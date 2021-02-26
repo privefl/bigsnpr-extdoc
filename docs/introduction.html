@@ -120,7 +120,7 @@ Also, I wanted to develop new methods, which seemed very hard to do without usin
 At some point, I realized that many functions (to perform e.g. <a href="https://en.wikipedia.org/wiki/Genome-wide_association_study">GWAS</a>, <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a>, summary statistics) were not really specific to genotype data.
 Indeed, a TWAS or an EWAS are not conceptually very different from a GWAS; one can also perform PCA on e.g. DNA methylation data.
 Therefore I decided to move all these functions that could be used on any data stored as a matrix and build a new <i class="fab  fa-r-project "></i> package, {bigstatsr}.
-This is why there are two packages, where {bigstatsr} can basically be used for any field using matrices, while {bigsnpr} provides some tools rather specific to genotype data, largely building on top of {bigstatsr}.</p>
+This is why there are two packages, where {bigstatsr} can basically be used by any field using matrices, while {bigsnpr} provides some tools rather specific to genotype data, largely building on top of {bigstatsr}.</p>
 <div class="infobox info">
 <p>To know which function belongs to which package: functions starting with <code>big_</code> belongs to {bigstatsr} while functions starting with <code>snp_</code> or <code>bed_</code> belongs to {bigsnpr}.</p>
 </div>
