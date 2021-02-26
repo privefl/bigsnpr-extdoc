@@ -51,6 +51,7 @@
 
 
 
+<link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-66N68ENQ12"></script>
 <script>
@@ -111,14 +112,14 @@
 <h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
 <div id="main-motivation-for-developing-bigstatsr-and-bigsnpr" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Main motivation for developing {bigstatsr} and {bigsnpr}</h2>
-<p>The main motivation was for me to be able to run all my analyses within R.
+<p>The main motivation was for me to be able to run all my analyses within <i class="fab  fa-r-project "></i>.
 I was frustrated by having to use all these different software, with different input formats, and requiring text files for parameters.
-This made it hard for me to build a chain of analyses, to perform some exploratory analyses, or to use familiar R packages.
+This made it hard for me to build a chain of analyses, to perform some exploratory analyses, or to use familiar <i class="fab  fa-r-project "></i> packages.
 Also, I wanted to develop new methods, which seemed very hard to do without using a simple matrix-like format.</p>
-<p>Thus I started developing R package {bigsnpr} at the beginning of my thesis.
+<p>Thus I started developing <i class="fab  fa-r-project "></i> package {bigsnpr} at the beginning of my thesis.
 At some point, I realized that many functions (to perform e.g. <a href="https://en.wikipedia.org/wiki/Genome-wide_association_study">GWAS</a>, <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a>, summary statistics) were not really specific to genotype data.
-Indeed, a TWAS or an EWAS are not very conceptually different from a GWAS; one can also perform PCA on e.g. DNA methylation data.
-Therefore I decided to move all these functions that could be used on any data stored as a matrix and build a new package, {bigstatsr}.
+Indeed, a TWAS or an EWAS are not conceptually very different from a GWAS; one can also perform PCA on e.g. DNA methylation data.
+Therefore I decided to move all these functions that could be used on any data stored as a matrix and build a new <i class="fab  fa-r-project "></i> package, {bigstatsr}.
 This is why there are two packages, where {bigstatsr} can basically be used for any field using matrices, while {bigsnpr} provides some tools rather specific to genotype data, largely building on top of {bigstatsr}.</p>
 <div class="infobox info">
 <p>To know which function belongs to which package: functions starting with <code>big_</code> belongs to {bigstatsr} while functions starting with <code>snp_</code> or <code>bed_</code> belongs to {bigsnpr}.</p>
