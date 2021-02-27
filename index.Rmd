@@ -1,6 +1,6 @@
 --- 
 title: "bigsnpr & bigstatsr"
-subtitle: "Extended documentation"
+subtitle: "Extended documentation [WORK IN PROGRESS]"
 author: "Florian Privé"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
