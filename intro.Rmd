@@ -1,6 +1,7 @@
 # Introduction
 
 ```{r setup, include=FALSE}
+WORDS_TO_IGNORE <- c("pak", "EWAS", "methylation")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -26,3 +27,22 @@ To know which function belongs to which package: functions starting with `big_` 
 
 <blockquote class="twitter-tweet" data-lang="en" align="center" width="50%"><p lang="en" dir="ltr">A friendly reminder:<br>The correct spelling is<br> - bigstatsr -- not bigstatr / BIGstatsR<br> - bigsnpr -- not BIGsnpR / bigSNPr<br> - pcadapt -- not PCAdapt<br> - LDpred -- not LDPred<br><br>Thank you<br>The kittens thank you too <a href="https://t.co/S8wyE4G6BG">pic.twitter.com/S8wyE4G6BG</a></p>&mdash; Florian Privé (remote postdoc) (@privefl) <a href="https://twitter.com/privefl/status/1329109034218237953?ref_src=twsrc%5Etfw">November 18, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 
+
+## Installation
+
+Both packages are available on CRAN, so you can use `install.packages()`:
+
+```{r, eval=FALSE}
+install.packages("bigstatsr")
+install.packages("bigsnpr")
+```
+
+To install the latest versions (from GitHub), you can use {remotes}:
+
+```{r, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("privefl/bigstatsr")
+remotes::install_github("privefl/bigsnpr")
+```
+
+As an alternative to {remotes}, you can also try [{pak}](https://github.com/r-lib/pak), which gives more information and solve other issues.
