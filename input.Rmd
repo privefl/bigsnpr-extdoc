@@ -35,7 +35,7 @@ Note that the elements of the FBM are stored column-wise (as for a standard R ma
 
 ## In {bigsnpr}
 
-This package uses a class called `bigSNP` for representing SNP data. A `bigSNP` object is merely a list with the following elements:
+Package {bigsnpr} uses a class called `bigSNP` for representing SNP data. A `bigSNP` object is merely a list with the following elements:
 
 - `$genotypes`: A [`FBM.code256`](https://privefl.github.io/bigstatsr/reference/FBM.code256-class.html). Rows are samples and columns are variants. This stores genotype calls or *dosages* (rounded to 2 decimal places).
 - `$fam`: A `data.frame` with some information on the individuals.
@@ -46,7 +46,7 @@ The code used in class *FBM.code256* for imputed data is e.g.
 ```{r}
 bigsnpr::CODE_DOSAGE
 ```
-where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for many types of data by storing each elements using only one byte (x4 compared to bed files, but /8 compared to doubles). 
+where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for handling many types of data while storing each elements using one byte only (x4 compared to bed files, but /8 compared to doubles). 
 ::::
 
 Since v1.0, package {bigsnpr} also provides functions for directly working on bed files with a few missing values [@prive2020efficient].
@@ -63,6 +63,6 @@ If there is a demand for it, I might extend functions in {bigsnpr} to handle mor
 
 - To read a bigSNP object from *bed*/*bim*/*fam* files, you can use functions `snp_readBed()` and `snp_readBed2()` (the second one allows using only a subset of individuals/variants and using parallelism). 
 
-- To read *BGEN* files, you can use function `snp_readBGEN()`. This function takes around 40 minutes to read 1M variants for 400K individuals using 15 cores. Note that works only for BGEN V1.2 with probabilities stored as 8 bits (which is the case of e.g. the UK Biobank files, see [this issue](https://github.com/privefl/bigsnpr/issues/140)).
+- To read *BGEN* files, you can use function `snp_readBGEN()`. This function takes around 40 minutes to read 1M variants for 400K individuals using 15 cores. Note that this function works only for BGEN V1.2 with probabilities stored as 8 bits (which is the case of e.g. the UK Biobank files, see [this issue](https://github.com/privefl/bigsnpr/issues/140)).
 
 - To read any format used in genetics, you can always convert blocks of the data to text files using PLINK, read these using `bigreadr::fread2()` and filling a part of the resulting FBM. [TODO: export the code to convert from RICOPILI imputed data]
