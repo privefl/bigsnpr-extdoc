@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Preprocessing | bigsnpr &amp; bigstatsr</title>
+  <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Preprocessing | bigsnpr &amp; bigstatsr" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://privefl.github.io/bigsnpr-extdoc/" />
+  <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
+  <meta property="og:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Preprocessing | bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:site" content="@privefl" />
+  <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
+
+<meta name="author" content="Florian Privé" />
+
+
+<meta name="date" content="2021-03-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="inputs-and-formats.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-66N68ENQ12"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-66N68ENQ12');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">bigsnpr & bigstatsr</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#main-motivation-for-developing-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>1.1</b> Main motivation for developing {bigstatsr} and {bigsnpr}</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.3</b> Correct spellings</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigstatsr"><i class="fa fa-check"></i><b>2.1</b> In {bigstatsr}</a></li>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> In {bigsnpr}</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-a-fbm-or-bigsnp-object"><i class="fa fa-check"></i><b>2.3</b> Getting a FBM or bigSNP object</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">bigsnpr &amp; bigstatsr</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="preprocessing" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Preprocessing</h1>
+<p>In this section, I’m including conversion, quality control and imputation.</p>
+<div id="conversion-and-quality-control-of-plink-files" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Conversion and quality control of PLINK files</h2>
+<p>PLINK is very efficient for conversion and quality control of multiple formats, so I have decided just using it.</p>
+<p>In {bigsnpr}, I provide some wrappers to PLINK for ease of use:</p>
+<ul>
+<li><p><code>download_plink()</code> and <code>download_plink2()</code> for downloading the latest stable versions of PLINK 1.9 and 2.0.</p></li>
+<li><p><code>snp_plinkQC()</code> for quality control (QC) and conversion to bed/bim/fam.</p></li>
+<li><p><code>snp_plinkKINGQC()</code> for QC on relatedness based on KING-robust kinship estimator. Using <code>make.bed = FALSE</code> allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files.</p></li>
+<li><p><code>snp_plinkIBDQC()</code> for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments.</p></li>
+<li><p><code>snp_plinkRmSamples()</code> for producing new PLINK files after having removed some individuals.</p></li>
+<li><p>For any other PLINK function, I recommend calling PLINK directly from <i class="fab  fa-r-project "></i> thanks to system calls and package {glue}, e.g.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="preprocessing.html#cb1-1" aria-hidden="true" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb1-2"><a href="preprocessing.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb1-3"><a href="preprocessing.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --version&quot;</span></span>
+<span id="cb1-4"><a href="preprocessing.html#cb1-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<pre><code>#&gt; PLINK v1.90b6.21 64-bit (19 Oct 2020)</code></pre></li>
+</ul>
+</div>
+<div id="imputation" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Imputation</h2>
+<p>Note that most functions from {bigstatsr} and {bigsnpr} don’t handle missing values.</p>
+<p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="preprocessing.html#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="at">init =</span> <span class="fu">rnorm</span>(<span class="dv">400</span>))</span>
+<span id="cb3-2"><a href="preprocessing.html#cb3-2" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="preprocessing.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_apply</span>(X, <span class="cf">function</span>(X, ind) {</span>
+<span id="cb4-2"><a href="preprocessing.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># access a subset of columns as a standard R matrix</span></span>
+<span id="cb4-3"><a href="preprocessing.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  X.sub <span class="ot">&lt;-</span> X[, ind, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb4-4"><a href="preprocessing.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get the location (i, j) of missing values</span></span>
+<span id="cb4-5"><a href="preprocessing.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  ind_na <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(X.sub), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-6"><a href="preprocessing.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute the corresponding mean for each column j</span></span>
+<span id="cb4-7"><a href="preprocessing.html#cb4-7" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(X.sub, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)[ind_na[, <span class="dv">2</span>]]</span>
+<span id="cb4-8"><a href="preprocessing.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update j (relative to subset) to global &#39;ind&#39;</span></span>
+<span id="cb4-9"><a href="preprocessing.html#cb4-9" aria-hidden="true" tabindex="-1"></a>  ind_na[, <span class="dv">2</span>] <span class="ot">&lt;-</span> ind[ind_na[, <span class="dv">2</span>]]</span>
+<span id="cb4-10"><a href="preprocessing.html#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fill positions with corresponding means</span></span>
+<span id="cb4-11"><a href="preprocessing.html#cb4-11" aria-hidden="true" tabindex="-1"></a>  X[ind_na] <span class="ot">&lt;-</span> means</span>
+<span id="cb4-12"><a href="preprocessing.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># here we don&#39;t want to return anything, so `NULL`</span></span>
+<span id="cb4-13"><a href="preprocessing.html#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span>
+<span id="cb4-14"><a href="preprocessing.html#cb4-14" aria-hidden="true" tabindex="-1"></a>}, <span class="at">a.combine =</span> <span class="st">&#39;c&#39;</span>, <span class="at">ncores =</span> <span class="dv">1</span>)  <span class="co"># can change `ncores` to `nb_cores()`</span></span></code></pre></div>
+<pre><code>#&gt; NULL</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="preprocessing.html#cb6-1" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ]</span></code></pre></div>
+<pre><code>#&gt;  [1]  0.09724393  0.36171414  0.17143729 -0.41956734 -0.04667270
+#&gt;  [6] -0.07045853  0.10367424  0.13215657 -0.33489135 -0.19328032
+#&gt; [11] -0.30679650  0.01190250 -0.37654967 -0.14073073 -0.19637132
+#&gt; [16]  0.24731710  0.04299967 -0.12737193 -0.05137451 -0.19734480</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preprocessing.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_scale</span>()(X)<span class="sc">$</span>center</span></code></pre></div>
+<pre><code>#&gt;  [1]  0.09724393  0.36171414  0.17143729 -0.41956734 -0.04667270
+#&gt;  [6] -0.07045853  0.10367424  0.13215657 -0.33489135 -0.19328032
+#&gt; [11] -0.30679650  0.01190250 -0.37654967 -0.14073073 -0.19637132
+#&gt; [16]  0.24731710  0.04299967 -0.12737193 -0.05137451 -0.19734480</code></pre>
+<p>In {bigsnpr}, to perform simple imputation of genotyped data, you can use <code>snp_fastImputeSimple()</code>. You can also use <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data (slower but still fast enough, described in <span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span>).</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="inputs-and-formats.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+# Preprocessing
+
+```{r setup, include=FALSE}
+WORDS_TO_IGNORE <- c("XGBoost")
+source("knitr-options.R")
+source("spelling-check.R")
+library(bigsnpr)
+```
+
+In this section, I'm including conversion, quality control and imputation.
+
+## Conversion and quality control of PLINK files
+
+PLINK is very efficient for conversion and quality control of multiple formats, so I have decided just using it.
+
+In {bigsnpr}, I provide some wrappers to PLINK for ease of use:
+
+- `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0.
+
+- `snp_plinkQC()` for quality control (QC) and conversion to bed/bim/fam.
+
+- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files.
+	
+- `snp_plinkIBDQC()` for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments.
+	
+- `snp_plinkRmSamples()` for producing new PLINK files after having removed some individuals.
+
+- For any other PLINK function, I recommend calling PLINK directly from `r icon::fa_r_project()` thanks to system calls and package {glue}, e.g.
+    ```{r, eval=FALSE}
+    plink <- download_plink("tmp-data")
+    system(glue::glue(
+      "{plink} --version"
+    ))
+    ```
+
+    ```{r, echo=FALSE}
+    cat(
+      system(glue::glue("{download_plink('tmp-data')} --version"), 
+             intern = TRUE), sep = '\n')
+    ```
+
+## Imputation
+
+Note that most functions from {bigstatsr} and {bigsnpr} don't handle missing values.
+
+Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g.
+
+```{r}
+X <- FBM(20, 20, init = rnorm(400))
+X[1, ] <- NA
+```
+
+```{r}
+big_apply(X, function(X, ind) {
+  # access a subset of columns as a standard R matrix
+  X.sub <- X[, ind, drop = FALSE]
+  # get the location (i, j) of missing values
+  ind_na <- which(is.na(X.sub), arr.ind = TRUE)
+  # compute the corresponding mean for each column j
+  means <- colMeans(X.sub, na.rm = TRUE)[ind_na[, 2]]
+  # update j (relative to subset) to global 'ind'
+  ind_na[, 2] <- ind[ind_na[, 2]]
+  # fill positions with corresponding means
+  X[ind_na] <- means
+  # here we don't want to return anything, so `NULL`
+  NULL
+}, a.combine = 'c', ncores = 1)  # can change `ncores` to `nb_cores()`
+X[1, ]
+big_scale()(X)$center
+```
+
+In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use `snp_fastImpute()` that uses XGBoost models to impute genotyped data (slower but still fast enough, described in @prive2017efficient).
