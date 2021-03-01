@@ -200,10 +200,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><code>snp_plinkIBDQC()</code> for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments.</p></li>
 <li><p><code>snp_plinkRmSamples()</code> for producing new PLINK files after having removed some individuals.</p></li>
 <li><p>For any other PLINK function, I recommend calling PLINK directly from <i class="fab  fa-r-project "></i> thanks to system calls and package {glue}, e.g.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="preprocessing.html#cb1-1" aria-hidden="true" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
-<span id="cb1-2"><a href="preprocessing.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
-<span id="cb1-3"><a href="preprocessing.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --version&quot;</span></span>
-<span id="cb1-4"><a href="preprocessing.html#cb1-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="preprocessing.html#cb5-1" aria-hidden="true" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb5-2"><a href="preprocessing.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb5-3"><a href="preprocessing.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --version&quot;</span></span>
+<span id="cb5-4"><a href="preprocessing.html#cb5-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <pre><code>#&gt; PLINK v1.90b6.21 64-bit (19 Oct 2020)</code></pre></li>
 </ul>
 </div>
@@ -211,33 +211,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.2</span> Imputation</h2>
 <p>Note that most functions from {bigstatsr} and {bigsnpr} don’t handle missing values.</p>
 <p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="preprocessing.html#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="at">init =</span> <span class="fu">rnorm</span>(<span class="dv">400</span>))</span>
-<span id="cb3-2"><a href="preprocessing.html#cb3-2" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="preprocessing.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_apply</span>(X, <span class="cf">function</span>(X, ind) {</span>
-<span id="cb4-2"><a href="preprocessing.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># access a subset of columns as a standard R matrix</span></span>
-<span id="cb4-3"><a href="preprocessing.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  X.sub <span class="ot">&lt;-</span> X[, ind, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb4-4"><a href="preprocessing.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get the location (i, j) of missing values</span></span>
-<span id="cb4-5"><a href="preprocessing.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  ind_na <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(X.sub), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-6"><a href="preprocessing.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute the corresponding mean for each column j</span></span>
-<span id="cb4-7"><a href="preprocessing.html#cb4-7" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(X.sub, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)[ind_na[, <span class="dv">2</span>]]</span>
-<span id="cb4-8"><a href="preprocessing.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update j (relative to subset) to global &#39;ind&#39;</span></span>
-<span id="cb4-9"><a href="preprocessing.html#cb4-9" aria-hidden="true" tabindex="-1"></a>  ind_na[, <span class="dv">2</span>] <span class="ot">&lt;-</span> ind[ind_na[, <span class="dv">2</span>]]</span>
-<span id="cb4-10"><a href="preprocessing.html#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fill positions with corresponding means</span></span>
-<span id="cb4-11"><a href="preprocessing.html#cb4-11" aria-hidden="true" tabindex="-1"></a>  X[ind_na] <span class="ot">&lt;-</span> means</span>
-<span id="cb4-12"><a href="preprocessing.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># here we don&#39;t want to return anything, so `NULL`</span></span>
-<span id="cb4-13"><a href="preprocessing.html#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span>
-<span id="cb4-14"><a href="preprocessing.html#cb4-14" aria-hidden="true" tabindex="-1"></a>}, <span class="at">a.combine =</span> <span class="st">&#39;c&#39;</span>, <span class="at">ncores =</span> <span class="dv">1</span>)  <span class="co"># can change `ncores` to `nb_cores()`</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="preprocessing.html#cb7-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="at">init =</span> <span class="fu">rnorm</span>(<span class="dv">400</span>))</span>
+<span id="cb7-2"><a href="preprocessing.html#cb7-2" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preprocessing.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_apply</span>(X, <span class="cf">function</span>(X, ind) {</span>
+<span id="cb8-2"><a href="preprocessing.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># access a subset of columns as a standard R matrix</span></span>
+<span id="cb8-3"><a href="preprocessing.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  X.sub <span class="ot">&lt;-</span> X[, ind, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb8-4"><a href="preprocessing.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get the location (i, j) of missing values</span></span>
+<span id="cb8-5"><a href="preprocessing.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  ind_na <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(X.sub), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-6"><a href="preprocessing.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute the corresponding mean for each column j</span></span>
+<span id="cb8-7"><a href="preprocessing.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(X.sub, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)[ind_na[, <span class="dv">2</span>]]</span>
+<span id="cb8-8"><a href="preprocessing.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update j (relative to subset) to global &#39;ind&#39;</span></span>
+<span id="cb8-9"><a href="preprocessing.html#cb8-9" aria-hidden="true" tabindex="-1"></a>  ind_na[, <span class="dv">2</span>] <span class="ot">&lt;-</span> ind[ind_na[, <span class="dv">2</span>]]</span>
+<span id="cb8-10"><a href="preprocessing.html#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fill positions with corresponding means</span></span>
+<span id="cb8-11"><a href="preprocessing.html#cb8-11" aria-hidden="true" tabindex="-1"></a>  X[ind_na] <span class="ot">&lt;-</span> means</span>
+<span id="cb8-12"><a href="preprocessing.html#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># here we don&#39;t want to return anything, so `NULL`</span></span>
+<span id="cb8-13"><a href="preprocessing.html#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span>
+<span id="cb8-14"><a href="preprocessing.html#cb8-14" aria-hidden="true" tabindex="-1"></a>}, <span class="at">a.combine =</span> <span class="st">&#39;c&#39;</span>, <span class="at">ncores =</span> <span class="dv">1</span>)  <span class="co"># can change `ncores` to `nb_cores()`</span></span></code></pre></div>
 <pre><code>#&gt; NULL</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="preprocessing.html#cb6-1" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ]</span></code></pre></div>
-<pre><code>#&gt;  [1]  0.09724393  0.36171414  0.17143729 -0.41956734 -0.04667270
-#&gt;  [6] -0.07045853  0.10367424  0.13215657 -0.33489135 -0.19328032
-#&gt; [11] -0.30679650  0.01190250 -0.37654967 -0.14073073 -0.19637132
-#&gt; [16]  0.24731710  0.04299967 -0.12737193 -0.05137451 -0.19734480</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preprocessing.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_scale</span>()(X)<span class="sc">$</span>center</span></code></pre></div>
-<pre><code>#&gt;  [1]  0.09724393  0.36171414  0.17143729 -0.41956734 -0.04667270
-#&gt;  [6] -0.07045853  0.10367424  0.13215657 -0.33489135 -0.19328032
-#&gt; [11] -0.30679650  0.01190250 -0.37654967 -0.14073073 -0.19637132
-#&gt; [16]  0.24731710  0.04299967 -0.12737193 -0.05137451 -0.19734480</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="preprocessing.html#cb10-1" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ]</span></code></pre></div>
+<pre><code>#&gt;  [1]  0.17602512 -0.17879976 -0.37203514 -0.13214410 -0.26206598
+#&gt;  [6]  0.09667698  0.08943569 -0.29142221  0.21591796 -0.36550639
+#&gt; [11]  0.27471736  0.09183784  0.02423489  0.03757876 -0.19126269
+#&gt; [16]  0.19431476  0.10260873  0.22299665 -0.10153383  0.27182522</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="preprocessing.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_scale</span>()(X)<span class="sc">$</span>center</span></code></pre></div>
+<pre><code>#&gt;  [1]  0.17602512 -0.17879976 -0.37203514 -0.13214410 -0.26206598
+#&gt;  [6]  0.09667698  0.08943569 -0.29142221  0.21591796 -0.36550639
+#&gt; [11]  0.27471736  0.09183784  0.02423489  0.03757876 -0.19126269
+#&gt; [16]  0.19431476  0.10260873  0.22299665 -0.10153383  0.27182522</code></pre>
 <p>In {bigsnpr}, to perform simple imputation of genotyped data, you can use <code>snp_fastImputeSimple()</code>. You can also use <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data (slower but still fast enough, described in <span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span>).</p>
 
 </div>
@@ -298,6 +298,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
