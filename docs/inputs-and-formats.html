@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>bigsnpr &amp; bigstatsr</title>
+  <title>Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="bigsnpr &amp; bigstatsr" />
+  <meta property="og:title" content="Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://privefl.github.io/bigsnpr-extdoc/" />
   <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:title" content="Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr" />
   <meta name="twitter:site" content="@privefl" />
   <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="introduction.html"/>
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -181,27 +181,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">bigsnpr &amp; bigstatsr</h1>
-<h2 class="subtitle"><em>Extended documentation [WORK IN PROGRESS]</em></h2>
-<p class="author"><em>Florian Privé</em></p>
-<p class="date"><em>2021-03-01</em></p>
+<div id="inputs-and-formats" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Inputs and formats</h1>
+<div id="in-bigstatsr" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> In {bigstatsr}</h2>
+<p>The format provided in package {bigstatsr} is called a Filebacked Big Matrix (FBM). It is an on-disk matrix format which is accessed through memory-mapping.</p>
+<div class="infobox info">
+<p>Memory-mapping accesses the elements you need from disk to memory when needed. The second time you access the same elements, they are directly accessed from memory while there is enough memory for storing them. When no more memory is available, the OS frees some of the memory to make room for new elements you want to access.
+Therefore, try to always perform as many operations on a subset of elements since data is accessed from disk only once.</p>
 </div>
-<div id="about" class="section level1 unnumbered">
-<h1>About</h1>
-<div id="license" class="section level2 unnumbered">
-<h2>License</h2>
-<p>This material is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 License</a>.</p>
+<p>All the elements of one FBM have the same type; supported types are:</p>
+<ul>
+<li><p><code>"double"</code> (the default, double precision – 64 bits)</p></li>
+<li><p><code>"float"</code> (single precision – 32 bits)</p></li>
+<li><p><code>"integer"</code> (signed, so between <span class="math inline">\(-2^{31}\)</span> and <span class="math inline">\(2^{31} - 1\)</span>)</p></li>
+<li><p><code>"unsigned short"</code>: can store integer values from <span class="math inline">\(0\)</span> to <span class="math inline">\(65535\)</span>.</p></li>
+<li><p><code>"raw"</code> or <code>"unsigned char"</code>: can store integer values from <span class="math inline">\(0\)</span> to <span class="math inline">\(255\)</span>. It is the basis for class <em>FBM.code256</em> in order to access 256 arbitrary different numeric values. It is used in package {bigsnpr} (see below).</p></li>
+</ul>
+<div class="infobox info">
+<p>Standard matrix accessors are implemented for FBMs, so you can e.g. access the first column of <code>X</code> using <code>X[, 1]</code>. You can access the whole FBM as an R matrix in memory using <code>X[]</code>.
+However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
+Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it will read non-contiguous elements from the whole matrix from disk.</p>
 </div>
-<div id="author" class="section level2 unnumbered">
-<h2>Author</h2>
-<p><a href="https://privefl.github.io/">Florian Privé</a> is a postdoc in predictive human genetics, fond of Data Science and an R(cpp) enthusiast. He is also the founder and former organizer of <a href="https://r-in-grenoble.github.io/">the Grenoble R user group</a>. You can find him on <a href="https://twitter.com/privefl">Twitter</a> and <a href="https://github.com/privefl">GitHub</a> as @privefl and on <a href="https://stackoverflow.com/users/6103040/f-priv%c3%a9">Stack Overflow</a> as F. Privé.</p>
 </div>
-<div id="contact" class="section level2 unnumbered">
-<h2>Contact</h2>
-<p>If you want me to add or clarify some content in this documentation, please open <a href="https://github.com/privefl/bigsnpr-extdoc/issues">an issue on the GitHub repository of this documentation</a>.</p>
-<p>If you have bug reports or questions specifically on functions of the packages, please open an issue on the corresponding package’s repository.</p>
-<p>I will always redirect you to GitHub issues if you email me about the packages, so that others can benefit from our discussion.</p>
+<div id="in-bigsnpr" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> In {bigsnpr}</h2>
+<p>This package uses a class called <code>bigSNP</code> for representing SNP data. A <code>bigSNP</code> object is merely a list with the following elements:</p>
+<ul>
+<li><code>$genotypes</code>: A <a href="https://privefl.github.io/bigstatsr/reference/FBM.code256-class.html"><code>FBM.code256</code></a>. Rows are samples and columns are variants. This stores genotype calls or <em>dosages</em> (rounded to 2 decimal places).</li>
+<li><code>$fam</code>: A <code>data.frame</code> with some information on the individuals.</li>
+<li><code>$map</code>: A <code>data.frame</code> with some information on the variants.</li>
+</ul>
+<div class="infobox info">
+<p>The code used in class <em>FBM.code256</em> for imputed data is e.g. </p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="inputs-and-formats.html#cb3-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
+<pre><code>#&gt;  [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
+#&gt; [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
+#&gt; [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
+#&gt; [43] 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42
+#&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 206 entries ]</code></pre>
+<p>where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for many types of data by storing each elements using only one byte (x4 compared to bed files, but /8 compared to doubles).</p>
+</div>
+<p>Since v1.0, package {bigsnpr} also provides functions for directly working on bed files with a few missing values <span class="citation">(<a href="references.html#ref-prive2020efficient" role="doc-biblioref">Privé et al. 2020</a>)</span>.</p>
+<div class="infobox info">
+<p>If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only <em>FBM.code256</em>. We have started talking about this in <a href="https://github.com/privefl/bigsnpr/issues/185">this issue</a>.</p>
+</div>
+</div>
+<div id="getting-a-fbm-or-bigsnp-object" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Getting a FBM or bigSNP object</h2>
+<ul>
+<li><p>The easiest way to get an FBM is to use the constructor function <code>FBM()</code> or the converter <code>as_FBM()</code>.</p></li>
+<li><p>To read an FBM from a large text file, you can use function <code>big_read()</code> (see <a href="https://privefl.github.io/bigstatsr/articles/read-FBM-from-file.html">this vignette</a>).</p></li>
+<li><p>To read a bigSNP object from <em>bed</em>/<em>bim</em>/<em>fam</em> files, you can use functions <code>snp_readBed()</code> and <code>snp_readBed2()</code> (the second one allows using only a subset of individuals/variants and using parallelism).</p></li>
+<li><p>To read <em>BGEN</em> files, you can use function <code>snp_readBGEN()</code>. This function takes around 40 minutes to read 1M variants for 400K individuals using 15 cores. Note that works only for BGEN V1.2 with probabilities stored as 8 bits (which is the case of e.g. the UK Biobank files, see <a href="https://github.com/privefl/bigsnpr/issues/140">this issue</a>).</p></li>
+<li><p>To read any format used in genetics, you can always convert blocks of the data to text files using PLINK, read these using <code>bigreadr::fread2()</code> and filling a part of the resulting FBM. [TODO: export the code to convert from RICOPILI imputed data]</p></li>
+</ul>
 
 </div>
 </div>
@@ -210,8 +244,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-
-<a href="introduction.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -17,7 +17,7 @@ Thus I started developing  `r icon::fa_r_project()` package {bigsnpr} at the beg
 At some point, I realized that many functions (to perform e.g. [GWAS](https://en.wikipedia.org/wiki/Genome-wide_association_study), [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis), summary statistics) were not really specific to genotype data.
 Indeed, a TWAS or an EWAS are not conceptually very different from a GWAS; one can also perform PCA on e.g. DNA methylation data.
 Therefore I decided to move all these functions that could be used on any data stored as a matrix and build a new `r icon::fa_r_project()` package, {bigstatsr}.
-This is why there are two packages, where {bigstatsr} can basically be used by any field using matrices, while {bigsnpr} provides some tools rather specific to genotype data, largely building on top of {bigstatsr}.
+This is why there are two packages, where {bigstatsr} can basically be used by any field using matrices, while {bigsnpr} provides some tools rather specific to genotype data, largely building on top of {bigstatsr}. The initial description of the two packages is available in @prive2017efficient.
 
 :::: {.infobox .info}
 
