@@ -6,3 +6,4 @@ _main*
 spelling.errors
 docs/*.md
 tmp-data
+_bookdown_files/

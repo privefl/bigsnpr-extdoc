@@ -33,7 +33,7 @@
   
 <link rel="prev" href="inputs-and-formats.html"/>
 <link rel="next" href="references.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.7.2/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -152,8 +152,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#main-motivation-for-developing-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>1.1</b> Main motivation for developing {bigstatsr} and {bigsnpr}</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.3</b> Correct spellings</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features"><i class="fa fa-check"></i><b>1.2</b> Features</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.4</b> Correct spellings</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
@@ -165,6 +166,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
 <li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Exercise: preprocessing</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -188,7 +190,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="preprocessing" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Preprocessing</h1>
-<p>In this section, I’m including conversion, quality control and imputation.</p>
+<p>In this section, I am including conversion, quality control and imputation.</p>
 <div id="conversion-and-quality-control-of-plink-files" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Conversion and quality control of PLINK files</h2>
 <p>PLINK is very efficient for conversion and quality control of multiple formats, so I have decided just using it.</p>
@@ -200,45 +202,113 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><code>snp_plinkIBDQC()</code> for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments.</p></li>
 <li><p><code>snp_plinkRmSamples()</code> for producing new PLINK files after having removed some individuals.</p></li>
 <li><p>For any other PLINK function, I recommend calling PLINK directly from <i class="fab  fa-r-project "></i> thanks to system calls and package {glue}, e.g.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="preprocessing.html#cb5-1" aria-hidden="true" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
-<span id="cb5-2"><a href="preprocessing.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
-<span id="cb5-3"><a href="preprocessing.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --version&quot;</span></span>
-<span id="cb5-4"><a href="preprocessing.html#cb5-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="preprocessing.html#cb1-1" aria-hidden="true" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb1-2"><a href="preprocessing.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb1-3"><a href="preprocessing.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --version&quot;</span></span>
+<span id="cb1-4"><a href="preprocessing.html#cb1-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <pre><code>#&gt; PLINK v1.90b6.21 64-bit (19 Oct 2020)</code></pre></li>
 </ul>
 </div>
 <div id="imputation" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Imputation</h2>
 <p>Note that most functions from {bigstatsr} and {bigsnpr} don’t handle missing values.</p>
-<p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="preprocessing.html#cb7-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="at">init =</span> <span class="fu">rnorm</span>(<span class="dv">400</span>))</span>
-<span id="cb7-2"><a href="preprocessing.html#cb7-2" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preprocessing.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_apply</span>(X, <span class="cf">function</span>(X, ind) {</span>
-<span id="cb8-2"><a href="preprocessing.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># access a subset of columns as a standard R matrix</span></span>
-<span id="cb8-3"><a href="preprocessing.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  X.sub <span class="ot">&lt;-</span> X[, ind, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb8-4"><a href="preprocessing.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get the location (i, j) of missing values</span></span>
-<span id="cb8-5"><a href="preprocessing.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  ind_na <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(X.sub), <span class="at">arr.ind =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-6"><a href="preprocessing.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute the corresponding mean for each column j</span></span>
-<span id="cb8-7"><a href="preprocessing.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(X.sub, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)[ind_na[, <span class="dv">2</span>]]</span>
-<span id="cb8-8"><a href="preprocessing.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update j (relative to subset) to global &#39;ind&#39;</span></span>
-<span id="cb8-9"><a href="preprocessing.html#cb8-9" aria-hidden="true" tabindex="-1"></a>  ind_na[, <span class="dv">2</span>] <span class="ot">&lt;-</span> ind[ind_na[, <span class="dv">2</span>]]</span>
-<span id="cb8-10"><a href="preprocessing.html#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fill positions with corresponding means</span></span>
-<span id="cb8-11"><a href="preprocessing.html#cb8-11" aria-hidden="true" tabindex="-1"></a>  X[ind_na] <span class="ot">&lt;-</span> means</span>
-<span id="cb8-12"><a href="preprocessing.html#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># here we don&#39;t want to return anything, so `NULL`</span></span>
-<span id="cb8-13"><a href="preprocessing.html#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span>
-<span id="cb8-14"><a href="preprocessing.html#cb8-14" aria-hidden="true" tabindex="-1"></a>}, <span class="at">a.combine =</span> <span class="st">&#39;c&#39;</span>, <span class="at">ncores =</span> <span class="dv">1</span>)  <span class="co"># can change `ncores` to `nb_cores()`</span></span></code></pre></div>
-<pre><code>#&gt; NULL</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="preprocessing.html#cb10-1" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>, ]</span></code></pre></div>
-<pre><code>#&gt;  [1]  0.17602512 -0.17879976 -0.37203514 -0.13214410 -0.26206598
-#&gt;  [6]  0.09667698  0.08943569 -0.29142221  0.21591796 -0.36550639
-#&gt; [11]  0.27471736  0.09183784  0.02423489  0.03757876 -0.19126269
-#&gt; [16]  0.19431476  0.10260873  0.22299665 -0.10153383  0.27182522</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="preprocessing.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_scale</span>()(X)<span class="sc">$</span>center</span></code></pre></div>
-<pre><code>#&gt;  [1]  0.17602512 -0.17879976 -0.37203514 -0.13214410 -0.26206598
-#&gt;  [6]  0.09667698  0.08943569 -0.29142221  0.21591796 -0.36550639
-#&gt; [11]  0.27471736  0.09183784  0.02423489  0.03757876 -0.19126269
-#&gt; [16]  0.19431476  0.10260873  0.22299665 -0.10153383  0.27182522</code></pre>
+<p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g. as explained in <a href="https://privefl.github.io/bigstatsr/articles/big-apply.html">this vignette</a>.</p>
 <p>In {bigsnpr}, to perform simple imputation of genotyped data, you can use <code>snp_fastImputeSimple()</code>. You can also use <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data (slower but still fast enough, described in <span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span>).</p>
+</div>
+<div id="exo-preprocessing" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Exercise: preprocessing</h2>
+<p>For the exercises, we will use the data provided in <span class="citation"><a href="references.html#ref-reed2015guide" role="doc-biblioref">Reed et al.</a> (<a href="references.html#ref-reed2015guide" role="doc-biblioref">2015</a>)</span>.</p>
+<p>This can be downloaded using</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="preprocessing.html#cb3-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/&quot;</span></span>
+<span id="cb3-2"><a href="preprocessing.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">paste0</span>(url, <span class="st">&quot;GWAS_data&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;.bed&quot;</span>, <span class="st">&quot;.bim&quot;</span>, <span class="st">&quot;.fam&quot;</span>)),</span>
+<span id="cb3-3"><a href="preprocessing.html#cb3-3" aria-hidden="true" tabindex="-1"></a>       runonce<span class="sc">::</span>download_file, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/GWAS_data.bed 
+#&gt;                                                  &quot;tmp-data/GWAS_data.bed&quot; 
+#&gt; https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/GWAS_data.bim 
+#&gt;                                                  &quot;tmp-data/GWAS_data.bim&quot; 
+#&gt; https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/GWAS_data.fam 
+#&gt;                                                  &quot;tmp-data/GWAS_data.fam&quot;</code></pre>
+<p>For some reason, this data is not ordered by chromosome and position; we can use PLINK to get an ordered version of this using</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="preprocessing.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb5-2"><a href="preprocessing.html#cb5-2" aria-hidden="true" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="preprocessing.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb6-2"><a href="preprocessing.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --bfile tmp-data/GWAS_data&quot;</span>,</span>
+<span id="cb6-3"><a href="preprocessing.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot; --make-bed --out tmp-data/GWAS_data_sorted&quot;</span></span>
+<span id="cb6-4"><a href="preprocessing.html#cb6-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<pre><code>#&gt; [1] 0</code></pre>
+<p>As you can see from PLINK output, this data contains 1401 individuals and 500,000 variants, with a few missing values.</p>
+<p>We can then perform some quality control using</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preprocessing.html#cb8-1" aria-hidden="true" tabindex="-1"></a>bedfile2 <span class="ot">&lt;-</span> <span class="fu">snp_plinkQC</span>(plink, <span class="st">&quot;tmp-data/GWAS_data_sorted&quot;</span>)</span></code></pre></div>
+<p>404,663 variants are remaining after this quality control; we can then read this data into an R object called <code>bigSNP</code> using</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="preprocessing.html#cb9-1" aria-hidden="true" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile2, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()))</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\Desktop\\bigsnpr-extdoc\\tmp-data\\GWAS_data_sorted_QC.rds&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="preprocessing.html#cb11-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
+<span id="cb11-2"><a href="preprocessing.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(obj.bigsnp, <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>#&gt; List of 3
+#&gt;  $ genotypes:Reference class &#39;FBM.code256&#39; [package &quot;bigstatsr&quot;] with 16 fields
+#&gt;   ..and 26 methods, of which 12 are  possibly relevant:
+#&gt;   ..  add_columns, as.FBM, bm, bm.desc, check_dimensions,
+#&gt;   ..  check_write_permissions, copy#envRefClass, initialize,
+#&gt;   ..  initialize#FBM, save, show#envRefClass, show#FBM
+#&gt;  $ fam      :&#39;data.frame&#39;:   1401 obs. of  6 variables:
+#&gt;   ..$ family.ID  : int [1:1401] 10002 10004 10005 10007 10008 10009 10010 10011 10012 10013 ...
+#&gt;   ..$ sample.ID  : int [1:1401] 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;   ..$ paternal.ID: int [1:1401] 0 0 0 0 0 0 0 0 0 0 ...
+#&gt;   ..$ maternal.ID: int [1:1401] 0 0 0 0 0 0 0 0 0 0 ...
+#&gt;   ..$ sex        : int [1:1401] 1 2 1 1 1 1 1 2 1 2 ...
+#&gt;   ..$ affection  : int [1:1401] 1 1 2 1 2 2 2 1 2 -9 ...
+#&gt;  $ map      :&#39;data.frame&#39;:   404663 obs. of  6 variables:
+#&gt;   ..$ chromosome  : int [1:404663] 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;   ..$ marker.ID   : chr [1:404663] &quot;rs12565286&quot; &quot;rs3094315&quot; &quot;rs2980319&quot; &quot;rs2980300&quot; ...
+#&gt;   ..$ genetic.dist: int [1:404663] 0 0 0 0 0 0 0 0 0 0 ...
+#&gt;   ..$ physical.pos: int [1:404663] 721290 752566 777122 785989 798959 947034 949608 1018704 1041700 1129672 ...
+#&gt;   ..$ allele1     : chr [1:404663] &quot;G&quot; &quot;C&quot; &quot;A&quot; &quot;A&quot; ...
+#&gt;   ..$ allele2     : chr [1:404663] &quot;C&quot; &quot;T&quot; &quot;T&quot; &quot;G&quot; ...
+#&gt;  - attr(*, &quot;class&quot;)= chr &quot;bigSNP&quot;</code></pre>
+<p>Recall that this data contains some missing values; you can get some counts per variant using</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="preprocessing.html#cb13-1" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb13-2"><a href="preprocessing.html#cb13-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">big_counts</span>(G)</span>
+<span id="cb13-3"><a href="preprocessing.html#cb13-3" aria-hidden="true" tabindex="-1"></a>counts[, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
+<pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+#&gt; 0    1247  958 1057  988  831 1201  496  386
+#&gt; 1     131  362  316  370  502  115  676  730
+#&gt; 2       6   66   28   25   67    7  165  216
+#&gt; &lt;NA&gt;   17   15    0   18    1   78   64   69</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="preprocessing.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(nbNA <span class="ot">&lt;-</span> counts[<span class="dv">4</span>, ])</span></code></pre></div>
+<p><img src="preprocessing_files/figure-html/unnamed-chunk-9-1.svg" width="70%" style="display: block; margin: auto;" /></p>
+<p>We can e.g. perform a quick imputation by the mean using</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="preprocessing.html#cb16-1" aria-hidden="true" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> <span class="fu">snp_fastImputeSimple</span>(G, <span class="at">method =</span> <span class="st">&quot;mean2&quot;</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
+<span id="cb16-2"><a href="preprocessing.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">big_counts</span>(G2, <span class="at">ind.col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code></pre></div>
+<pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+#&gt; 0    1247  958 1057  988  831 1201  496  386
+#&gt; 1     131  362  316  370  502  115  676  730
+#&gt; 2       6   66   28   25   67    7  165  216
+#&gt; &lt;NA&gt;    0    0    0    0    0    0    0    0
+#&gt; 0.01    0    0    0    0    0    0    0    0
+#&gt; 0.02    0    0    0    0    0    0    0    0
+#&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 196 rows ]</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="preprocessing.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_counts</span>(G, <span class="at">ind.col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code></pre></div>
+<pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+#&gt; 0    1247  958 1057  988  831 1201  496  386
+#&gt; 1     131  362  316  370  502  115  676  730
+#&gt; 2       6   66   28   25   67    7  165  216
+#&gt; &lt;NA&gt;   17   15    0   18    1   78   64   69</code></pre>
+<p><code>G</code> still has missing values, but <code>G2</code> does not. Note that both are using the same data, the difference is that they using a different code to decode the underlying data:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="preprocessing.html#cb20-1" aria-hidden="true" tabindex="-1"></a>G<span class="sc">$</span>code256</span></code></pre></div>
+<pre><code>#&gt;  [1]  0  1  2 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+#&gt; [24] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+#&gt; [47] NA NA NA NA
+#&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 206 entries ]</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="preprocessing.html#cb22-1" aria-hidden="true" tabindex="-1"></a>G2<span class="sc">$</span>code256</span></code></pre></div>
+<pre><code>#&gt;  [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
+#&gt; [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
+#&gt; [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
+#&gt; [43] 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42
+#&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 206 entries ]</code></pre>
+<p>To always use the new code, you need to save it using</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="preprocessing.html#cb24-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp<span class="sc">$</span>genotypes <span class="ot">&lt;-</span> G2</span>
+<span id="cb24-2"><a href="preprocessing.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_save</span>(obj.bigsnp)</span></code></pre></div>
+<p>You can re-attach this data in another R session later using <code>snp_attach("tmp-data/GWAS_data_sorted_QC.rds")</code>.</p>
 
 </div>
 </div>
@@ -298,20 +368,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

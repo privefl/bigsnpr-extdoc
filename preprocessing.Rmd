@@ -7,7 +7,7 @@ source("spelling-check.R")
 library(bigsnpr)
 ```
 
-In this section, I'm including conversion, quality control and imputation.
+In this section, I am including conversion, quality control and imputation.
 
 ## Conversion and quality control of PLINK files
 
@@ -39,34 +39,82 @@ In {bigsnpr}, I provide some wrappers to PLINK for ease of use:
              intern = TRUE), sep = '\n')
     ```
 
+
 ## Imputation
 
 Note that most functions from {bigstatsr} and {bigsnpr} don't handle missing values.
 
-Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g.
-
-```{r}
-X <- FBM(20, 20, init = rnorm(400))
-X[1, ] <- NA
-```
-
-```{r}
-big_apply(X, function(X, ind) {
-  # access a subset of columns as a standard R matrix
-  X.sub <- X[, ind, drop = FALSE]
-  # get the location (i, j) of missing values
-  ind_na <- which(is.na(X.sub), arr.ind = TRUE)
-  # compute the corresponding mean for each column j
-  means <- colMeans(X.sub, na.rm = TRUE)[ind_na[, 2]]
-  # update j (relative to subset) to global 'ind'
-  ind_na[, 2] <- ind[ind_na[, 2]]
-  # fill positions with corresponding means
-  X[ind_na] <- means
-  # here we don't want to return anything, so `NULL`
-  NULL
-}, a.combine = 'c', ncores = 1)  # can change `ncores` to `nb_cores()`
-X[1, ]
-big_scale()(X)$center
-```
+Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. as explained in [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
 In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use `snp_fastImpute()` that uses XGBoost models to impute genotyped data (slower but still fast enough, described in @prive2017efficient).
+
+
+## Exercise: preprocessing {#exo-preprocessing}
+
+For the exercises, we will use the data provided in @reed2015guide.
+
+This can be downloaded using 
+```{r}
+url <- "https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/"
+sapply(paste0(url, "GWAS_data", c(".bed", ".bim", ".fam")),
+       runonce::download_file, dir = "tmp-data")
+```
+
+For some reason, this data is not ordered by chromosome and position; we can use PLINK to get an ordered version of this using
+```{r}
+library(bigsnpr)
+plink <- download_plink("tmp-data")
+```
+
+```{r}
+system(glue::glue(
+  "{plink} --bfile tmp-data/GWAS_data",
+  " --make-bed --out tmp-data/GWAS_data_sorted"
+))
+```
+
+As you can see from PLINK output, this data contains 1401 individuals and 500,000 variants, with a few missing values.
+
+We can then perform some quality control using
+```{r, include=FALSE}
+file.remove(paste0("tmp-data/GWAS_data_sorted_QC", 
+                   c(".bed", ".bim", ".fam", ".bk", ".rds")))
+```
+```{r}
+bedfile2 <- snp_plinkQC(plink, "tmp-data/GWAS_data_sorted")
+```
+404,663 variants are remaining after this quality control; we can then read this data into an R object called `bigSNP` using
+```{r}
+(rds <- snp_readBed2(bedfile2, ncores = nb_cores()))
+obj.bigsnp <- snp_attach(rds)
+str(obj.bigsnp, max.level = 2)
+```
+
+Recall that this data contains some missing values; you can get some counts per variant using
+```{r}
+G <- obj.bigsnp$genotypes
+counts <- big_counts(G)
+counts[, 1:8]
+hist(nbNA <- counts[4, ])
+```
+
+We can e.g. perform a quick imputation by the mean using 
+```{r}
+G2 <- snp_fastImputeSimple(G, method = "mean2", ncores = nb_cores())
+big_counts(G2, ind.col = 1:8)
+big_counts(G, ind.col = 1:8)
+```
+
+`G` still has missing values, but `G2` does not. Note that both are using the same data, the difference is that they using a different code to decode the underlying data:
+```{r}
+G$code256
+G2$code256
+```
+
+To always use the new code, you need to save it using
+```{r}
+obj.bigsnp$genotypes <- G2
+snp_save(obj.bigsnp)
+```
+
+You can re-attach this data in another R session later using `snp_attach("tmp-data/GWAS_data_sorted_QC.rds")`.  
