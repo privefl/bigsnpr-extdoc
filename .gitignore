@@ -7,3 +7,5 @@ spelling.errors
 docs/*.md
 tmp-data
 _bookdown_files/
+index.knit.md
+render*.rds

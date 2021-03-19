@@ -235,15 +235,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-2"><a href="preprocessing.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;{plink} --bfile tmp-data/GWAS_data&quot;</span>,</span>
 <span id="cb6-3"><a href="preprocessing.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot; --make-bed --out tmp-data/GWAS_data_sorted&quot;</span></span>
 <span id="cb6-4"><a href="preprocessing.html#cb6-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
-<pre><code>#&gt; [1] 0</code></pre>
+<pre><code>#&gt; PLINK v1.90b6.21 64-bit (19 Oct 2020)          www.cog-genomics.org/plink/1.9/
+#&gt; (C) 2005-2020 Shaun Purcell, Christopher Chang   GNU General Public License v3
+#&gt; Logging to tmp-data/GWAS_data_sorted.log.
+#&gt; Options in effect:
+#&gt;   --bfile tmp-data/GWAS_data
+#&gt;   --make-bed
+#&gt;   --out tmp-data/GWAS_data_sorted
+#&gt; 
+#&gt; 32574 MB RAM detected; reserving 16287 MB for main workspace.
+#&gt; 500000 variants loaded from .bim file.
+#&gt; 1401 people (937 males, 464 females) loaded from .fam.
+#&gt; 933 phenotype values loaded from .fam.
+#&gt; Using 1 thread (no multithreaded calculations invoked).
+#&gt; Before main variant filters, 1401 founders and 0 nonfounders present.
+#&gt; Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+#&gt; Total genotyping rate is 0.977593.
+#&gt; 500000 variants and 1401 people pass filters and QC.
+#&gt; Among remaining phenotypes, 463 are cases and 470 are controls.  (468
+#&gt; phenotypes are missing.)
+#&gt; --make-bed to tmp-data/GWAS_data_sorted.bed + tmp-data/GWAS_data_sorted.bim +
+#&gt; tmp-data/GWAS_data_sorted.fam ... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99%done.</code></pre>
 <p>As you can see from PLINK output, this data contains 1401 individuals and 500,000 variants, with a few missing values.</p>
 <p>We can then perform some quality control using</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preprocessing.html#cb8-1" aria-hidden="true" tabindex="-1"></a>bedfile2 <span class="ot">&lt;-</span> <span class="fu">snp_plinkQC</span>(plink, <span class="st">&quot;tmp-data/GWAS_data_sorted&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; PLINK v1.90b6.21 64-bit (19 Oct 2020)          www.cog-genomics.org/plink/1.9/
+#&gt; (C) 2005-2020 Shaun Purcell, Christopher Chang   GNU General Public License v3
+#&gt; Logging to tmp-data/GWAS_data_sorted_QC.log.
+#&gt; Options in effect:
+#&gt;   --bfile tmp-data/GWAS_data_sorted
+#&gt;   --geno 0.1
+#&gt;   --hwe 1e-50
+#&gt;   --maf 0.01
+#&gt;   --make-bed
+#&gt;   --mind 0.1
+#&gt;   --out tmp-data/GWAS_data_sorted_QC
+#&gt; 
+#&gt; 32574 MB RAM detected; reserving 16287 MB for main workspace.
+#&gt; 500000 variants loaded from .bim file.
+#&gt; 1401 people (937 males, 464 females) loaded from .fam.
+#&gt; 933 phenotype values loaded from .fam.
+#&gt; 0 people removed due to missing genotype data (--mind).
+#&gt; Using 1 thread (no multithreaded calculations invoked).
+#&gt; Before main variant filters, 1401 founders and 0 nonfounders present.
+#&gt; Calculating allele frequencies... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99% done.
+#&gt; Total genotyping rate is 0.977593.
+#&gt; 27390 variants removed due to missing genotype data (--geno).
+#&gt; --hwe: 91 variants removed due to Hardy-Weinberg exact test.
+#&gt; 67856 variants removed due to minor allele threshold(s)
+#&gt; (--maf/--max-maf/--mac/--max-mac).
+#&gt; 404663 variants and 1401 people pass filters and QC.
+#&gt; Among remaining phenotypes, 463 are cases and 470 are controls.  (468
+#&gt; phenotypes are missing.)
+#&gt; --make-bed to tmp-data/GWAS_data_sorted_QC.bed +
+#&gt; tmp-data/GWAS_data_sorted_QC.bim + tmp-data/GWAS_data_sorted_QC.fam ... 0%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99%done.</code></pre>
 <p>404,663 variants are remaining after this quality control; we can then read this data into an R object called <code>bigSNP</code> using</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="preprocessing.html#cb9-1" aria-hidden="true" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile2, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="preprocessing.html#cb10-1" aria-hidden="true" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile2, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()))</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\Desktop\\bigsnpr-extdoc\\tmp-data\\GWAS_data_sorted_QC.rds&quot;</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="preprocessing.html#cb11-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
-<span id="cb11-2"><a href="preprocessing.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(obj.bigsnp, <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="preprocessing.html#cb12-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
+<span id="cb12-2"><a href="preprocessing.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(obj.bigsnp, <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>#&gt; List of 3
 #&gt;  $ genotypes:Reference class &#39;FBM.code256&#39; [package &quot;bigstatsr&quot;] with 16 fields
 #&gt;   ..and 26 methods, of which 12 are  possibly relevant:
@@ -266,19 +316,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   ..$ allele2     : chr [1:404663] &quot;C&quot; &quot;T&quot; &quot;T&quot; &quot;G&quot; ...
 #&gt;  - attr(*, &quot;class&quot;)= chr &quot;bigSNP&quot;</code></pre>
 <p>Recall that this data contains some missing values; you can get some counts per variant using</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="preprocessing.html#cb13-1" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb13-2"><a href="preprocessing.html#cb13-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">big_counts</span>(G)</span>
-<span id="cb13-3"><a href="preprocessing.html#cb13-3" aria-hidden="true" tabindex="-1"></a>counts[, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="preprocessing.html#cb14-1" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb14-2"><a href="preprocessing.html#cb14-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">big_counts</span>(G)</span>
+<span id="cb14-3"><a href="preprocessing.html#cb14-3" aria-hidden="true" tabindex="-1"></a>counts[, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
 <pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
 #&gt; 0    1247  958 1057  988  831 1201  496  386
 #&gt; 1     131  362  316  370  502  115  676  730
 #&gt; 2       6   66   28   25   67    7  165  216
 #&gt; &lt;NA&gt;   17   15    0   18    1   78   64   69</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="preprocessing.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(nbNA <span class="ot">&lt;-</span> counts[<span class="dv">4</span>, ])</span></code></pre></div>
-<p><img src="preprocessing_files/figure-html/unnamed-chunk-9-1.svg" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="preprocessing.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(nbNA <span class="ot">&lt;-</span> counts[<span class="dv">4</span>, ])</span></code></pre></div>
+<p><img src="preprocessing_files/figure-html/unnamed-chunk-8-1.svg" width="70%" style="display: block; margin: auto;" /></p>
 <p>We can e.g. perform a quick imputation by the mean using</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="preprocessing.html#cb16-1" aria-hidden="true" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> <span class="fu">snp_fastImputeSimple</span>(G, <span class="at">method =</span> <span class="st">&quot;mean2&quot;</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
-<span id="cb16-2"><a href="preprocessing.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">big_counts</span>(G2, <span class="at">ind.col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="preprocessing.html#cb17-1" aria-hidden="true" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> <span class="fu">snp_fastImputeSimple</span>(G, <span class="at">method =</span> <span class="st">&quot;mean2&quot;</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
+<span id="cb17-2"><a href="preprocessing.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">big_counts</span>(G2, <span class="at">ind.col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code></pre></div>
 <pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
 #&gt; 0    1247  958 1057  988  831 1201  496  386
 #&gt; 1     131  362  316  370  502  115  676  730
@@ -287,27 +337,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt; 0.01    0    0    0    0    0    0    0    0
 #&gt; 0.02    0    0    0    0    0    0    0    0
 #&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 196 rows ]</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="preprocessing.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_counts</span>(G, <span class="at">ind.col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="preprocessing.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">big_counts</span>(G, <span class="at">ind.col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)</span></code></pre></div>
 <pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
 #&gt; 0    1247  958 1057  988  831 1201  496  386
 #&gt; 1     131  362  316  370  502  115  676  730
 #&gt; 2       6   66   28   25   67    7  165  216
 #&gt; &lt;NA&gt;   17   15    0   18    1   78   64   69</code></pre>
 <p><code>G</code> still has missing values, but <code>G2</code> does not. Note that both are using the same data, the difference is that they using a different code to decode the underlying data:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="preprocessing.html#cb20-1" aria-hidden="true" tabindex="-1"></a>G<span class="sc">$</span>code256</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="preprocessing.html#cb21-1" aria-hidden="true" tabindex="-1"></a>G<span class="sc">$</span>code256</span></code></pre></div>
 <pre><code>#&gt;  [1]  0  1  2 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
 #&gt; [24] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
 #&gt; [47] NA NA NA NA
 #&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 206 entries ]</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="preprocessing.html#cb22-1" aria-hidden="true" tabindex="-1"></a>G2<span class="sc">$</span>code256</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="preprocessing.html#cb23-1" aria-hidden="true" tabindex="-1"></a>G2<span class="sc">$</span>code256</span></code></pre></div>
 <pre><code>#&gt;  [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
 #&gt; [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
 #&gt; [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
 #&gt; [43] 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42
 #&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 206 entries ]</code></pre>
 <p>To always use the new code, you need to save it using</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="preprocessing.html#cb24-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp<span class="sc">$</span>genotypes <span class="ot">&lt;-</span> G2</span>
-<span id="cb24-2"><a href="preprocessing.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_save</span>(obj.bigsnp)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="preprocessing.html#cb25-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp<span class="sc">$</span>genotypes <span class="ot">&lt;-</span> G2</span>
+<span id="cb25-2"><a href="preprocessing.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_save</span>(obj.bigsnp)</span></code></pre></div>
 <p>You can re-attach this data in another R session later using <code>snp_attach("tmp-data/GWAS_data_sorted_QC.rds")</code>.</p>
 
 </div>

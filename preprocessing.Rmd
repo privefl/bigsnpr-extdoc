@@ -26,17 +26,11 @@ In {bigsnpr}, I provide some wrappers to PLINK for ease of use:
 - `snp_plinkRmSamples()` for producing new PLINK files after having removed some individuals.
 
 - For any other PLINK function, I recommend calling PLINK directly from `r icon::fa_r_project()` thanks to system calls and package {glue}, e.g.
-    ```{r, eval=FALSE}
+    ```{r}
     plink <- download_plink("tmp-data")
     system(glue::glue(
       "{plink} --version"
     ))
-    ```
-
-    ```{r, echo=FALSE}
-    cat(
-      system(glue::glue("{download_plink('tmp-data')} --version"), 
-             intern = TRUE), sep = '\n')
     ```
 
 
