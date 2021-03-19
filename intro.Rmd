@@ -25,6 +25,25 @@ To know which function belongs to which package: functions starting with `big_` 
 
 ::::
 
+## Features
+
+There are now many things implemented in the packages. You can find a comprehensive list of available functions on the package website [of {bigstatsr}](https://privefl.github.io/bigstatsr/reference/index.html) and [of {bigsnpr}](https://privefl.github.io/bigsnpr/reference/index.html).
+
+The next table presents an overview of common genetic analyses that are already implemented in {bigstatsr} and {bigsnpr}. This listing is inspired from table 1 of @visscher201710 "The Role of GWAS SNP Arrays in Human Genetic Discoveries".
+
+| Analysis                          | Available in {bigstatsr} and {bigsnpr} | Still missing               | Citations              |
+|-----------------------------------|----------------------------------------|-----------------------------|----------------------------------|
+| GWAS                              | linear and logistic                    | - mixed models <br> - rare variant association                 | @prive2017efficient |
+| Genome-wide assessment of LD      | - sparse correlation matrix <br> - optimal LD splitting    |          | @prive2017efficient <br> @prive2021optimal |
+| Estimation of SNP heritability    | LDpred2-auto & LD score regression          | need proper validation      | @prive2020ldpred2 |
+| Estimation of polygenicity        | LDpred2-auto                           | need proper validation      | @prive2020ldpred2 |
+| Estimation of genetic correlation |                                        | need to extend LDpred2-auto |                            |
+| Polygenic risk scores             | - penalized regressions <br> - (stacked) C+T <br> - LDpred2        |           | @prive2019efficient <br> @prive2019making <br> @prive2020ldpred2  |
+| Mendelian randomization           |                                        | completely missing          |                          |
+| Population structure              | - principal component analysis <br> - ancestry inference <br> - fixation index ($F_{ST}$) <br> - local adaptation |           | @prive2017efficient & @prive2020efficient <br> @prive2021high <br> @prive2020efficient <br> @prive2020performing |
+| Fine-mapping                      |                                        | completely missing          |                          |
+| Miscellaneous                     | - integration with PLINK <br> - format conversion <br> - imputation of genotyped variants <br> - matrix operations <br> - summaries       |              | @prive2017efficient |
+
 
 ## Installation
 

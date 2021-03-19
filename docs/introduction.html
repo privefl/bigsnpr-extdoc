@@ -33,7 +33,7 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="inputs-and-formats.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.7.2/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -152,8 +152,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#main-motivation-for-developing-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>1.1</b> Main motivation for developing {bigstatsr} and {bigsnpr}</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.3</b> Correct spellings</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features"><i class="fa fa-check"></i><b>1.2</b> Features</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.4</b> Correct spellings</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
@@ -203,8 +204,91 @@ This is why there are two packages, where {bigstatsr} can basically be used by a
 <p>To know which function belongs to which package: functions starting with <code>big_</code> belongs to {bigstatsr} while functions starting with <code>snp_</code> or <code>bed_</code> belongs to {bigsnpr}.</p>
 </div>
 </div>
-<div id="installation" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Installation</h2>
+<div id="features" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Features</h2>
+<p>There are now many things implemented in the packages. You can find a comprehensive list of available functions on the package website <a href="https://privefl.github.io/bigstatsr/reference/index.html">of {bigstatsr}</a> and <a href="https://privefl.github.io/bigsnpr/reference/index.html">of {bigsnpr}</a>.</p>
+<p>The next table presents an overview of common genetic analyses that are already implemented in {bigstatsr} and {bigsnpr}. This listing is inspired from table 1 of <span class="citation"><a href="references.html#ref-visscher201710" role="doc-biblioref">Visscher et al.</a> (<a href="references.html#ref-visscher201710" role="doc-biblioref">2017</a>)</span> “The Role of GWAS SNP Arrays in Human Genetic Discoveries.”</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="28%" />
+<col width="21%" />
+<col width="24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Analysis</th>
+<th>Available in {bigstatsr} and {bigsnpr}</th>
+<th>Still missing</th>
+<th>Citations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GWAS</td>
+<td>linear and logistic</td>
+<td>- mixed models <br> - rare variant association</td>
+<td><span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Genome-wide assessment of LD</td>
+<td>- sparse correlation matrix <br> - optimal LD splitting</td>
+<td></td>
+<td><span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span> <br> <span class="citation"><a href="references.html#ref-prive2021optimal" role="doc-biblioref">Privé</a> (<a href="references.html#ref-prive2021optimal" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Estimation of SNP heritability</td>
+<td>LDpred2-auto &amp; LD score regression</td>
+<td>need proper validation</td>
+<td><span class="citation"><a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">Privé, Arbel, and Vilhjálmsson</a> (<a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Estimation of polygenicity</td>
+<td>LDpred2-auto</td>
+<td>need proper validation</td>
+<td><span class="citation"><a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">Privé, Arbel, and Vilhjálmsson</a> (<a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Estimation of genetic correlation</td>
+<td></td>
+<td>need to extend LDpred2-auto</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Polygenic risk scores</td>
+<td>- penalized regressions <br> - (stacked) C+T <br> - LDpred2</td>
+<td></td>
+<td><span class="citation"><a href="references.html#ref-prive2019efficient" role="doc-biblioref">Privé, Aschard, and Blum</a> (<a href="references.html#ref-prive2019efficient" role="doc-biblioref">2019</a>)</span> <br> <span class="citation"><a href="references.html#ref-prive2019making" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2019making" role="doc-biblioref">2019</a>)</span> <br> <span class="citation"><a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">Privé, Arbel, and Vilhjálmsson</a> (<a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Mendelian randomization</td>
+<td></td>
+<td>completely missing</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Population structure</td>
+<td>- principal component analysis <br> - ancestry inference <br> - fixation index (<span class="math inline">\(F_{ST}\)</span>) <br> - local adaptation</td>
+<td></td>
+<td><span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span> &amp; <span class="citation"><a href="references.html#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al.</a> (<a href="references.html#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span> <br> <span class="citation"><a href="references.html#ref-prive2021high" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2021high" role="doc-biblioref">2021</a>)</span> <br> <span class="citation"><a href="references.html#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al.</a> (<a href="references.html#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span> <br> <span class="citation"><a href="references.html#ref-prive2020performing" role="doc-biblioref">Privé, Luu, Vilhjálmsson, et al.</a> (<a href="references.html#ref-prive2020performing" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Fine-mapping</td>
+<td></td>
+<td>completely missing</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Miscellaneous</td>
+<td>- integration with PLINK <br> - format conversion <br> - imputation of genotyped variants <br> - matrix operations <br> - summaries</td>
+<td></td>
+<td><span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="installation" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Installation</h2>
 <p>Both packages are available on CRAN, so you can use <code>install.packages()</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;bigstatsr&quot;</span>)</span>
 <span id="cb1-2"><a href="introduction.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;bigsnpr&quot;</span>)</span></code></pre></div>
@@ -214,8 +298,8 @@ This is why there are two packages, where {bigstatsr} can basically be used by a
 <span id="cb2-3"><a href="introduction.html#cb2-3" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;privefl/bigsnpr&quot;</span>)</span></code></pre></div>
 <p>As an alternative to {remotes}, you can also try <a href="https://github.com/r-lib/pak">{pak}</a>, which gives more information and solve other issues.</p>
 </div>
-<div id="correct-spellings" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Correct spellings</h2>
+<div id="correct-spellings" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Correct spellings</h2>
 <blockquote class="twitter-tweet" data-lang="en" align="center" width="50%">
 <p lang="en" dir="ltr">
 A friendly reminder:<br>The correct spelling is<br> - bigstatsr – not bigstatr / BIGstatsR<br> - bigsnpr – not BIGsnpR / bigSNPr<br> - pcadapt – not PCAdapt<br> - LDpred – not LDPred<br><br>Thank you<br>The kittens thank you too <a href="https://t.co/S8wyE4G6BG">pic.twitter.com/S8wyE4G6BG</a>
