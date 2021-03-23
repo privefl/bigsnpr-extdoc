@@ -24,16 +24,16 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2021-03-01" />
+<meta name="date" content="2021-03-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="preprocessing.html"/>
+<link rel="prev" href="genome-wide-association-study-gwas.html"/>
 
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.7.2/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -152,8 +152,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#main-motivation-for-developing-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>1.1</b> Main motivation for developing {bigstatsr} and {bigsnpr}</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.3</b> Correct spellings</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features"><i class="fa fa-check"></i><b>1.2</b> Features</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.4</b> Correct spellings</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
@@ -165,6 +166,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
 <li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Exercise: preprocessing</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>4</b> Population structure</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>4.2</b> Exercise: population structure</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>5</b> Genome-Wide Association Study (GWAS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Exercise: GWAS</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -190,11 +201,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>References</h1>
 
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-aschard2015adjusting" class="csl-entry">
+Aschard, Hugues, Bjarni J Vilhjálmsson, Amit D Joshi, Alkes L Price, and Peter Kraft. 2015. <span>“Adjusting for Heritable Covariates Can Bias Effect Estimates in Genome-Wide Association Studies.”</span> <em>The American Journal of Human Genetics</em> 96 (2): 329–39.
+</div>
+<div id="ref-bycroft2018uk" class="csl-entry">
+Bycroft, Clare, Colin Freeman, Desislava Petkova, Gavin Band, Lloyd T Elliott, Kevin Sharp, Allan Motyer, et al. 2018. <span>“The <span>UK Biobank</span> Resource with Deep Phenotyping and Genomic Data.”</span> <em>Nature</em> 562 (7726): 203–9.
+</div>
+<div id="ref-prive2021optimal" class="csl-entry">
+Privé, Florian. 2021. <span>“Optimal Linkage Disequilibrium Splitting.”</span> <em>bioRxiv</em>.
+</div>
+<div id="ref-prive2020ldpred2" class="csl-entry">
+Privé, Florian, Julyan Arbel, and Bjarni J Vilhjálmsson. 2020. <span>“<span class="nocase"><span>LDpred2</span>: better, faster, stronger</span>.”</span> <em>Bioinformatics</em>, December. <a href="https://doi.org/10.1093/bioinformatics/btaa1029">https://doi.org/10.1093/bioinformatics/btaa1029</a>.
+</div>
+<div id="ref-prive2019efficient" class="csl-entry">
+Privé, Florian, Hugues Aschard, and Michael GB Blum. 2019. <span>“Efficient Implementation of Penalized Regression for Genetic Risk Prediction.”</span> <em>Genetics</em> 212 (1): 65–74.
+</div>
+<div id="ref-prive2021high" class="csl-entry">
+Privé, Florian, Hugues Aschard, Shai Carmi, Lasse Folkersen, Clive Hoggart, Paul F O’Reilly, and Bjarni J Vilhjálmsson. 2021. <span>“High-Resolution Portability of 245 Polygenic Scores When Derived and Applied in the Same Cohort.”</span> <em>medRxiv</em>.
+</div>
 <div id="ref-prive2017efficient" class="csl-entry">
 Privé, Florian, Hugues Aschard, Andrey Ziyatdinov, and Michael G B Blum. 2018. <span>“Efficient Analysis of Large-Scale Genome-Wide Data with Two <span>R</span> Packages: Bigstatsr and Bigsnpr.”</span> <em>Bioinformatics</em> 34 (16): 2781–87. <a href="https://doi.org/10.1093/bioinformatics/bty185">https://doi.org/10.1093/bioinformatics/bty185</a>.
 </div>
 <div id="ref-prive2020efficient" class="csl-entry">
 Privé, Florian, Keurcien Luu, Michael G B Blum, John J McGrath, and Bjarni J Vilhjálmsson. 2020. <span>“<span class="nocase">Efficient toolkit implementing best practices for principal component analysis of population genetic data</span>.”</span> <em>Bioinformatics</em>, May. <a href="https://doi.org/10.1093/bioinformatics/btaa520">https://doi.org/10.1093/bioinformatics/btaa520</a>.
+</div>
+<div id="ref-prive2020performing" class="csl-entry">
+Privé, Florian, Keurcien Luu, Bjarni J Vilhjálmsson, and Michael GB Blum. 2020. <span>“Performing Highly Efficient Genome Scans for Local Adaptation with <span>R</span> Package Pcadapt Version 4.”</span> <em>Molecular Biology and Evolution</em> 37 (7): 2153–54.
+</div>
+<div id="ref-prive2019making" class="csl-entry">
+Privé, Florian, Bjarni J Vilhjálmsson, Hugues Aschard, and Michael G. B. Blum. 2019. <span>“Making the Most of Clumping and Thresholding for Polygenic Scores.”</span> <em>The American Journal of Human Genetics</em> 105 (6): 1213–21.
+</div>
+<div id="ref-reed2015guide" class="csl-entry">
+Reed, Eric, Sara Nunez, David Kulp, Jing Qian, Muredach P Reilly, and Andrea S Foulkes. 2015. <span>“A Guide to Genome-Wide Association Analysis and Post-Analytic Interrogation.”</span> <em>Statistics in Medicine</em> 34 (28): 3769–92.
+</div>
+<div id="ref-visscher201710" class="csl-entry">
+Visscher, Peter M, Naomi R Wray, Qian Zhang, Pamela Sklar, Mark I McCarthy, Matthew A Brown, and Jian Yang. 2017. <span>“10 Years of GWAS Discovery: Biology, Function, and Translation.”</span> <em>The American Journal of Human Genetics</em> 101 (1): 5–22.
 </div>
 </div>
 </div>
@@ -203,7 +244,7 @@ Privé, Florian, Keurcien Luu, Michael G B Blum, John J McGrath, and Bjarni J Vi
           </div>
         </div>
       </div>
-<a href="preprocessing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="genome-wide-association-study-gwas.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

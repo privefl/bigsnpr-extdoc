@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Population structure | bigsnpr &amp; bigstatsr</title>
+  <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Population structure | bigsnpr &amp; bigstatsr" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://privefl.github.io/bigsnpr-extdoc/" />
+  <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
+  <meta property="og:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Population structure | bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:site" content="@privefl" />
+  <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
+
+<meta name="author" content="Florian Privé" />
+
+
+<meta name="date" content="2021-03-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="preprocessing.html"/>
+<link rel="next" href="genome-wide-association-study-gwas.html"/>
+<script src="libs/header-attrs-2.7.2/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-66N68ENQ12"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-66N68ENQ12');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">bigsnpr & bigstatsr</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#main-motivation-for-developing-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>1.1</b> Main motivation for developing {bigstatsr} and {bigsnpr}</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features"><i class="fa fa-check"></i><b>1.2</b> Features</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.4</b> Correct spellings</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigstatsr"><i class="fa fa-check"></i><b>2.1</b> In {bigstatsr}</a></li>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> In {bigsnpr}</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-a-fbm-or-bigsnp-object"><i class="fa fa-check"></i><b>2.3</b> Getting a FBM or bigSNP object</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Exercise: preprocessing</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>4</b> Population structure</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>4.2</b> Exercise: population structure</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>5</b> Genome-Wide Association Study (GWAS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Exercise: GWAS</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">bigsnpr &amp; bigstatsr</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="population-structure" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Population structure</h1>
+<div id="principal-component-analysis-pca" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Principal Component Analysis (PCA)</h2>
+<p>PCA on the genotype matrix can be used to capture population structure.
+PCA can capture different kinds of structure <span class="citation">(<a href="references.html#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al. 2020</a>)</span>:</p>
+<ul>
+<li><p>population structure (what we want)</p></li>
+<li><p>LD structure, when there are two many correlated variants and not enough population structure (see <a href="https://privefl.github.io/bigsnpr/articles/how-to-PCA.html">this vignette</a>)</p></li>
+<li><p>relatedness structure, when there are related individuals that can cluster together in later PCs</p></li>
+<li><p>noise, basically just circles when looking at PC scores</p></li>
+</ul>
+<p>In <span class="citation"><a href="references.html#ref-prive2017efficient" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span>, I have introduced an algorithm to compute PCA for a <code>bigSNP</code> object while accounting for the LD problem via an automatic removing of long-range LD regions.
+In <span class="citation"><a href="references.html#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al.</a> (<a href="references.html#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span>, I have extended the package to be also able to run PCA directly on PLINK bed files with a few missing values, and investigated best practices for PCA in more detail.
+In <span class="citation"><a href="references.html#ref-prive2021high" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2021high" role="doc-biblioref">2021</a>)</span>, I have shown how to use PCA for ancestry inference.</p>
+<p>There are many steps to compute properly a PCA analysis, which I will try to detail in the following exercise.</p>
+</div>
+<div id="exo-pca" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Exercise: population structure</h2>
+<p><strong>You can find another example in <a href="https://privefl.github.io/bigsnpr/articles/bedpca.html">this vignette</a>.</strong></p>
+<p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a>.</p>
+<p>First, let’s get an idea of the relatedness in the data using</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="population-structure.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb30-2"><a href="population-structure.html#cb30-2" aria-hidden="true" tabindex="-1"></a>plink2 <span class="ot">&lt;-</span> <span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb30-3"><a href="population-structure.html#cb30-3" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">snp_plinkKINGQC</span>(plink2, <span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>,</span>
+<span id="cb30-4"><a href="population-structure.html#cb30-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">thr.king =</span> <span class="dv">2</span><span class="sc">^-</span><span class="fl">4.5</span>, <span class="at">make.bed =</span> <span class="cn">FALSE</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="population-structure.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log2</span>(rel<span class="sc">$</span>KINSHIP), <span class="st">&quot;FD&quot;</span>)</span></code></pre></div>
+<p><img src="popstruct_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="infobox info">
+<p>When computing relatedness with KING, it may be needed to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank <span class="citation">(<a href="references.html#ref-bycroft2018uk" role="doc-biblioref">Bycroft et al. 2018</a>)</span>. [TODO: also export my code for iPSYCH]</p>
+</div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="population-structure.html#cb32-1" aria-hidden="true" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb32-2"><a href="population-structure.html#cb32-2" aria-hidden="true" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
+<span id="cb32-3"><a href="population-structure.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_autoSVD</span>(obj.bed, <span class="at">k =</span> <span class="dv">20</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
+<span id="cb32-4"><a href="population-structure.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="population-structure.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd)</span></code></pre></div>
+<p><img src="popstruct_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="population-structure.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;scores&quot;</span>, <span class="at">scores =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">coeff =</span> <span class="fl">0.6</span>)</span></code></pre></div>
+<p><img src="popstruct_files/figure-html/unnamed-chunk-4-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>There is a bit of population structure (it seems at least 6 PCs). It would be better if could get a better sense of the ancestry of these individuals; let us project this data to the 1000G data and infer ancestry as described in <span class="citation"><a href="references.html#ref-prive2021high" role="doc-biblioref">Privé et al.</a> (<a href="references.html#ref-prive2021high" role="doc-biblioref">2021</a>)</span>.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="population-structure.html#cb35-1" aria-hidden="true" tabindex="-1"></a>bed.ref <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="fu">download_1000G</span>(<span class="st">&quot;tmp-data&quot;</span>))</span>
+<span id="cb35-2"><a href="population-structure.html#cb35-2" aria-hidden="true" tabindex="-1"></a>proj <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
+<span id="cb35-3"><a href="population-structure.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_projectPCA</span>(bed.ref, obj.bed, <span class="at">k =</span> <span class="dv">25</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
+<span id="cb35-4"><a href="population-structure.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/proj-to-1000G.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="population-structure.html#cb36-1" aria-hidden="true" tabindex="-1"></a>PC.ref <span class="ot">&lt;-</span> <span class="fu">predict</span>(proj<span class="sc">$</span>obj.svd.ref)</span>
+<span id="cb36-2"><a href="population-structure.html#cb36-2" aria-hidden="true" tabindex="-1"></a>proj2 <span class="ot">&lt;-</span> proj<span class="sc">$</span>OADP_proj</span>
+<span id="cb36-3"><a href="population-structure.html#cb36-3" aria-hidden="true" tabindex="-1"></a>fam2 <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(<span class="fu">sub_bed</span>(bed.ref<span class="sc">$</span>bedfile, <span class="st">&quot;.fam2&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="population-structure.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb37-2"><a href="population-structure.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R&quot;</span>)</span>
+<span id="cb37-3"><a href="population-structure.html#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb37-4"><a href="population-structure.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb37-5"><a href="population-structure.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
+<span id="cb37-6"><a href="population-structure.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC.ref[, k1], PC.ref[, k2], <span class="at">color =</span> fam2<span class="sc">$</span><span class="st">`</span><span class="at">Super Population</span><span class="st">`</span>, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb37-7"><a href="population-structure.html#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(proj2[, k1], proj2[, k2]), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb37-8"><a href="population-structure.html#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="population-structure.html#cb37-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Ref Pop&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-10"><a href="population-structure.html#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
+<span id="cb37-11"><a href="population-structure.html#cb37-11" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="popstruct_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>These are clearly mostly European individuals.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="population-structure.html#cb38-1" aria-hidden="true" tabindex="-1"></a>ldist <span class="ot">&lt;-</span> <span class="fu">log</span>(bigutilsr<span class="sc">::</span><span class="fu">dist_ogk</span>(proj2))</span>
+<span id="cb38-2"><a href="population-structure.html#cb38-2" aria-hidden="true" tabindex="-1"></a>lims <span class="ot">&lt;-</span> bigutilsr<span class="sc">::</span><span class="fu">hist_out</span>(ldist)<span class="sc">$</span>lim</span>
+<span id="cb38-3"><a href="population-structure.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ldist, <span class="st">&quot;FD&quot;</span>); <span class="fu">abline</span>(<span class="at">v =</span> lims, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) </span></code></pre></div>
+<p><img src="popstruct_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="population-structure.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ldist <span class="sc">&gt;</span> lims[<span class="dv">2</span>])</span></code></pre></div>
+<pre><code>#&gt; [1] 4</code></pre>
+<p>There are 4 outlier individuals that you could remove.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="preprocessing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="genome-wide-association-study-gwas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
