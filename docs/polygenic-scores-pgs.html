@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Polygenic scores (PGS) | bigsnpr &amp; bigstatsr</title>
+  <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Polygenic scores (PGS) | bigsnpr &amp; bigstatsr" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://privefl.github.io/bigsnpr-extdoc/" />
+  <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
+  <meta property="og:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Polygenic scores (PGS) | bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:site" content="@privefl" />
+  <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
+  <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc/images/bigstatsr.png" />
+
+<meta name="author" content="Florian Privé" />
+
+
+<meta name="date" content="2021-03-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="genome-wide-association-study-gwas.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.7.2/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-66N68ENQ12"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-66N68ENQ12');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">bigsnpr & bigstatsr</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#main-motivation-for-developing-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>1.1</b> Main motivation for developing {bigstatsr} and {bigsnpr}</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features"><i class="fa fa-check"></i><b>1.2</b> Features</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#correct-spellings"><i class="fa fa-check"></i><b>1.4</b> Correct spellings</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigstatsr"><i class="fa fa-check"></i><b>2.1</b> In {bigstatsr}</a></li>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> In {bigsnpr}</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-a-fbm-or-bigsnp-object"><i class="fa fa-check"></i><b>2.3</b> Getting a FBM or bigSNP object</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Exercise: preprocessing</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>4</b> Population structure</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>4.2</b> Exercise: population structure</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>5</b> Genome-Wide Association Study (GWAS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Exercise: GWAS</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html"><i class="fa fa-check"></i><b>6</b> Polygenic scores (PGS)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#exercises-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>6.1</b> Exercises: LDpred2 and lassosum2</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#preparing-the-data"><i class="fa fa-check"></i><b>6.1.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="6.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>6.1.2</b> LDpred2</a></li>
+<li class="chapter" data-level="6.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>6.1.3</b> lassosum2: grid of models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">bigsnpr &amp; bigstatsr</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="polygenic-scores-pgs" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Polygenic scores (PGS)</h1>
+<p>Polygenic scores are one of the main focus of package {bigsnpr}. These are the main methods currently available:</p>
+<ul>
+<li><p>penalized regressions, with individual-level data <span class="citation">(<a href="references.html#ref-prive2019efficient" role="doc-biblioref">Privé, Aschard, and Blum 2019</a>)</span> <a href="https://privefl.github.io/bigstatsr/articles/penalized-regressions.html">[tutorial]</a></p></li>
+<li><p>Clumping and Thresholding (C+T) and Stacked C+T (SCT), with summary statistics and individual level data <span class="citation">(<a href="references.html#ref-prive2019making" role="doc-biblioref">Privé et al. 2019</a>)</span> <a href="https://privefl.github.io/bigsnpr/articles/SCT.html">[tutorial]</a></p></li>
+<li><p>LDpred2, with summary statistics <span class="citation">(<a href="references.html#ref-prive2020ldpred2" role="doc-biblioref">Privé, Arbel, and Vilhjálmsson 2020</a>)</span> <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">[tutorial]</a></p></li>
+<li><p>lassosum2, with the same input data as LDpred2 (coming soon)</p></li>
+</ul>
+<div id="exercises-ldpred2-and-lassosum2" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Exercises: LDpred2 and lassosum2</h2>
+<p>You should also check the other tutorials mentioned before.</p>
+<div id="preparing-the-data" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Preparing the data</h3>
+<p>Let us first read the data produced in <a href="preprocessing.html#exo-preprocessing">3.3</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="polygenic-scores-pgs.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb1-2"><a href="polygenic-scores-pgs.html#cb1-2" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb1-3"><a href="polygenic-scores-pgs.html#cb1-3" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb1-4"><a href="polygenic-scores-pgs.html#cb1-4" aria-hidden="true" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span>
+<span id="cb1-5"><a href="polygenic-scores-pgs.html#cb1-5" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">transmute</span>(obj.bigsnp<span class="sc">$</span>map,</span>
+<span id="cb1-6"><a href="polygenic-scores-pgs.html#cb1-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos,</span>
+<span id="cb1-7"><a href="polygenic-scores-pgs.html#cb1-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">a0 =</span> allele2, <span class="at">a1 =</span> allele1)</span></code></pre></div>
+<p>We also get the phenotype data:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="polygenic-scores-pgs.html#cb2-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/&quot;</span></span>
+<span id="cb2-2"><a href="polygenic-scores-pgs.html#cb2-2" aria-hidden="true" tabindex="-1"></a>clinical <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb2-3"><a href="polygenic-scores-pgs.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(<span class="fu">paste0</span>(url, <span class="st">&quot;GWAS_clinical.csv&quot;</span>), <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>))</span>
+<span id="cb2-4"><a href="polygenic-scores-pgs.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the same order as for the genotypes</span></span>
+<span id="cb2-5"><a href="polygenic-scores-pgs.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (to match over multiple columns, use `vctrs::vec_match()`)</span></span>
+<span id="cb2-6"><a href="polygenic-scores-pgs.html#cb2-6" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> clinical[<span class="fu">match</span>(obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>family.ID, clinical<span class="sc">$</span>FamID), ]</span></code></pre></div>
+<p>We then download some GWAS summary statistics from a large consortium <span class="citation">(<a href="references.html#ref-nikpay2015comprehensive" role="doc-biblioref">Nikpay et al. 2015</a>; <a href="references.html#ref-buniello2019nhgri" role="doc-biblioref">Buniello et al. 2019</a>)</span> and prepare them in the format required by LDpred2:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="polygenic-scores-pgs.html#cb3-1" aria-hidden="true" tabindex="-1"></a>txt <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb3-2"><a href="polygenic-scores-pgs.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;ftp://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/NikpayM_26343387_GCST003116/cad.add.160614.website.txt&quot;</span>,</span>
+<span id="cb3-3"><a href="polygenic-scores-pgs.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;sumstats_CAD.txt&quot;</span>)</span>
+<span id="cb3-4"><a href="polygenic-scores-pgs.html#cb3-4" aria-hidden="true" tabindex="-1"></a>sumstats <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb3-5"><a href="polygenic-scores-pgs.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  txt,</span>
+<span id="cb3-6"><a href="polygenic-scores-pgs.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;bp_hg19&quot;</span>, <span class="st">&quot;noneffect_allele&quot;</span>,</span>
+<span id="cb3-7"><a href="polygenic-scores-pgs.html#cb3-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;effect_allele&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;se_dgc&quot;</span>),</span>
+<span id="cb3-8"><a href="polygenic-scores-pgs.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;a0&quot;</span>, <span class="st">&quot;a1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;beta_se&quot;</span>))</span>
+<span id="cb3-9"><a href="polygenic-scores-pgs.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># GWAS effective sample size from the paper</span></span>
+<span id="cb3-10"><a href="polygenic-scores-pgs.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># would better to have a per-variant sample size in the sumstats</span></span>
+<span id="cb3-11"><a href="polygenic-scores-pgs.html#cb3-11" aria-hidden="true" tabindex="-1"></a>sumstats<span class="sc">$</span>n_eff <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="dv">60801</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">123504</span>) </span></code></pre></div>
+<p>Let us now match these with the internal data we have:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="polygenic-scores-pgs.html#cb4-1" aria-hidden="true" tabindex="-1"></a>info_snp <span class="ot">&lt;-</span> <span class="fu">snp_match</span>(sumstats, map)</span></code></pre></div>
+<pre><code>#&gt; 9,455,778 variants to be matched.</code></pre>
+<pre><code>#&gt; 62,531 ambiguous SNPs have been removed.</code></pre>
+<pre><code>#&gt; 340,563 variants have been matched; 170,352 were flipped and 309,568 were reversed.</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="polygenic-scores-pgs.html#cb8-1" aria-hidden="true" tabindex="-1"></a>(info_snp <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>(info_snp))</span></code></pre></div>
+<pre><code>#&gt; # A tibble: 340,563 x 9
+#&gt;      chr    pos a0    a1        beta beta_se  n_eff `_NUM_ID_.ss`
+#&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;         &lt;int&gt;
+#&gt;  1     1 7.53e5 T     C      5.24e-3  0.0158 1.63e5             2
+#&gt;  2     1 7.86e5 G     A     -9.81e-4  0.0163 1.63e5            54
+#&gt;  3     1 7.99e5 G     A      1.56e-2  0.0143 1.63e5            80
+#&gt;  4     1 9.50e5 G     A     -4.01e-2  0.0134 1.63e5           126
+#&gt;  5     1 1.02e6 G     A     -1.50e-2  0.0101 1.63e5           246
+#&gt;  6     1 1.04e6 T     C     -8.94e-3  0.0130 1.63e5           309
+#&gt;  7     1 1.13e6 C     A      7.63e-3  0.0147 1.63e5           584
+#&gt;  8     1 1.13e6 A     C      1.43e-3  0.0164 1.63e5           594
+#&gt;  9     1 1.16e6 C     T     -2.21e-2  0.0208 1.63e5           719
+#&gt; 10     1 1.17e6 C     T      2.78e-2  0.0207 1.63e5           776
+#&gt; # ... with 340,553 more rows, and 1 more variable: `_NUM_ID_` &lt;int&gt;</code></pre>
+<p>Note that we recommend to use imputed HapMap3 variants when available, otherwise you can just use the genotyped variants as I am doing here.</p>
+<p>Then we can perform some quality control on the summary statistics to see how standard deviations inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="polygenic-scores-pgs.html#cb10-1" aria-hidden="true" tabindex="-1"></a>sd_val <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">big_colstats</span>(G, <span class="at">ind.col =</span> info_snp<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)<span class="sc">$</span>var)</span>
+<span id="cb10-2"><a href="polygenic-scores-pgs.html#cb10-2" aria-hidden="true" tabindex="-1"></a>sd_ss <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="dv">2</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n_eff <span class="sc">*</span> beta_se<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> beta<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb10-3"><a href="polygenic-scores-pgs.html#cb10-3" aria-hidden="true" tabindex="-1"></a>is_bad <span class="ot">&lt;-</span></span>
+<span id="cb10-4"><a href="polygenic-scores-pgs.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.5</span> <span class="sc">*</span> sd_val) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_val <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span> sd_ss <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">|</span> sd_val <span class="sc">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="polygenic-scores-pgs.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href="polygenic-scores-pgs.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_val, sd_ss, is_bad), <span class="at">n =</span> <span class="fl">50e3</span>)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="polygenic-scores-pgs.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_val, sd_ss, <span class="at">color =</span> is_bad), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="polygenic-scores-pgs.html#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb11-5"><a href="polygenic-scores-pgs.html#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="polygenic-scores-pgs.html#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="polygenic-scores-pgs.html#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations in the validation set&quot;</span>,</span>
+<span id="cb11-8"><a href="polygenic-scores-pgs.html#cb11-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>,</span>
+<span id="cb11-9"><a href="polygenic-scores-pgs.html#cb11-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;To remove?&quot;</span>)</span></code></pre></div>
+<p><img src="pgs_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="polygenic-scores-pgs.html#cb12-1" aria-hidden="true" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> info_snp[<span class="sc">!</span>is_bad, ]</span></code></pre></div>
+<p>Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes for faster running of this tutorial):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="polygenic-scores-pgs.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb13-2"><a href="polygenic-scores-pgs.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-3"><a href="polygenic-scores-pgs.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  corr0 <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>({</span>
+<span id="cb13-4"><a href="polygenic-scores-pgs.html#cb13-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-5"><a href="polygenic-scores-pgs.html#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(chr)</span>
+<span id="cb13-6"><a href="polygenic-scores-pgs.html#cb13-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-7"><a href="polygenic-scores-pgs.html#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="do">## indices in &#39;sumstats&#39;</span></span>
+<span id="cb13-8"><a href="polygenic-scores-pgs.html#cb13-8" aria-hidden="true" tabindex="-1"></a>    ind.chr <span class="ot">&lt;-</span> <span class="fu">which</span>(df_beta<span class="sc">$</span>chr <span class="sc">==</span> chr)</span>
+<span id="cb13-9"><a href="polygenic-scores-pgs.html#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="do">## indices in &#39;G&#39;</span></span>
+<span id="cb13-10"><a href="polygenic-scores-pgs.html#cb13-10" aria-hidden="true" tabindex="-1"></a>    ind.chr2 <span class="ot">&lt;-</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind.chr]</span>
+<span id="cb13-11"><a href="polygenic-scores-pgs.html#cb13-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-12"><a href="polygenic-scores-pgs.html#cb13-12" aria-hidden="true" tabindex="-1"></a>    POS2 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(map<span class="sc">$</span>chr[ind.chr2], map<span class="sc">$</span>pos[ind.chr2], <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb13-13"><a href="polygenic-scores-pgs.html#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind.chr2, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">infos.pos =</span> POS2, </span>
+<span id="cb13-14"><a href="polygenic-scores-pgs.html#cb13-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncores =</span> NCORES)</span>
+<span id="cb13-15"><a href="polygenic-scores-pgs.html#cb13-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-16"><a href="polygenic-scores-pgs.html#cb13-16" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;tmp-data/corr_chr&quot;</span>, chr, <span class="st">&quot;.rds&quot;</span>))</span>
+<span id="cb13-17"><a href="polygenic-scores-pgs.html#cb13-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Then we create the on-disk sparse genome-wide correlation matrix (again using only the first 4 chromosomes, for speed in this tutorial; replace by <code>1:22</code>):</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="polygenic-scores-pgs.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb14-2"><a href="polygenic-scores-pgs.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-3"><a href="polygenic-scores-pgs.html#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(chr)</span>
+<span id="cb14-4"><a href="polygenic-scores-pgs.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-5"><a href="polygenic-scores-pgs.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  corr0 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&quot;tmp-data/corr_chr&quot;</span>, chr, <span class="st">&quot;.rds&quot;</span>))</span>
+<span id="cb14-6"><a href="polygenic-scores-pgs.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-7"><a href="polygenic-scores-pgs.html#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (chr <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb14-8"><a href="polygenic-scores-pgs.html#cb14-8" aria-hidden="true" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb14-9"><a href="polygenic-scores-pgs.html#cb14-9" aria-hidden="true" tabindex="-1"></a>    corr <span class="ot">&lt;-</span> <span class="fu">as_SFBM</span>(corr0, <span class="st">&quot;tmp-data/corr&quot;</span>)</span>
+<span id="cb14-10"><a href="polygenic-scores-pgs.html#cb14-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb14-11"><a href="polygenic-scores-pgs.html#cb14-11" aria-hidden="true" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> <span class="fu">c</span>(ld, Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb14-12"><a href="polygenic-scores-pgs.html#cb14-12" aria-hidden="true" tabindex="-1"></a>    corr<span class="sc">$</span><span class="fu">add_columns</span>(corr0, <span class="fu">nrow</span>(corr))</span>
+<span id="cb14-13"><a href="polygenic-scores-pgs.html#cb14-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-14"><a href="polygenic-scores-pgs.html#cb14-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>#&gt; [1] 1
+#&gt; [1] 2
+#&gt; [1] 3
+#&gt; [1] 4</code></pre>
+</div>
+<div id="ldpred2" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> LDpred2</h3>
+<p>We can now run LD score regression:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="polygenic-scores-pgs.html#cb16-1" aria-hidden="true" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(df_beta, chr <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)  <span class="co"># TO REMOVE (for speed here)</span></span>
+<span id="cb16-2"><a href="polygenic-scores-pgs.html#cb16-2" aria-hidden="true" tabindex="-1"></a>(ldsc <span class="ot">&lt;-</span> <span class="fu">with</span>(df_beta, <span class="fu">snp_ldsc</span>(ld, <span class="fu">length</span>(ld), <span class="at">chi2 =</span> (beta <span class="sc">/</span> beta_se)<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb16-3"><a href="polygenic-scores-pgs.html#cb16-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">sample_size =</span> n_eff, <span class="at">blocks =</span> <span class="cn">NULL</span>)))</span></code></pre></div>
+<pre><code>#&gt;        int         h2 
+#&gt; 0.87323243 0.02092089</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="polygenic-scores-pgs.html#cb18-1" aria-hidden="true" tabindex="-1"></a>ldsc_h2_est <span class="ot">&lt;-</span> ldsc[[<span class="st">&quot;h2&quot;</span>]]</span></code></pre></div>
+<p>We can now run LDpred2-inf very easily:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="polygenic-scores-pgs.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LDpred2-inf</span></span>
+<span id="cb19-2"><a href="polygenic-scores-pgs.html#cb19-2" aria-hidden="true" tabindex="-1"></a>beta_inf <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_inf</span>(corr, df_beta, ldsc_h2_est)</span>
+<span id="cb19-3"><a href="polygenic-scores-pgs.html#cb19-3" aria-hidden="true" tabindex="-1"></a>pred_inf <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, beta_inf, <span class="at">ind.col =</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>)</span>
+<span id="cb19-4"><a href="polygenic-scores-pgs.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">AUCBoot</span>(pred_inf, info<span class="sc">$</span>CAD)</span></code></pre></div>
+<pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
+#&gt; 0.64428351 0.61335824 0.67504990 0.01573054</code></pre>
+<p>For LDpred2(-grid), this is the grid we recommend to use:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="polygenic-scores-pgs.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LDpred2-grid</span></span>
+<span id="cb21-2"><a href="polygenic-scores-pgs.html#cb21-2" aria-hidden="true" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
+<pre><code>#&gt; [1] 0.0146 0.0209 0.0293</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="polygenic-scores-pgs.html#cb23-1" aria-hidden="true" tabindex="-1"></a>(p_seq <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-5</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">21</span>), <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>#&gt;  [1] 1.0e-05 1.8e-05 3.2e-05 5.6e-05 1.0e-04 1.8e-04 3.2e-04 5.6e-04
+#&gt;  [9] 1.0e-03 1.8e-03 3.2e-03 5.6e-03 1.0e-02 1.8e-02 3.2e-02 5.6e-02
+#&gt; [17] 1.0e-01 1.8e-01 3.2e-01 5.6e-01 1.0e+00</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="polygenic-scores-pgs.html#cb25-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> p_seq, <span class="at">h2 =</span> h2_seq, <span class="at">sparse =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
+<span id="cb25-2"><a href="polygenic-scores-pgs.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(params)</span></code></pre></div>
+<pre><code>#&gt; [1] 126   3</code></pre>
+<p>Here, we will be using this smaller grid instead (for speed in this tutorial):</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="polygenic-scores-pgs.html#cb27-1" aria-hidden="true" tabindex="-1"></a>(params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">0.001</span>, <span class="fl">0.2</span>, <span class="at">length.out =</span> <span class="dv">8</span>), <span class="dv">2</span>),</span>
+<span id="cb27-2"><a href="polygenic-scores-pgs.html#cb27-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">h2 =</span> <span class="fu">round</span>(ldsc_h2_est, <span class="dv">4</span>), <span class="at">sparse =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>#&gt;        p     h2 sparse
+#&gt; 1 0.0010 0.0209   TRUE
+#&gt; 2 0.0021 0.0209   TRUE
+#&gt; 3 0.0045 0.0209   TRUE
+#&gt; 4 0.0097 0.0209   TRUE
+#&gt; 5 0.0210 0.0209   TRUE
+#&gt; 6 0.0440 0.0209   TRUE
+#&gt; 7 0.0940 0.0209   TRUE
+#&gt; 8 0.2000 0.0209   TRUE</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="polygenic-scores-pgs.html#cb29-1" aria-hidden="true" tabindex="-1"></a>beta_grid <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_grid</span>(corr, df_beta, params, <span class="at">ncores =</span> NCORES)</span>
+<span id="cb29-2"><a href="polygenic-scores-pgs.html#cb29-2" aria-hidden="true" tabindex="-1"></a>params<span class="sc">$</span>sparsity <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(beta_grid <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<p>Then, we can compute the corresponding PGS for all these models:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="polygenic-scores-pgs.html#cb30-1" aria-hidden="true" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_grid, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb30-2"><a href="polygenic-scores-pgs.html#cb30-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ncores =</span> NCORES)</span>
+<span id="cb30-3"><a href="polygenic-scores-pgs.html#cb30-3" aria-hidden="true" tabindex="-1"></a>params<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">big_univLogReg</span>(<span class="fu">as_FBM</span>(pred_grid), info<span class="sc">$</span>CAD)<span class="sc">$</span>score</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="polygenic-scores-pgs.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(params, <span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(h2))) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="polygenic-scores-pgs.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb31-3"><a href="polygenic-scores-pgs.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb31-4"><a href="polygenic-scores-pgs.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb31-5"><a href="polygenic-scores-pgs.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>), <span class="at">minor_breaks =</span> params<span class="sc">$</span>p) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="polygenic-scores-pgs.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sparse, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb31-7"><a href="polygenic-scores-pgs.html#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;h2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-8"><a href="polygenic-scores-pgs.html#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">&quot;lines&quot;</span>))</span></code></pre></div>
+<p><img src="pgs_files/figure-html/unnamed-chunk-17-1.png" width="70%" style="display: block; margin: auto;" />
+Then you can use the best-performing model here (note that you should use only individuals from the validation set to compute the <code>$score</code> and then evaluate the best model for the individuals in the test set).</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="polygenic-scores-pgs.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<pre><code>#&gt; Warning: package &#39;dplyr&#39; was built under R version 3.6.3</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="polygenic-scores-pgs.html#cb34-1" aria-hidden="true" tabindex="-1"></a>best_beta_grid <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="polygenic-scores-pgs.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="polygenic-scores-pgs.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-4"><a href="polygenic-scores-pgs.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-5"><a href="polygenic-scores-pgs.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb34-6"><a href="polygenic-scores-pgs.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  beta_grid[, .]</span></code></pre></div>
+<p>To run LDpred2-auto, you can use:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="polygenic-scores-pgs.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LDpred2-auto</span></span>
+<span id="cb35-2"><a href="polygenic-scores-pgs.html#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: use vec_p_init = seq_log(1e-4, 0.5, 30) in real scenario</span></span>
+<span id="cb35-3"><a href="polygenic-scores-pgs.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and defaults for &#39;burn_in&#39; and &#39;num_iter&#39; (again, for speed here..)</span></span>
+<span id="cb35-4"><a href="polygenic-scores-pgs.html#cb35-4" aria-hidden="true" tabindex="-1"></a>multi_auto <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_auto</span>(</span>
+<span id="cb35-5"><a href="polygenic-scores-pgs.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  corr, df_beta, <span class="at">h2_init =</span> ldsc_h2_est,</span>
+<span id="cb35-6"><a href="polygenic-scores-pgs.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">vec_p_init =</span> <span class="fu">seq_log</span>(<span class="fl">1e-3</span>, <span class="fl">0.1</span>, <span class="dv">4</span>),  <span class="co"># TO CHANGE</span></span>
+<span id="cb35-7"><a href="polygenic-scores-pgs.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">burn_in =</span> <span class="dv">50</span>, <span class="at">num_iter =</span> <span class="dv">50</span>,         <span class="co"># TO REMOVE</span></span>
+<span id="cb35-8"><a href="polygenic-scores-pgs.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncores =</span> NCORES)</span></code></pre></div>
+<p>We should perform some quality control on the chains (you should have more than 4, e.g. 30):</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="polygenic-scores-pgs.html#cb36-1" aria-hidden="true" tabindex="-1"></a>beta_auto <span class="ot">&lt;-</span> <span class="fu">sapply</span>(multi_auto, <span class="cf">function</span>(auto) auto<span class="sc">$</span>beta_est)</span>
+<span id="cb36-2"><a href="polygenic-scores-pgs.html#cb36-2" aria-hidden="true" tabindex="-1"></a>pred_auto <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_auto, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb36-3"><a href="polygenic-scores-pgs.html#cb36-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ncores =</span> NCORES)</span>
+<span id="cb36-4"><a href="polygenic-scores-pgs.html#cb36-4" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_auto, <span class="dv">2</span>, sd)</span>
+<span id="cb36-5"><a href="polygenic-scores-pgs.html#cb36-5" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">abs</span>(sc <span class="sc">-</span> <span class="fu">median</span>(sc)) <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">mad</span>(sc)</span>
+<span id="cb36-6"><a href="polygenic-scores-pgs.html#cb36-6" aria-hidden="true" tabindex="-1"></a>final_beta_auto <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(beta_auto[, keep])</span></code></pre></div>
+<p>We can finally test the final prediction</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="polygenic-scores-pgs.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># could directly use `rowMeans(pred_auto[, keep])` here</span></span>
+<span id="cb37-2"><a href="polygenic-scores-pgs.html#cb37-2" aria-hidden="true" tabindex="-1"></a>final_pred_auto <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, final_beta_auto,</span>
+<span id="cb37-3"><a href="polygenic-scores-pgs.html#cb37-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb37-4"><a href="polygenic-scores-pgs.html#cb37-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">ncores =</span> NCORES)</span>
+<span id="cb37-5"><a href="polygenic-scores-pgs.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">AUCBoot</span>(final_pred_auto, info<span class="sc">$</span>CAD)</span></code></pre></div>
+<pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
+#&gt; 0.61304403 0.58190696 0.64429158 0.01594833</code></pre>
+</div>
+<div id="lassosum2-grid-of-models" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> lassosum2: grid of models</h3>
+<p>lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (<code>corr</code> and <code>df_beta</code>). It should be much faster than running LDpred2. It can be run next to LDpred2 and the best model can be chosen using the validation set.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="polygenic-scores-pgs.html#cb39-1" aria-hidden="true" tabindex="-1"></a>beta_lassosum2 <span class="ot">&lt;-</span> <span class="fu">snp_lassosum2</span>(</span>
+<span id="cb39-2"><a href="polygenic-scores-pgs.html#cb39-2" aria-hidden="true" tabindex="-1"></a>  corr, df_beta, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb39-3"><a href="polygenic-scores-pgs.html#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">s =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>, <span class="dv">1</span>), <span class="at">nlambda =</span> <span class="dv">10</span>, <span class="at">maxiter =</span> <span class="dv">50</span>)  <span class="co"># TO REMOVE</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="polygenic-scores-pgs.html#cb40-1" aria-hidden="true" tabindex="-1"></a>params2 <span class="ot">&lt;-</span> <span class="fu">attr</span>(beta_lassosum2, <span class="st">&quot;grid_param&quot;</span>)</span>
+<span id="cb40-2"><a href="polygenic-scores-pgs.html#cb40-2" aria-hidden="true" tabindex="-1"></a>pred_grid2 <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_lassosum2, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb40-3"><a href="polygenic-scores-pgs.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ncores =</span> NCORES)</span>
+<span id="cb40-4"><a href="polygenic-scores-pgs.html#cb40-4" aria-hidden="true" tabindex="-1"></a>params2<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">big_univLogReg</span>(<span class="fu">as_FBM</span>(pred_grid2), info<span class="sc">$</span>CAD)<span class="sc">$</span>score</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="polygenic-scores-pgs.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb41-2"><a href="polygenic-scores-pgs.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(params2, <span class="fu">aes</span>(<span class="at">x =</span> lambda, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(s))) <span class="sc">+</span></span>
+<span id="cb41-3"><a href="polygenic-scores-pgs.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb41-4"><a href="polygenic-scores-pgs.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb41-5"><a href="polygenic-scores-pgs.html#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb41-6"><a href="polygenic-scores-pgs.html#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb41-7"><a href="polygenic-scores-pgs.html#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;s&quot;</span>)</span></code></pre></div>
+<p><img src="pgs_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="polygenic-scores-pgs.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb42-2"><a href="polygenic-scores-pgs.html#cb42-2" aria-hidden="true" tabindex="-1"></a>best_grid_lassosum2 <span class="ot">&lt;-</span> params2 <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="polygenic-scores-pgs.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb42-4"><a href="polygenic-scores-pgs.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
+<span id="cb42-5"><a href="polygenic-scores-pgs.html#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb42-6"><a href="polygenic-scores-pgs.html#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-7"><a href="polygenic-scores-pgs.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  beta_lassosum2[, .]</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="polygenic-scores-pgs.html#cb43-1" aria-hidden="true" tabindex="-1"></a>best_grid_overall <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">if</span><span class="st">`</span>(<span class="fu">max</span>(params2<span class="sc">$</span>score) <span class="sc">&gt;</span> <span class="fu">max</span>(params<span class="sc">$</span>score),</span>
+<span id="cb43-2"><a href="polygenic-scores-pgs.html#cb43-2" aria-hidden="true" tabindex="-1"></a>                          best_grid_lassosum2,</span>
+<span id="cb43-3"><a href="polygenic-scores-pgs.html#cb43-3" aria-hidden="true" tabindex="-1"></a>                          best_beta_grid)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="genome-wide-association-study-gwas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

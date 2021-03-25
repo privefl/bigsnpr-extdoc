@@ -1,0 +1,279 @@
+# Polygenic scores (PGS)
+
+```{r setup, include=FALSE}
+WORDS_TO_IGNORE <- c("HapMap")
+source("knitr-options.R")
+source("spelling-check.R")
+library(bigsnpr)
+```
+
+Polygenic scores are one of the main focus of package {bigsnpr}. These are the main methods currently available:
+
+- penalized regressions, with individual-level data [@prive2019efficient] [[tutorial]](https://privefl.github.io/bigstatsr/articles/penalized-regressions.html)
+
+- Clumping and Thresholding (C+T) and Stacked C+T (SCT), with summary statistics and individual level data [@prive2019making] [[tutorial]](https://privefl.github.io/bigsnpr/articles/SCT.html)
+
+- LDpred2, with summary statistics [@prive2020ldpred2] [[tutorial]](https://privefl.github.io/bigsnpr/articles/LDpred2.html)
+
+- lassosum2, with the same input data as LDpred2 (coming soon)
+
+
+## Exercises: LDpred2 and lassosum2
+
+You should also check the other tutorials mentioned before.
+
+### Preparing the data
+
+Let us first read the data produced in \@ref(exo-preprocessing):
+```{r}
+library(bigsnpr)
+obj.bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
+G <- obj.bigsnp$genotypes
+NCORES <- nb_cores()
+map <- dplyr::transmute(obj.bigsnp$map,
+                        chr = chromosome, pos = physical.pos,
+                        a0 = allele2, a1 = allele1)
+```
+
+We also get the phenotype data:
+```{r}
+url <- "https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/"
+clinical <- bigreadr::fread2(
+  runonce::download_file(paste0(url, "GWAS_clinical.csv"), dir = "tmp-data"))
+# get the same order as for the genotypes
+# (to match over multiple columns, use `vctrs::vec_match()`)
+info <- clinical[match(obj.bigsnp$fam$family.ID, clinical$FamID), ]
+```
+
+
+We then download some GWAS summary statistics from a large consortium [@nikpay2015comprehensive; @buniello2019nhgri] and prepare them in the format required by LDpred2:
+```{r}
+txt <- runonce::download_file(
+  "ftp://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/NikpayM_26343387_GCST003116/cad.add.160614.website.txt",
+  dir = "tmp-data", fname = "sumstats_CAD.txt")
+sumstats <- bigreadr::fread2(
+  txt,
+  select = c("chr", "bp_hg19", "noneffect_allele",
+             "effect_allele", "beta", "se_dgc"),
+  col.names = c("chr", "pos", "a0", "a1", "beta", "beta_se"))
+# GWAS effective sample size from the paper
+# would better to have a per-variant sample size in the sumstats
+sumstats$n_eff <- 4 / (1 / 60801 + 1 / 123504) 
+```
+
+Let us now match these with the internal data we have:
+```{r}
+info_snp <- snp_match(sumstats, map)
+(info_snp <- tibble::as_tibble(info_snp))
+```
+Note that we recommend to use imputed HapMap3 variants when available, otherwise you can just use the genotyped variants as I am doing here.
+
+Then we can perform some quality control on the summary statistics to see how standard deviations inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
+```{r}
+sd_val <- sqrt(big_colstats(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)$var)
+sd_ss <- with(info_snp, 2 / sqrt(n_eff * beta_se^2 + beta^2))
+is_bad <-
+  sd_ss < (0.5 * sd_val) | sd_ss > (sd_val + 0.1) | sd_ss < 0.1 | sd_val < 0.05
+```
+
+```{r, warning=FALSE, fig.width=10, out.width="85%"}
+library(ggplot2)
+ggplot(dplyr::slice_sample(data.frame(sd_val, sd_ss, is_bad), n = 50e3)) +
+  geom_point(aes(sd_val, sd_ss, color = is_bad), alpha = 0.5) +
+  theme_bigstatsr(0.9) +
+  scale_color_viridis_d(direction = -1) +
+  geom_abline(linetype = 2) +
+  labs(x = "Standard deviations in the validation set",
+       y = "Standard deviations derived from the summary statistics",
+       color = "To remove?")
+
+```
+```{r}
+df_beta <- info_snp[!is_bad, ]
+```
+
+Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes for faster running of this tutorial):
+
+```{r}
+for (chr in 1:4) {
+  
+  corr0 <- runonce::save_run({
+    
+    print(chr)
+    
+    ## indices in 'sumstats'
+    ind.chr <- which(df_beta$chr == chr)
+    ## indices in 'G'
+    ind.chr2 <- df_beta$`_NUM_ID_`[ind.chr]
+    
+    POS2 <- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = "tmp-data")
+    snp_cor(G, ind.col = ind.chr2, size = 3 / 1000, infos.pos = POS2, 
+            ncores = NCORES)
+    
+  }, file = paste0("tmp-data/corr_chr", chr, ".rds"))
+}
+```
+
+```{r, include=FALSE}
+file.remove("tmp-data/corr.sbk")
+```
+
+Then we create the on-disk sparse genome-wide correlation matrix (again using only the first 4 chromosomes, for speed in this tutorial; replace by `1:22`):
+```{r}
+for (chr in 1:4) {
+  
+  print(chr)
+  
+  corr0 <- readRDS(paste0("tmp-data/corr_chr", chr, ".rds"))
+  
+  if (chr == 1) {
+    ld <- Matrix::colSums(corr0^2)
+    corr <- as_SFBM(corr0, "tmp-data/corr")
+  } else {
+    ld <- c(ld, Matrix::colSums(corr0^2))
+    corr$add_columns(corr0, nrow(corr))
+  }
+}
+```
+
+### LDpred2
+
+We can now run LD score regression:
+```{r}
+df_beta <- dplyr::filter(df_beta, chr %in% 1:4)  # TO REMOVE (for speed here)
+(ldsc <- with(df_beta, snp_ldsc(ld, length(ld), chi2 = (beta / beta_se)^2,
+                                 sample_size = n_eff, blocks = NULL)))
+ldsc_h2_est <- ldsc[["h2"]]
+```
+
+We can now run LDpred2-inf very easily:
+```{r}
+# LDpred2-inf
+beta_inf <- snp_ldpred2_inf(corr, df_beta, ldsc_h2_est)
+pred_inf <- big_prodVec(G, beta_inf, ind.col = df_beta$`_NUM_ID_`)
+AUCBoot(pred_inf, info$CAD)
+```
+
+For LDpred2(-grid), this is the grid we recommend to use:
+```{r}
+# LDpred2-grid
+(h2_seq <- round(ldsc_h2_est * c(0.7, 1, 1.4), 4))
+(p_seq <- signif(seq_log(1e-5, 1, length.out = 21), 2))
+params <- expand.grid(p = p_seq, h2 = h2_seq, sparse = c(FALSE, TRUE))
+dim(params)
+```
+
+Here, we will be using this smaller grid instead (for speed in this tutorial):
+```{r}
+(params <- expand.grid(p = signif(seq_log(0.001, 0.2, length.out = 8), 2),
+                       h2 = round(ldsc_h2_est, 4), sparse = TRUE))
+```
+
+```{r}
+beta_grid <- snp_ldpred2_grid(corr, df_beta, params, ncores = NCORES)
+params$sparsity <- colMeans(beta_grid == 0)
+```
+
+Then, we can compute the corresponding PGS for all these models:
+```{r}
+pred_grid <- big_prodMat(G, beta_grid, ind.col = df_beta[["_NUM_ID_"]],
+                         ncores = NCORES)
+params$score <- big_univLogReg(as_FBM(pred_grid), info$CAD)$score
+```
+
+```{r}
+ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
+  theme_bigstatsr() +
+  geom_point() +
+  geom_line() +
+  scale_x_log10(breaks = 10^(-5:0), minor_breaks = params$p) +
+  facet_wrap(~ sparse, labeller = label_both) +
+  labs(y = "GLM Z-Score", color = "h2") +
+  theme(legend.position = "top", panel.spacing = unit(1, "lines"))
+```
+Then you can use the best-performing model here (note that you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set).
+```{r, message=FALSE}
+library(dplyr)
+best_beta_grid <- params %>%
+  mutate(id = row_number()) %>%
+  arrange(desc(score)) %>%
+  slice(1) %>%
+  pull(id) %>%
+  beta_grid[, .]
+```
+
+To run LDpred2-auto, you can use:
+```{r}
+# LDpred2-auto
+# Note: use vec_p_init = seq_log(1e-4, 0.5, 30) in real scenario
+# and defaults for 'burn_in' and 'num_iter' (again, for speed here..)
+multi_auto <- snp_ldpred2_auto(
+  corr, df_beta, h2_init = ldsc_h2_est,
+  vec_p_init = seq_log(1e-3, 0.1, 4),  # TO CHANGE
+  burn_in = 50, num_iter = 50,         # TO REMOVE
+  ncores = NCORES)
+```
+
+We should perform some quality control on the chains (you should have more than 4, e.g. 30):
+```{r}
+beta_auto <- sapply(multi_auto, function(auto) auto$beta_est)
+pred_auto <- big_prodMat(G, beta_auto, ind.col = df_beta[["_NUM_ID_"]],
+                         ncores = NCORES)
+sc <- apply(pred_auto, 2, sd)
+keep <- abs(sc - median(sc)) < 3 * mad(sc)
+final_beta_auto <- rowMeans(beta_auto[, keep])
+```
+
+We can finally test the final prediction
+```{r}
+# could directly use `rowMeans(pred_auto[, keep])` here
+final_pred_auto <- big_prodVec(G, final_beta_auto,
+                               ind.col = df_beta[["_NUM_ID_"]],
+                               ncores = NCORES)
+AUCBoot(final_pred_auto, info$CAD)
+```
+
+
+### lassosum2: grid of models
+
+lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It should be much faster than running LDpred2. It can be run next to LDpred2 and the best model can be chosen using the validation set.
+
+```{r}
+beta_lassosum2 <- snp_lassosum2(
+  corr, df_beta, ncores = NCORES,
+  s = c(0.2, 0.5, 0.8, 1), nlambda = 10, maxiter = 50)  # TO REMOVE
+```
+
+```{r}
+params2 <- attr(beta_lassosum2, "grid_param")
+pred_grid2 <- big_prodMat(G, beta_lassosum2, ind.col = df_beta[["_NUM_ID_"]],
+                          ncores = NCORES)
+params2$score <- big_univLogReg(as_FBM(pred_grid2), info$CAD)$score
+```
+
+```{r}
+library(ggplot2)
+ggplot(params2, aes(x = lambda, y = score, color = as.factor(s))) +
+  theme_bigstatsr() +
+  geom_point() +
+  geom_line() +
+  scale_x_log10(breaks = 10^(-5:0)) +
+  labs(y = "GLM Z-Score", color = "s")
+```
+
+```{r}
+library(dplyr)
+best_grid_lassosum2 <- params2 %>%
+  mutate(id = row_number()) %>%
+  arrange(desc(score)) %>%
+  slice(1) %>%
+  pull(id) %>% 
+  beta_lassosum2[, .]
+```
+
+```{r}
+best_grid_overall <- `if`(max(params2$score) > max(params$score),
+                          best_grid_lassosum2,
+                          best_beta_grid)
+```
+
