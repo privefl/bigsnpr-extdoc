@@ -40,7 +40,7 @@ We also get the phenotype data:
 url <- "https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/"
 clinical <- bigreadr::fread2(
   runonce::download_file(paste0(url, "GWAS_clinical.csv"), dir = "tmp-data"))
-# get the same order as for the genotypes
+# Get the same order as for the genotypes
 # (to match over multiple columns, use `vctrs::vec_match()`)
 info <- clinical[match(obj.bigsnp$fam$family.ID, clinical$FamID), ]
 ```
@@ -51,30 +51,38 @@ We then download some GWAS summary statistics from a large consortium [@nikpay20
 txt <- runonce::download_file(
   "ftp://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/NikpayM_26343387_GCST003116/cad.add.160614.website.txt",
   dir = "tmp-data", fname = "sumstats_CAD.txt")
+writeLines(readLines(txt, n = 3))
+# One could also read other variables such as 'median_info', 'model',
+# 'het_pvalue', and 'n_studies' to apply some quality control to the sumstats.
 sumstats <- bigreadr::fread2(
   txt,
   select = c("chr", "bp_hg19", "noneffect_allele",
              "effect_allele", "beta", "se_dgc"),
   col.names = c("chr", "pos", "a0", "a1", "beta", "beta_se"))
-# GWAS effective sample size from the paper
-# would better to have a per-variant sample size in the sumstats
+# GWAS effective sample size from the paper;
+# it would be better to have a per-variant sample size in the sumstats.
+# For quantitative traits, just use the total sample size for `n_eff`.
 sumstats$n_eff <- 4 / (1 / 60801 + 1 / 123504) 
 ```
 
 Let us now match these with the internal data we have:
 ```{r}
-info_snp <- snp_match(sumstats, map)
-(info_snp <- tibble::as_tibble(info_snp))
+(info_snp <- tibble::as_tibble(snp_match(sumstats, map)))
 ```
 Note that we recommend to use imputed HapMap3 variants when available, otherwise you can just use the genotyped variants as I am doing here.
+Try to use an LD reference with at least 2000 individuals (I have only 1401 in this example).
+You can download some precomputed LD reference for European individuals based on the UK Biobank (+ some example R script and some information on the HapMap3 variants) at https://figshare.com/articles/dataset/European_LD_reference/13034123.
 
 Then we can perform some quality control on the summary statistics to see how standard deviations inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
 ```{r}
-sd_val <- sqrt(big_colstats(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)$var)
+maf <- snp_MAF(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)
+sd_val <- sqrt(2 * maf * (1 - maf))
 sd_ss <- with(info_snp, 2 / sqrt(n_eff * beta_se^2 + beta^2))
 is_bad <-
   sd_ss < (0.5 * sd_val) | sd_ss > (sd_val + 0.1) | sd_ss < 0.1 | sd_val < 0.05
 ```
+
+When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace `2` by `sd(y)` when computing `sd_ss`. Have a look at [section 3.4 of the LDpred2 paper](https://academic.oup.com/bioinformatics/article/36/22-23/5424/6039173#233620521). 
 
 ```{r, warning=FALSE, fig.width=10, out.width="85%"}
 library(ggplot2)
@@ -85,8 +93,7 @@ ggplot(dplyr::slice_sample(data.frame(sd_val, sd_ss, is_bad), n = 50e3)) +
   geom_abline(linetype = 2) +
   labs(x = "Standard deviations in the validation set",
        y = "Standard deviations derived from the summary statistics",
-       color = "To remove?")
-
+       color = "To remove?", title = "This is far from perfect.")
 ```
 ```{r}
 df_beta <- info_snp[!is_bad, ]
@@ -95,11 +102,11 @@ df_beta <- info_snp[!is_bad, ]
 Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes for faster running of this tutorial):
 
 ```{r}
-for (chr in 1:4) {
+for (chr in 1:4) {  # REPLACE BY 1:22
+    
+  print(chr)
   
   corr0 <- runonce::save_run({
-    
-    print(chr)
     
     ## indices in 'sumstats'
     ind.chr <- which(df_beta$chr == chr)
@@ -120,7 +127,7 @@ file.remove("tmp-data/corr.sbk")
 
 Then we create the on-disk sparse genome-wide correlation matrix (again using only the first 4 chromosomes, for speed in this tutorial; replace by `1:22`):
 ```{r}
-for (chr in 1:4) {
+for (chr in 1:4) {  # REPLACE BY 1:22
   
   print(chr)
   
@@ -128,13 +135,22 @@ for (chr in 1:4) {
   
   if (chr == 1) {
     ld <- Matrix::colSums(corr0^2)
-    corr <- as_SFBM(corr0, "tmp-data/corr")
+    corr <- as_SFBM(corr0, "tmp-data/corr", compact = TRUE)
   } else {
     ld <- c(ld, Matrix::colSums(corr0^2))
     corr$add_columns(corr0, nrow(corr))
   }
 }
 ```
+
+Note that the "compact" format for SFBMs is quite new. You will need `packageVersion("bigsparser") >= package_version("0.5")`. 
+Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version (to avoid crashes).
+
+```{r}
+file.size(corr$sbk) / 1024^3  # file size in GB
+```
+
+Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM should be enough.
 
 ### LDpred2
 
@@ -157,7 +173,7 @@ AUCBoot(pred_inf, info$CAD)
 For LDpred2(-grid), this is the grid we recommend to use:
 ```{r}
 # LDpred2-grid
-(h2_seq <- round(ldsc_h2_est * c(0.7, 1, 1.4), 4))
+(h2_seq <- round(ldsc_h2_est * c(0.1, 0.7, 1, 1.4), 4))
 (p_seq <- signif(seq_log(1e-5, 1, length.out = 21), 2))
 params <- expand.grid(p = p_seq, h2 = h2_seq, sparse = c(FALSE, TRUE))
 dim(params)
@@ -165,7 +181,7 @@ dim(params)
 
 Here, we will be using this smaller grid instead (for speed in this tutorial):
 ```{r}
-(params <- expand.grid(p = signif(seq_log(0.001, 0.2, length.out = 8), 2),
+(params <- expand.grid(p = signif(seq_log(0.001, 0.3, length.out = 8), 2),
                        h2 = round(ldsc_h2_est, 4), sparse = TRUE))
 ```
 
@@ -178,8 +194,13 @@ Then, we can compute the corresponding PGS for all these models:
 ```{r}
 pred_grid <- big_prodMat(G, beta_grid, ind.col = df_beta[["_NUM_ID_"]],
                          ncores = NCORES)
-params$score <- big_univLogReg(as_FBM(pred_grid), info$CAD)$score
+params$score <- apply(pred_grid, 2, function(x) {
+  if (all(is.na(x))) return(NA)
+  summary(glm(CAD ~ x + sex + age, data = info, family = "binomial"))$coef[2, 3]
+})
 ```
+
+Note that missing values represent models that diverged substantially.
 
 ```{r}
 ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
@@ -191,7 +212,8 @@ ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
   labs(y = "GLM Z-Score", color = "h2") +
   theme(legend.position = "top", panel.spacing = unit(1, "lines"))
 ```
-Then you can use the best-performing model here (note that you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set).
+Then you can use the best-performing model here.
+Note that you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set.
 ```{r, message=FALSE}
 library(dplyr)
 best_beta_grid <- params %>%
@@ -206,11 +228,11 @@ To run LDpred2-auto, you can use:
 ```{r}
 # LDpred2-auto
 # Note: use vec_p_init = seq_log(1e-4, 0.5, 30) in real scenario
-# and defaults for 'burn_in' and 'num_iter' (again, for speed here..)
+# and defaults for 'burn_in' and 'num_iter' (again, for speed here)
 multi_auto <- snp_ldpred2_auto(
   corr, df_beta, h2_init = ldsc_h2_est,
-  vec_p_init = seq_log(1e-3, 0.1, 4),  # TO CHANGE
-  burn_in = 50, num_iter = 50,         # TO REMOVE
+  vec_p_init = seq_log(1e-3, 0.1, NCORES),  # TO CHANGE
+  burn_in = 50, num_iter = 50,              # TO REMOVE
   ncores = NCORES)
 ```
 
@@ -236,29 +258,33 @@ AUCBoot(final_pred_auto, info$CAD)
 
 ### lassosum2: grid of models
 
-lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It should be much faster than running LDpred2. It can be run next to LDpred2 and the best model can be chosen using the validation set.
+lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It should be fast to run. It can be run next to LDpred2 and the best model can be chosen using the validation set.
+Note that parameter 's' from lassosum has been replaced by a new parameter 'delta' in lassosum2, in order to better reflect that the lassosum model also uses L2-regularization (therefore, elastic-net regularization).
 
 ```{r}
 beta_lassosum2 <- snp_lassosum2(
   corr, df_beta, ncores = NCORES,
-  s = c(0.2, 0.5, 0.8, 1), nlambda = 10, maxiter = 50)  # TO REMOVE
+  nlambda = 10, maxiter = 50)  # TO REMOVE
 ```
 
 ```{r}
 params2 <- attr(beta_lassosum2, "grid_param")
 pred_grid2 <- big_prodMat(G, beta_lassosum2, ind.col = df_beta[["_NUM_ID_"]],
                           ncores = NCORES)
-params2$score <- big_univLogReg(as_FBM(pred_grid2), info$CAD)$score
+params2$score <- apply(pred_grid2, 2, function(x) {
+  if (all(is.na(x))) return(NA)
+  summary(glm(CAD ~ x + sex + age, data = info, family = "binomial"))$coef[2, 3]
+})
 ```
 
 ```{r}
 library(ggplot2)
-ggplot(params2, aes(x = lambda, y = score, color = as.factor(s))) +
+ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) +
   theme_bigstatsr() +
   geom_point() +
   geom_line() +
   scale_x_log10(breaks = 10^(-5:0)) +
-  labs(y = "GLM Z-Score", color = "s")
+  labs(y = "GLM Z-Score", color = "delta")
 ```
 
 ```{r}
@@ -276,4 +302,3 @@ best_grid_overall <- `if`(max(params2$score) > max(params$score),
                           best_grid_lassosum2,
                           best_beta_grid)
 ```
-

@@ -2,6 +2,7 @@ BGEN
 bigSNP
 bigsnpr
 bigstatsr
+bigsparser
 bim
 biobank
 exo
@@ -20,5 +21,7 @@ PGS
 PLINK
 polygenic
 polygenicity
+precomputed
 RICOPILI
 SCT
+SFBM
