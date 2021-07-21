@@ -83,6 +83,19 @@ bedfile2 <- snp_plinkQC(plink, "tmp-data/GWAS_data_sorted")
 obj.bigsnp <- snp_attach(rds)
 str(obj.bigsnp, max.level = 2)
 ```
+We can store some extra information on the individuals (e.g. some phenotypes):
+```{r}
+clinical <- bigreadr::fread2(
+  runonce::download_file(paste0(url, "GWAS_clinical.csv"), dir = "tmp-data"))
+# Get the same order as for the genotypes
+# (to match over multiple columns, use `vctrs::vec_match()`)
+pheno <- clinical[match(obj.bigsnp$fam$family.ID, clinical$FamID), ]
+# Some verif
+stopifnot(all.equal(obj.bigsnp$fam$sex, pheno$sex))
+# Update the $fam component
+obj.bigsnp$fam <- cbind(obj.bigsnp$fam, pheno[-c(1, 3)])
+```
+
 
 Recall that this data contains some missing values; you can get some counts per variant using
 ```{r}
@@ -103,11 +116,11 @@ big_counts(G, ind.col = 1:8)
 ```{r}
 G$code256
 G2$code256
+obj.bigsnp$genotypes <- G2
 ```
 
-To always use the new code, you need to save it using
+To always use `G2` (with the new `code256`) and the extended `obj.bigsnp$fam`, you need to re-save `obj.bigsnp` using
 ```{r}
-obj.bigsnp$genotypes <- G2
 snp_save(obj.bigsnp)
 ```
 

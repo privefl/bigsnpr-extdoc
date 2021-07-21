@@ -15,7 +15,7 @@ Polygenic scores are one of the main focus of package {bigsnpr}. These are the m
 
 - LDpred2, with summary statistics [@prive2020ldpred2] [[tutorial]](https://privefl.github.io/bigsnpr/articles/LDpred2.html)
 
-- lassosum2, with the same input data as LDpred2 (coming soon)
+- lassosum2, with the same input data as LDpred2
 
 
 ## Exercises: LDpred2 and lassosum2
@@ -34,17 +34,6 @@ map <- dplyr::transmute(obj.bigsnp$map,
                         chr = chromosome, pos = physical.pos,
                         a0 = allele2, a1 = allele1)
 ```
-
-We also get the phenotype data:
-```{r}
-url <- "https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/"
-clinical <- bigreadr::fread2(
-  runonce::download_file(paste0(url, "GWAS_clinical.csv"), dir = "tmp-data"))
-# Get the same order as for the genotypes
-# (to match over multiple columns, use `vctrs::vec_match()`)
-info <- clinical[match(obj.bigsnp$fam$family.ID, clinical$FamID), ]
-```
-
 
 We then download some GWAS summary statistics from a large consortium [@nikpay2015comprehensive; @buniello2019nhgri] and prepare them in the format required by LDpred2:
 ```{r}
@@ -93,7 +82,7 @@ ggplot(dplyr::slice_sample(data.frame(sd_val, sd_ss, is_bad), n = 50e3)) +
   geom_abline(linetype = 2) +
   labs(x = "Standard deviations in the validation set",
        y = "Standard deviations derived from the summary statistics",
-       color = "To remove?", title = "This is far from perfect.")
+       color = "To remove?", title = "This is far from perfect; Neff is probably overestimated.")
 ```
 ```{r}
 df_beta <- info_snp[!is_bad, ]
@@ -167,7 +156,7 @@ We can now run LDpred2-inf very easily:
 # LDpred2-inf
 beta_inf <- snp_ldpred2_inf(corr, df_beta, ldsc_h2_est)
 pred_inf <- big_prodVec(G, beta_inf, ind.col = df_beta$`_NUM_ID_`)
-AUCBoot(pred_inf, info$CAD)
+AUCBoot(pred_inf, obj.bigsnp$fam$CAD)
 ```
 
 For LDpred2(-grid), this is the grid we recommend to use:
@@ -196,7 +185,7 @@ pred_grid <- big_prodMat(G, beta_grid, ind.col = df_beta[["_NUM_ID_"]],
                          ncores = NCORES)
 params$score <- apply(pred_grid, 2, function(x) {
   if (all(is.na(x))) return(NA)
-  summary(glm(CAD ~ x + sex + age, data = info, family = "binomial"))$coef[2, 3]
+  summary(glm(CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"))$coef["x", 3]
 })
 ```
 
@@ -252,7 +241,7 @@ We can finally test the final prediction
 final_pred_auto <- big_prodVec(G, final_beta_auto,
                                ind.col = df_beta[["_NUM_ID_"]],
                                ncores = NCORES)
-AUCBoot(final_pred_auto, info$CAD)
+AUCBoot(final_pred_auto, obj.bigsnp$fam$CAD)
 ```
 
 
@@ -273,7 +262,7 @@ pred_grid2 <- big_prodMat(G, beta_lassosum2, ind.col = df_beta[["_NUM_ID_"]],
                           ncores = NCORES)
 params2$score <- apply(pred_grid2, 2, function(x) {
   if (all(is.na(x))) return(NA)
-  summary(glm(CAD ~ x + sex + age, data = info, family = "binomial"))$coef[2, 3]
+  summary(glm(CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"))$coef["x", 3]
 })
 ```
 

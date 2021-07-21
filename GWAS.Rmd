@@ -26,28 +26,18 @@ G <- obj.bigsnp$genotypes
 PC <- predict(readRDS("tmp-data/PCA_GWAS_data.rds"))
 ```
 
-Let us also download the phenotype information. This clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (`hdl`), low-density lipoprotein (LDL)-cholesterol (`ldl`), triglycerides (`tg`) and coronary artery disease status (`CAD`).
-
-```{r}
-url <- "https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/"
-clinical <- bigreadr::fread2(
-  runonce::download_file(paste0(url, "GWAS_clinical.csv"), dir = "tmp-data"))
-str(clinical)
-# get the same order as for the genotypes
-# (to match over multiple columns, use `vctrs::vec_match()`)
-info <- clinical[match(obj.bigsnp$fam$family.ID, clinical$FamID), ]
-```
+The clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (`hdl`), low-density lipoprotein (LDL)-cholesterol (`ldl`), triglycerides (`tg`) and coronary artery disease status (`CAD`).
 
 For the set of covariates, we will use sex, age, and the first 6 PCs:
 
 ```{r}
-covar <- cbind(info$sex, info$age, PC[, 1:6])
+covar <- cbind(as.matrix(obj.bigsnp$fam[c("sex", "age")]), PC[, 1:6])
 ```
 
 Let us perform a case-control GWAS for CAD:
 
 ```{r}
-y <- info$CAD
+y <- obj.bigsnp$fam$CAD
 ind.gwas <- which(!is.na(y) & complete.cases(covar))
 gwas <- runonce::save_run(
   big_univLogReg(G, y[ind.gwas], ind.train = ind.gwas,
@@ -72,7 +62,7 @@ snp_manhattan(gwas, CHR, POS, npoints = 50e3) +
 Here, nothing is genome-wide significant because of the small sample size. You can compare peaks with a GWAS for CAD with much larger sample size at https://pheweb.org/UKB-SAIGE/pheno/411.4.
 
 ```{r, out.width="95%", fig.asp=0.5, fig.width=10, dev='png'}
-y2 <- info$hdl
+y2 <- obj.bigsnp$fam$hdl
 ind.gwas2 <- which(!is.na(y2) & complete.cases(covar))
 gwas2 <- big_univLinReg(G, y2[ind.gwas2], ind.train = ind.gwas2,
                         covar.train = covar[ind.gwas2, ], 

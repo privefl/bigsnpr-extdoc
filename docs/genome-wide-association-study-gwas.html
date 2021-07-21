@@ -216,57 +216,43 @@ Function <code>big_univLinReg()</code> should be very fast.</p>
 <div id="exo-gwas" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Exercise: GWAS</h2>
 <p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a> and in <a href="population-structure.html#exo-pca">4.2</a>.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="genome-wide-association-study-gwas.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="genome-wide-association-study-gwas.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="genome-wide-association-study-gwas.html#cb43-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb43-2"><a href="genome-wide-association-study-gwas.html#cb43-2" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb43-3"><a href="genome-wide-association-study-gwas.html#cb43-3" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">readRDS</span>(<span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>))</span></code></pre></div>
-<p>Let us also download the phenotype information. This clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (<code>hdl</code>), low-density lipoprotein (LDL)-cholesterol (<code>ldl</code>), triglycerides (<code>tg</code>) and coronary artery disease status (<code>CAD</code>).</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="genome-wide-association-study-gwas.html#cb44-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.mtholyoke.edu/courses/afoulkes/Data/statsTeachR/&quot;</span></span>
-<span id="cb44-2"><a href="genome-wide-association-study-gwas.html#cb44-2" aria-hidden="true" tabindex="-1"></a>clinical <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
-<span id="cb44-3"><a href="genome-wide-association-study-gwas.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(<span class="fu">paste0</span>(url, <span class="st">&quot;GWAS_clinical.csv&quot;</span>), <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>))</span>
-<span id="cb44-4"><a href="genome-wide-association-study-gwas.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(clinical)</span></code></pre></div>
-<pre><code>#&gt; &#39;data.frame&#39;:    1401 obs. of  7 variables:
-#&gt;  $ FamID: int  10002 10004 10005 10007 10008 10009 10010 10011 10012 10013 ...
-#&gt;  $ CAD  : int  1 1 1 1 1 1 1 1 1 0 ...
-#&gt;  $ sex  : int  1 2 1 1 1 1 1 2 1 2 ...
-#&gt;  $ age  : int  60 50 55 52 58 59 54 66 58 67 ...
-#&gt;  $ tg   : int  NA 55 105 314 161 171 147 124 60 160 ...
-#&gt;  $ hdl  : int  NA 23 37 54 40 46 69 47 114 40 ...
-#&gt;  $ ldl  : int  NA 75 69 108 94 92 109 84 67 112 ...</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="genome-wide-association-study-gwas.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the same order as for the genotypes</span></span>
-<span id="cb46-2"><a href="genome-wide-association-study-gwas.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (to match over multiple columns, use `vctrs::vec_match()`)</span></span>
-<span id="cb46-3"><a href="genome-wide-association-study-gwas.html#cb46-3" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> clinical[<span class="fu">match</span>(obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>family.ID, clinical<span class="sc">$</span>FamID), ]</span></code></pre></div>
+<pre><code>#&gt; Warning: package &#39;bigstatsr&#39; was built under R version 3.6.3</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="genome-wide-association-study-gwas.html#cb4-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb4-2"><a href="genome-wide-association-study-gwas.html#cb4-2" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb4-3"><a href="genome-wide-association-study-gwas.html#cb4-3" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">readRDS</span>(<span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>))</span></code></pre></div>
+<p>The clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (<code>hdl</code>), low-density lipoprotein (LDL)-cholesterol (<code>ldl</code>), triglycerides (<code>tg</code>) and coronary artery disease status (<code>CAD</code>).</p>
 <p>For the set of covariates, we will use sex, age, and the first 6 PCs:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="genome-wide-association-study-gwas.html#cb47-1" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cbind</span>(info<span class="sc">$</span>sex, info<span class="sc">$</span>age, PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="genome-wide-association-study-gwas.html#cb5-1" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.matrix</span>(obj.bigsnp<span class="sc">$</span>fam[<span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>)]), PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>])</span></code></pre></div>
 <p>Let us perform a case-control GWAS for CAD:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="genome-wide-association-study-gwas.html#cb48-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> info<span class="sc">$</span>CAD</span>
-<span id="cb48-2"><a href="genome-wide-association-study-gwas.html#cb48-2" aria-hidden="true" tabindex="-1"></a>ind.gwas <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
-<span id="cb48-3"><a href="genome-wide-association-study-gwas.html#cb48-3" aria-hidden="true" tabindex="-1"></a>gwas <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
-<span id="cb48-4"><a href="genome-wide-association-study-gwas.html#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">big_univLogReg</span>(G, y[ind.gwas], <span class="at">ind.train =</span> ind.gwas,</span>
-<span id="cb48-5"><a href="genome-wide-association-study-gwas.html#cb48-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">covar.train =</span> covar[ind.gwas, ], </span>
-<span id="cb48-6"><a href="genome-wide-association-study-gwas.html#cb48-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
-<span id="cb48-7"><a href="genome-wide-association-study-gwas.html#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/GWAS_CAD.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="genome-wide-association-study-gwas.html#cb6-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD</span>
+<span id="cb6-2"><a href="genome-wide-association-study-gwas.html#cb6-2" aria-hidden="true" tabindex="-1"></a>ind.gwas <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
+<span id="cb6-3"><a href="genome-wide-association-study-gwas.html#cb6-3" aria-hidden="true" tabindex="-1"></a>gwas <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
+<span id="cb6-4"><a href="genome-wide-association-study-gwas.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">big_univLogReg</span>(G, y[ind.gwas], <span class="at">ind.train =</span> ind.gwas,</span>
+<span id="cb6-5"><a href="genome-wide-association-study-gwas.html#cb6-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">covar.train =</span> covar[ind.gwas, ], </span>
+<span id="cb6-6"><a href="genome-wide-association-study-gwas.html#cb6-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
+<span id="cb6-7"><a href="genome-wide-association-study-gwas.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/GWAS_CAD.rds&quot;</span>)</span></code></pre></div>
 <p>This takes two minutes with 4 cores on my laptop. Note that <code>big_univLinReg()</code> takes one second, and should give very similar p-values, if you just need something quick.</p>
 <div class="infobox caution">
 <p>You probably should not account for other information such as cholesterol as it is some heritable covariates <span class="citation">(<a href="references.html#ref-aschard2015adjusting" role="doc-biblioref">Aschard et al. 2015</a>)</span>.</p>
 </div>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="genome-wide-association-study-gwas.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gwas)</span></code></pre></div>
-<p><img src="GWAS_files/figure-html/unnamed-chunk-5-1.png" width="95%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="genome-wide-association-study-gwas.html#cb50-1" aria-hidden="true" tabindex="-1"></a>CHR <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>map<span class="sc">$</span>chromosome</span>
-<span id="cb50-2"><a href="genome-wide-association-study-gwas.html#cb50-2" aria-hidden="true" tabindex="-1"></a>POS <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>map<span class="sc">$</span>physical.pos</span>
-<span id="cb50-3"><a href="genome-wide-association-study-gwas.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
-<span id="cb50-4"><a href="genome-wide-association-study-gwas.html#cb50-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="GWAS_files/figure-html/unnamed-chunk-5-2.png" width="95%" style="display: block; margin: auto;" />
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="genome-wide-association-study-gwas.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gwas)</span></code></pre></div>
+<p><img src="GWAS_files/figure-html/unnamed-chunk-4-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="genome-wide-association-study-gwas.html#cb8-1" aria-hidden="true" tabindex="-1"></a>CHR <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>map<span class="sc">$</span>chromosome</span>
+<span id="cb8-2"><a href="genome-wide-association-study-gwas.html#cb8-2" aria-hidden="true" tabindex="-1"></a>POS <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>map<span class="sc">$</span>physical.pos</span>
+<span id="cb8-3"><a href="genome-wide-association-study-gwas.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="genome-wide-association-study-gwas.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="GWAS_files/figure-html/unnamed-chunk-4-2.png" width="95%" style="display: block; margin: auto;" />
 Here, nothing is genome-wide significant because of the small sample size. You can compare peaks with a GWAS for CAD with much larger sample size at <a href="https://pheweb.org/UKB-SAIGE/pheno/411.4" class="uri">https://pheweb.org/UKB-SAIGE/pheno/411.4</a>.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="genome-wide-association-study-gwas.html#cb51-1" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> info<span class="sc">$</span>hdl</span>
-<span id="cb51-2"><a href="genome-wide-association-study-gwas.html#cb51-2" aria-hidden="true" tabindex="-1"></a>ind.gwas2 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y2) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
-<span id="cb51-3"><a href="genome-wide-association-study-gwas.html#cb51-3" aria-hidden="true" tabindex="-1"></a>gwas2 <span class="ot">&lt;-</span> <span class="fu">big_univLinReg</span>(G, y2[ind.gwas2], <span class="at">ind.train =</span> ind.gwas2,</span>
-<span id="cb51-4"><a href="genome-wide-association-study-gwas.html#cb51-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">covar.train =</span> covar[ind.gwas2, ], </span>
-<span id="cb51-5"><a href="genome-wide-association-study-gwas.html#cb51-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
-<span id="cb51-6"><a href="genome-wide-association-study-gwas.html#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas2, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
-<span id="cb51-7"><a href="genome-wide-association-study-gwas.html#cb51-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="GWAS_files/figure-html/unnamed-chunk-6-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="genome-wide-association-study-gwas.html#cb9-1" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>hdl</span>
+<span id="cb9-2"><a href="genome-wide-association-study-gwas.html#cb9-2" aria-hidden="true" tabindex="-1"></a>ind.gwas2 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y2) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
+<span id="cb9-3"><a href="genome-wide-association-study-gwas.html#cb9-3" aria-hidden="true" tabindex="-1"></a>gwas2 <span class="ot">&lt;-</span> <span class="fu">big_univLinReg</span>(G, y2[ind.gwas2], <span class="at">ind.train =</span> ind.gwas2,</span>
+<span id="cb9-4"><a href="genome-wide-association-study-gwas.html#cb9-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">covar.train =</span> covar[ind.gwas2, ], </span>
+<span id="cb9-5"><a href="genome-wide-association-study-gwas.html#cb9-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
+<span id="cb9-6"><a href="genome-wide-association-study-gwas.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas2, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="genome-wide-association-study-gwas.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="GWAS_files/figure-html/unnamed-chunk-5-1.png" width="95%" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
@@ -326,20 +312,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
