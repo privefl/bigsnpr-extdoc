@@ -357,11 +357,11 @@ Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version 
 <span id="cb22-3"><a href="polygenic-scores-pgs.html#cb22-3" aria-hidden="true" tabindex="-1"></a>pred_inf <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, beta_inf, <span class="at">ind.col =</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>)</span>
 <span id="cb22-4"><a href="polygenic-scores-pgs.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">AUCBoot</span>(pred_inf, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
 <pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.64440055 0.61318690 0.67438099 0.01558153</code></pre>
+#&gt; 0.64430818 0.61320476 0.67457960 0.01554124</code></pre>
 <p>For LDpred2(-grid), this is the grid we recommend to use:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="polygenic-scores-pgs.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LDpred2-grid</span></span>
-<span id="cb24-2"><a href="polygenic-scores-pgs.html#cb24-2" aria-hidden="true" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
-<pre><code>#&gt; [1] 0.0021 0.0147 0.0210 0.0294</code></pre>
+<span id="cb24-2"><a href="polygenic-scores-pgs.html#cb24-2" aria-hidden="true" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
+<pre><code>#&gt; [1] 0.0063 0.0147 0.0210 0.0294</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="polygenic-scores-pgs.html#cb26-1" aria-hidden="true" tabindex="-1"></a>(p_seq <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-5</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">21</span>), <span class="dv">2</span>))</span></code></pre></div>
 <pre><code>#&gt;  [1] 1.0e-05 1.8e-05 3.2e-05 5.6e-05 1.0e-04 1.8e-04 3.2e-04 5.6e-04
 #&gt;  [9] 1.0e-03 1.8e-03 3.2e-03 5.6e-03 1.0e-02 1.8e-02 3.2e-02 5.6e-02
@@ -433,7 +433,7 @@ Note that you should use only individuals from the validation set to compute the
 <span id="cb40-4"><a href="polygenic-scores-pgs.html#cb40-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">ncores =</span> NCORES)</span>
 <span id="cb40-5"><a href="polygenic-scores-pgs.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">AUCBoot</span>(final_pred_auto, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
 <pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.60696186 0.57584434 0.63815946 0.01593951</code></pre>
+#&gt; 0.61386719 0.58256844 0.64474945 0.01598587</code></pre>
 </div>
 <div id="lassosum2-grid-of-models" class="section level3" number="6.1.3">
 <h3><span class="header-section-number">6.1.3</span> lassosum2: grid of models</h3>
