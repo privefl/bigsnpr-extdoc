@@ -38,7 +38,7 @@ map <- dplyr::transmute(obj.bigsnp$map,
 We then download some GWAS summary statistics from a large consortium [@nikpay2015comprehensive; @buniello2019nhgri] and prepare them in the format required by LDpred2:
 ```{r}
 txt <- runonce::download_file(
-  "ftp://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/NikpayM_26343387_GCST003116/cad.add.160614.website.txt",
+  "http://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST003001-GCST004000/GCST003116/cad.add.160614.website.txt",
   dir = "tmp-data", fname = "sumstats_CAD.txt")
 writeLines(readLines(txt, n = 3))
 # One could also read other variables such as 'median_info', 'model',
