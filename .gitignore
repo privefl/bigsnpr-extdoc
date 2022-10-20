@@ -5,8 +5,7 @@
 _main*
 spelling.errors
 docs/*.md
-tmp-data
-*_files/
-*_cache/
+tmp-data/
+_bookdown_files/
 index.knit.md
 render*.rds

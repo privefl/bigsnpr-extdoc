@@ -54,10 +54,10 @@ For the exercises, we will use the data provided in @reed2015guide.
 
 This can be downloaded using 
 ```{r, warning=FALSE}
-unzip(runonce::download_file(
+zip <- runonce::download_file(
   "https://figshare.com/ndownloader/files/36597108",
-  dir = "tmp-data", fname = "GWAS_data.zip"), 
-  exdir = "tmp-data", overwrite = FALSE)
+  dir = "tmp-data", fname = "GWAS_data.zip")
+unzip(zip, exdir = "tmp-data", overwrite = FALSE)
 ```
 
 For some reason, this data is not ordered by chromosome and position; we can use PLINK to get an ordered version of this using
