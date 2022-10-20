@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Genome-Wide Association Study (GWAS) | bigsnpr &amp; bigstatsr</title>
+  <title>Page not found | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Genome-Wide Association Study (GWAS) | bigsnpr &amp; bigstatsr" />
+  <meta property="og:title" content="Page not found | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
   <meta property="og:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Genome-Wide Association Study (GWAS) | bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:title" content="Page not found | bigsnpr &amp; bigstatsr" />
   <meta name="twitter:site" content="@privefl" />
   <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="population-structure.html"/>
-<link rel="next" href="polygenic-scores-pgs.html"/>
+
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -210,7 +210,6 @@ div.csl-indent {
 <li class="chapter" data-level="6.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>6.1.3</b> lassosum2: grid of models</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -230,70 +229,19 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="genome-wide-association-study-gwas" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Genome-Wide Association Study (GWAS)<a href="genome-wide-association-study-gwas.html#genome-wide-association-study-gwas" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In {bigstatsr}, you can perform both standard linear and logistic regressions GWAS, using either <code>big_univLinReg()</code> or <code>big_univLogReg()</code>.
-Function <code>big_univLinReg()</code> should be very fast.</p>
-<div class="infobox info">
-<p>This type of association, where each variable is considered independently, can be performed for any type of FBM (i.e. it does not have to be a genotype matrix). This is why these two functions are in package {bigstatsr}, and not {bigsnpr}.</p>
-</div>
-<div id="exo-gwas" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Exercise: GWAS<a href="genome-wide-association-study-gwas.html#exo-gwas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a> and in <a href="population-structure.html#exo-pca">4.2</a>.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="genome-wide-association-study-gwas.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
-<pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="genome-wide-association-study-gwas.html#cb46-1" aria-hidden="true" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb46-2"><a href="genome-wide-association-study-gwas.html#cb46-2" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb46-3"><a href="genome-wide-association-study-gwas.html#cb46-3" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">readRDS</span>(<span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>))</span></code></pre></div>
-<p>The clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (<code>hdl</code>), low-density lipoprotein (LDL)-cholesterol (<code>ldl</code>), triglycerides (<code>tg</code>) and coronary artery disease status (<code>CAD</code>).</p>
-<p>For the set of covariates, we will use sex, age, and the first 6 PCs:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="genome-wide-association-study-gwas.html#cb47-1" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.matrix</span>(obj.bigsnp<span class="sc">$</span>fam[<span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>)]), PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>])</span></code></pre></div>
-<p>Let us perform a case-control GWAS for CAD:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="genome-wide-association-study-gwas.html#cb48-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD</span>
-<span id="cb48-2"><a href="genome-wide-association-study-gwas.html#cb48-2" aria-hidden="true" tabindex="-1"></a>ind.gwas <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
-<span id="cb48-3"><a href="genome-wide-association-study-gwas.html#cb48-3" aria-hidden="true" tabindex="-1"></a>gwas <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
-<span id="cb48-4"><a href="genome-wide-association-study-gwas.html#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">big_univLogReg</span>(G, y[ind.gwas], <span class="at">ind.train =</span> ind.gwas,</span>
-<span id="cb48-5"><a href="genome-wide-association-study-gwas.html#cb48-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">covar.train =</span> covar[ind.gwas, ], </span>
-<span id="cb48-6"><a href="genome-wide-association-study-gwas.html#cb48-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
-<span id="cb48-7"><a href="genome-wide-association-study-gwas.html#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/GWAS_CAD.rds&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt;    user  system elapsed 
-#&gt;    0.14    0.04  135.81</code></pre>
-<p>This takes two minutes with 4 cores on my laptop. Note that <code>big_univLinReg()</code> takes one second, and should give very similar p-values, if you just need something quick.</p>
-<div class="infobox caution">
-<p>You probably should not account for other information such as cholesterol as it is some heritable covariates <span class="citation">(<a href="#ref-aschard2015adjusting" role="doc-biblioref">Aschard, Vilhjálmsson, Joshi, Price, &amp; Kraft, 2015</a>)</span>.</p>
-</div>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="genome-wide-association-study-gwas.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gwas)</span></code></pre></div>
-<p><img src="GWAS_files/figure-html/unnamed-chunk-4-1.png" width="95%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="genome-wide-association-study-gwas.html#cb51-1" aria-hidden="true" tabindex="-1"></a>CHR <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>map<span class="sc">$</span>chromosome</span>
-<span id="cb51-2"><a href="genome-wide-association-study-gwas.html#cb51-2" aria-hidden="true" tabindex="-1"></a>POS <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>map<span class="sc">$</span>physical.pos</span>
-<span id="cb51-3"><a href="genome-wide-association-study-gwas.html#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
-<span id="cb51-4"><a href="genome-wide-association-study-gwas.html#cb51-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="GWAS_files/figure-html/unnamed-chunk-4-2.png" width="95%" style="display: block; margin: auto;" />
-Here, nothing is genome-wide significant because of the small sample size. You can compare peaks with a GWAS for CAD with much larger sample size at <a href="https://pheweb.org/UKB-SAIGE/pheno/411.4" class="uri">https://pheweb.org/UKB-SAIGE/pheno/411.4</a>.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="genome-wide-association-study-gwas.html#cb52-1" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>hdl</span>
-<span id="cb52-2"><a href="genome-wide-association-study-gwas.html#cb52-2" aria-hidden="true" tabindex="-1"></a>ind.gwas2 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y2) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
-<span id="cb52-3"><a href="genome-wide-association-study-gwas.html#cb52-3" aria-hidden="true" tabindex="-1"></a>gwas2 <span class="ot">&lt;-</span> <span class="fu">big_univLinReg</span>(G, y2[ind.gwas2], <span class="at">ind.train =</span> ind.gwas2,</span>
-<span id="cb52-4"><a href="genome-wide-association-study-gwas.html#cb52-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">covar.train =</span> covar[ind.gwas2, ], </span>
-<span id="cb52-5"><a href="genome-wide-association-study-gwas.html#cb52-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
-<span id="cb52-6"><a href="genome-wide-association-study-gwas.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas2, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
-<span id="cb52-7"><a href="genome-wide-association-study-gwas.html#cb52-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="GWAS_files/figure-html/unnamed-chunk-5-1.png" width="95%" style="display: block; margin: auto;" /></p>
-
-</div>
-</div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-aschard2015adjusting" class="csl-entry">
-Aschard, H., Vilhjálmsson, B.J., Joshi, A.D., Price, A.L., &amp; Kraft, P. (2015). Adjusting for heritable covariates can bias effect estimates in genome-wide association studies. <em>The American Journal of Human Genetics</em>, <em>96</em>, 329–339.
-</div>
+<div id="page-not-found" class="section level1">
+<h1>Page not found</h1>
+<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
+<p>You may want to try searching to find the page's new location, or use
+the table of contents to find the page you are looking for.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="population-structure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="polygenic-scores-pgs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

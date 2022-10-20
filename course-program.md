@@ -10,5 +10,5 @@
 
 What will *NOT* be discussed:
 
-- rare variant association
+- Rare variant association
 - Mendelian randomization

@@ -31,3 +31,13 @@ pre code {
 .info {
   background-image: url("images/information-icon.png");
 }
+
+/* CITATIONS */
+
+div.csl-entry:before {
+    content: "-";
+}
+
+div.csl-entry {
+    margin-bottom: 0.5em;
+}
