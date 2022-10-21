@@ -3,6 +3,9 @@ bookdown::gitbook:
     in_header: [google_analytics.html]
   css: style.css
   config:
+    sharing:
+      facebook: false
+      twitter: false
     toc:
       before: |
         <li><a href="./index.html">bigsnpr & bigstatsr</a></li>

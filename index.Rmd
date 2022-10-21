@@ -14,7 +14,6 @@ twitter-handle: "privefl"
 github-repo: "privefl/bigsnpr-extdoc"
 url: 'https\://privefl.github.io/bigsnpr-extdoc/'
 cover-image: "images/bigstatsr.png"
-output: html_document
 ---
 
 
