@@ -1,0 +1,118 @@
+# Working with an FBM
+
+## Similar accessor as R matrices
+
+```{r setup, include=FALSE}
+WORDS_TO_IGNORE <- c("Rcpp")
+source("knitr-options.R")
+source("spelling-check.R")
+rm(X); gc(); file.remove(c("test.bk", "test.rds"))
+```
+
+```{r}
+library(bigstatsr)
+X <- FBM(2, 5, init = 1:10, backingfile = "test")$save()
+```
+
+```{r}
+X$backingfile                ## the file where the data is actually stored
+X <- big_attach("test.rds")  ## can get the FBM from any R session
+X[, 1]  ## ok
+X[1, ]  ## bad
+X[]     ## super bad
+```
+
+You can access the whole FBM as an R matrix in memory using `X[]`.
+However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
+Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.
+
+
+## Split-(par)Apply-Combine Strategy
+
+```{r}
+colSums(X[])  ## super bad
+```
+
+```{r, out.width='40%', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/privefl/R-presentation/master/caution.jpg")
+```
+
+***
+
+How to apply standard R functions to big matrices (in parallel); implemented in `big_apply()`.
+
+```{r, out.width='90%', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/privefl/R-presentation/master/split-apply-combine.svg")
+```
+
+Learn more with [this tutorial on `big_apply()`](https://privefl.github.io/bigstatsr/articles/big-apply.html).
+
+*Exercise*: compute the sum of each column using `big_apply()`.
+
+
+## Similar accessor as Rcpp matrices
+
+```{Rcpp, eval=FALSE}
+// [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::depends(bigstatsr, rmio)]]
+#include <bigstatsr/BMAcc.h>
+
+// [[Rcpp::export]]
+NumericVector bigcolsums(Environment BM) {
+  
+  XPtr<FBM> xpBM = BM["address"];   // get the external pointer
+  BMAcc<double> macc(xpBM);         // create an accessor to the data
+  
+  size_t n = macc.nrow();           // similar code as for an Rcpp::NumericMatrix
+  size_t m = macc.ncol();           // similar code as for an Rcpp::NumericMatrix
+  
+  NumericVector res(m);
+  
+  for (size_t j = 0; j < m; j++) 
+    for (size_t i = 0; i < n; i++)
+      res[j] += macc(i, j);         // similar code as for an Rcpp::NumericMatrix
+  
+  return res;
+}
+```
+
+For a subset of the data:
+
+```{Rcpp, eval=FALSE}
+// [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::depends(bigstatsr, rmio)]]
+#include <bigstatsr/BMAcc.h>
+
+// [[Rcpp::export]]
+NumericVector bigcolsums2(Environment BM,
+                          const IntegerVector& rowInd,
+                          const IntegerVector& colInd) {
+  
+  XPtr<FBM> xpBM = BM["address"];   
+  // accessor to a sub-view of the data -> the only line of code that should change
+  SubBMAcc<double> macc(xpBM, rowInd, colInd, 1);  
+  
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
+  
+  NumericVector res(m);
+  
+  for (size_t j = 0; j < m; j++) 
+    for (size_t i = 0; i < n; i++)
+      res[j] += macc(i, j); 
+  
+  return res;
+}
+```
+
+## Some summary functions are already implemented
+
+```{r}
+big_colstats(X)  # sum and var (for each column)
+big_scale()(X)   # mean and sd (for each column)
+```
+
+
+```{r, include=FALSE}
+rm(X); gc(); file.remove(c("test.bk", "test.rds"))
+```

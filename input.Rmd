@@ -22,20 +22,15 @@ How memory-mapping works:
 - you can access many columns like that, until you do not have enough memory anymore
 - some space is freed automatically so that new columns can be accessed into memory
 - everything is seamlessly managed by the operating system (OS)
+- it is also very convenient for parallelism as data is shared between processes
 
 All the elements of an FBM have the same type; supported types are:
 
  - `"double"` (the default, double precision -- 64 bits)
  - `"float"` (single precision -- 32 bits)
- - `"integer"` (signed, so between $\text{-}2^{31}$ and $2^{31} - 1$)
+ - `"integer"` (signed, so between $\text{-}2^{31}$ and $2^{31} \text{ - } 1$)
  - `"unsigned short"`: can store integer values from $0$ to $65535$
  - `"raw"` or `"unsigned char"`: can store integer values from $0$ to $255$. It is the basis for class *FBM.code256* in order to access 256 arbitrary different numeric values. It is used in package {bigsnpr} (see below).
- 
-:::: {.infobox .info}
-Standard matrix accessors are implemented for FBMs, so you can e.g. access the first column of `X` using `X[, 1]`. You can access the whole FBM as an R matrix in memory using `X[]`.
-However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
-Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk. [TODO: MAKE NEW CHAPTER ON THIS]
-::::
 
 
 ## In {bigsnpr}
@@ -58,7 +53,7 @@ Since v1.0, package {bigsnpr} also provides functions for directly working on be
 If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only *FBM.code256*. We have started talking about this in [this issue](https://github.com/privefl/bigsnpr/issues/185).
 ::::
 
-## Getting a FBM or bigSNP object
+## Getting an FBM or bigSNP object
 
 - The easiest way to get an FBM is to use the constructor function `FBM()` or the converter `as_FBM()`.
 
