@@ -184,7 +184,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigstatsr"><i class="fa fa-check"></i><b>2.1</b> In {bigstatsr}</a></li>
 <li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> In {bigsnpr}</a></li>
-<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-an-fbm-or-bigsnp-object"><i class="fa fa-check"></i><b>2.3</b> Getting an FBM or bigSNP object</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-FBM"><i class="fa fa-check"></i><b>2.3</b> Getting an FBM or bigSNP object</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html"><i class="fa fa-check"></i><b>3</b> Working with an FBM</a>
 <ul>
@@ -271,7 +271,7 @@ div.csl-indent {
 <li><code>$map</code>: A <code>data.frame</code> with some information on the genetic variants.</li>
 </ul>
 <p>The code used in class <em>FBM.code256</em> for imputed data is e.g. </p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="inputs-and-formats.html#cb3-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="inputs-and-formats.html#cb1-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
 <pre><code>#&gt;   [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
 #&gt;  [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
 #&gt;  [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
@@ -297,8 +297,8 @@ div.csl-indent {
 <p>If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only <em>FBM.code256</em>. We have started talking about this in <a href="https://github.com/privefl/bigsnpr/issues/185">this issue</a>.</p>
 </div>
 </div>
-<div id="getting-an-fbm-or-bigsnp-object" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Getting an FBM or bigSNP object<a href="inputs-and-formats.html#getting-an-fbm-or-bigsnp-object" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="getting-FBM" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Getting an FBM or bigSNP object<a href="inputs-and-formats.html#getting-FBM" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>The easiest way to get an FBM is to use the constructor function <code>FBM()</code> or the converter <code>as_FBM()</code>.</p></li>
 <li><p>To read an FBM from a large text file, you can use function <code>big_read()</code> (see <a href="https://privefl.github.io/bigstatsr/articles/read-FBM-from-file.html">this vignette</a>).</p></li>

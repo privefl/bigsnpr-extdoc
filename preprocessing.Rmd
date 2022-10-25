@@ -6,27 +6,25 @@ editor_options:
 # Preprocessing
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("XGBoost")
+WORDS_TO_IGNORE <- c("monozygotic", "XGBoost")
 source("knitr-options.R")
 source("spelling-check.R")
 library(bigsnpr)
 ```
 
-In this section, I am including conversion, quality control and imputation.
+In this section, I talk about conversion, quality control and imputation. Conversion is also discussed in \@ref(getting-FBM).
 
 ## Conversion and quality control of PLINK files
 
-PLINK is very efficient for conversion and quality control of multiple formats, so I have decided just using it.
+PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from `r icon::fa_r_project()`:
 
-In {bigsnpr}, I provide some wrappers to PLINK for ease of use:
-
-- `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0.
+- `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0 [@chang2015second].
 
 - `snp_plinkQC()` for quality control (QC) and conversion to bed/bim/fam.
 
-- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files.
+- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator [@manichaikul2010robust]. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files. Note that monozygotic twins or identical samples have a KING coefficient of $0.5$, not $1$; $0.25$ = siblings and parents; $2^{-3}$ = second-degree relatives (e.g. grandparents, uncles); $2^{-4}$ = third-degree relatives (e.g. cousins). You can use a threshold of $2^{-4.5} \approx 0.0442$ to remove all these related individuals (one from each pair).
 	
-- `snp_plinkIBDQC()` for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments.
+- `snp_plinkIBDQC()` for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments. I prefer the KING one.
 	
 - `snp_plinkRmSamples()` for producing new PLINK files after having removed some individuals.
 
@@ -41,11 +39,11 @@ In {bigsnpr}, I provide some wrappers to PLINK for ease of use:
 
 ## Imputation
 
-Note that most functions from {bigstatsr} and {bigsnpr} don't handle missing values.
+Note that most functions from {bigstatsr} and {bigsnpr} do NOT handle missing values.
 
-Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. as explained in [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
+Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. the code from [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
-In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use `snp_fastImpute()` that uses XGBoost models to impute genotyped data (slower but still fast enough, described in @prive2017efficient).
+In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient; @prive2020efficient].
 
 
 ## Exercise: preprocessing {#exo-preprocessing}
@@ -64,9 +62,6 @@ For some reason, this data is not ordered by chromosome and position; we can use
 ```{r}
 library(bigsnpr)
 plink <- download_plink("tmp-data")
-```
-
-```{r}
 system(glue::glue(
   "{plink} --bfile tmp-data/GWAS_data",
   " --make-bed --out tmp-data/GWAS_data_sorted"
@@ -94,13 +89,13 @@ We can store some extra information on the individuals (e.g. some phenotypes):
 clinical <- bigreadr::fread2("tmp-data/GWAS_clinical.csv")
 # Get the same order as for the genotypes
 # (to match over multiple columns, use `vctrs::vec_match()`)
-pheno <- clinical[match(obj.bigsnp$fam$family.ID, clinical$FamID), ]
-# Some verif
+ord <- match(obj.bigsnp$fam$family.ID, clinical$FamID)
+pheno <- clinical[ord, ]
+# Quick check
 stopifnot(all.equal(obj.bigsnp$fam$sex, pheno$sex))
 # Update the $fam component
 obj.bigsnp$fam <- cbind(obj.bigsnp$fam, pheno[-c(1, 3)])
 ```
-
 
 Recall that this data contains some missing values; you can get some counts per variant using
 ```{r}
@@ -117,15 +112,15 @@ big_counts(G2, ind.col = 1:8)
 big_counts(G, ind.col = 1:8)
 ```
 
-`G` still has missing values, but `G2` does not. Note that both are using the same data, the difference is that they using a different code to decode the underlying data:
+`G` still has missing values, but `G2` does not. Note that both use the same underlying data (the same binary file on disk), the difference is that they use a different code to decode the underlying data:
 ```{r}
 G$code256
 G2$code256
-obj.bigsnp$genotypes <- G2
 ```
 
-To always use `G2` (with the new `code256`) and the extended `obj.bigsnp$fam`, you need to re-save `obj.bigsnp` using
+To always use `G2` (with the new `code256`) and the extended `obj.bigsnp$fam`, you need to save `obj.bigsnp` again using
 ```{r}
+obj.bigsnp$genotypes <- G2
 snp_save(obj.bigsnp)
 ```
 

@@ -53,7 +53,7 @@ Since v1.0, package {bigsnpr} also provides functions for directly working on be
 If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only *FBM.code256*. We have started talking about this in [this issue](https://github.com/privefl/bigsnpr/issues/185).
 ::::
 
-## Getting an FBM or bigSNP object
+## Getting an FBM or bigSNP object {#getting-FBM}
 
 - The easiest way to get an FBM is to use the constructor function `FBM()` or the converter `as_FBM()`.
 

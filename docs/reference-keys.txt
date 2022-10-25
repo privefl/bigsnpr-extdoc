@@ -26,3 +26,4 @@ exercises-ldpred2-and-lassosum2
 preparing-the-data
 ldpred2
 lassosum2-grid-of-models
+getting-FBM

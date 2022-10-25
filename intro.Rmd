@@ -10,9 +10,9 @@ source("spelling-check.R")
 
 The main motivation was for me to be able to run all my analyses within `r icon::fa_r_project()`.
 I was frustrated by having to use all these different software, with different input formats, and requiring text files for parameters.
-This made it hard for me to build a chain of analyses, to perform some exploratory analyses, or to use familiar  `r icon::fa_r_project()` packages.
+This made it hard for me to build a chain of analyses, to perform some exploratory analyses, or to use familiar `r icon::fa_r_project()` packages.
 Also, I wanted to develop new methods, which seemed very hard to do without using a simple matrix-like format.
-Thus I started developing  `r icon::fa_r_project()` package {bigsnpr} at the beginning of my thesis.
+Thus I started developing `r icon::fa_r_project()` package {bigsnpr} at the beginning of my thesis.
 
 At some point, I realized that many functions (to perform e.g. [GWAS](https://en.wikipedia.org/wiki/Genome-wide_association_study), [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis), summary statistics) were not really specific to genotype data.
 Indeed, a TWAS or an EWAS are not conceptually very different from a GWAS; one can also perform PCA on e.g. DNA methylation data.
