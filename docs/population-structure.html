@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Population structure | bigsnpr &amp; bigstatsr</title>
+  <title>Chapter 5 Population structure | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Population structure | bigsnpr &amp; bigstatsr" />
+  <meta property="og:title" content="Chapter 5 Population structure | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
   <meta property="og:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Population structure | bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:title" content="Chapter 5 Population structure | bigsnpr &amp; bigstatsr" />
   <meta name="twitter:site" content="@privefl" />
   <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-10-21" />
+<meta name="date" content="2022-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,30 +184,37 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigstatsr"><i class="fa fa-check"></i><b>2.1</b> In {bigstatsr}</a></li>
 <li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#in-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> In {bigsnpr}</a></li>
-<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-a-fbm-or-bigsnp-object"><i class="fa fa-check"></i><b>2.3</b> Getting a FBM or bigSNP object</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-an-fbm-or-bigsnp-object"><i class="fa fa-check"></i><b>2.3</b> Getting an FBM or bigSNP object</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
+<li class="chapter" data-level="3" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html"><i class="fa fa-check"></i><b>3</b> Working with an FBM</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
-<li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
-<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Exercise: preprocessing</a></li>
+<li class="chapter" data-level="3.1" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>3.1</b> Similar accessor as R matrices</a></li>
+<li class="chapter" data-level="3.2" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>3.2</b> Split-(par)Apply-Combine Strategy</a></li>
+<li class="chapter" data-level="3.3" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>3.3</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="3.4" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>3.4</b> Some summary functions are already implemented</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>4</b> Population structure</a>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> Preprocessing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis (PCA)</a></li>
-<li class="chapter" data-level="4.2" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>4.2</b> Exercise: population structure</a></li>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>4.2</b> Imputation</a></li>
+<li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>4.3</b> Exercise: preprocessing</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>5</b> Genome-Wide Association Study (GWAS)</a>
+<li class="chapter" data-level="5" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>5</b> Population structure</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Exercise: GWAS</a></li>
+<li class="chapter" data-level="5.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>5.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="5.2" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>5.2</b> Exercise: population structure</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html"><i class="fa fa-check"></i><b>6</b> Polygenic scores (PGS)</a>
+<li class="chapter" data-level="6" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>6</b> Genome-Wide Association Study (GWAS)</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#exercises-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>6.1</b> Exercises: LDpred2 and lassosum2</a>
+<li class="chapter" data-level="6.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>6.1</b> Exercise: GWAS</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html"><i class="fa fa-check"></i><b>7</b> Polygenic scores (PGS)</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#preparing-the-data"><i class="fa fa-check"></i><b>6.1.1</b> Preparing the data</a></li>
-<li class="chapter" data-level="6.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>6.1.2</b> LDpred2</a></li>
-<li class="chapter" data-level="6.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>6.1.3</b> lassosum2: grid of models</a></li>
+<li class="chapter" data-level="7.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#exercises-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>7.1</b> Exercises: LDpred2 and lassosum2</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#preparing-the-data"><i class="fa fa-check"></i><b>7.1.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>7.1.2</b> LDpred2</a></li>
+<li class="chapter" data-level="7.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>7.1.3</b> lassosum2: grid of models</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -230,10 +237,10 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="population-structure" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Population structure<a href="population-structure.html#population-structure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="principal-component-analysis-pca" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Principal Component Analysis (PCA)<a href="population-structure.html#principal-component-analysis-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="population-structure" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Population structure<a href="population-structure.html#population-structure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="principal-component-analysis-pca" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Principal Component Analysis (PCA)<a href="population-structure.html#principal-component-analysis-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>PCA on the genotype matrix can be used to capture population structure.
 PCA can capture different kinds of structure <span class="citation">(<a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, McGrath, &amp; Vilhjálmsson, 2020</a>)</span>:</p>
 <ul>
@@ -247,58 +254,58 @@ In <span class="citation"><a href="#ref-prive2020efficient" role="doc-biblioref"
 In <span class="citation"><a href="#ref-prive2021high" role="doc-biblioref">Privé et al.</a> (<a href="#ref-prive2021high" role="doc-biblioref">2022</a>)</span>, I have shown how to use PCA for ancestry inference.</p>
 <p>There are many steps to compute properly a PCA analysis, which I will try to detail in the following exercise.</p>
 </div>
-<div id="exo-pca" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Exercise: population structure<a href="population-structure.html#exo-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exo-pca" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Exercise: population structure<a href="population-structure.html#exo-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>You can find another example in <a href="https://privefl.github.io/bigsnpr/articles/bedpca.html">this vignette</a>.</strong></p>
-<p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a>.</p>
+<p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">4.3</a>.</p>
 <p>First, let’s get an idea of the relatedness in the data using</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="population-structure.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
-<span id="cb31-2"><a href="population-structure.html#cb31-2" aria-hidden="true" tabindex="-1"></a>plink2 <span class="ot">&lt;-</span> <span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
-<span id="cb31-3"><a href="population-structure.html#cb31-3" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">snp_plinkKINGQC</span>(plink2, <span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>,</span>
-<span id="cb31-4"><a href="population-structure.html#cb31-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">thr.king =</span> <span class="dv">2</span><span class="sc">^-</span><span class="fl">4.5</span>, <span class="at">make.bed =</span> <span class="cn">FALSE</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="population-structure.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log2</span>(rel<span class="sc">$</span>KINSHIP), <span class="st">&quot;FD&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="population-structure.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb48-2"><a href="population-structure.html#cb48-2" aria-hidden="true" tabindex="-1"></a>plink2 <span class="ot">&lt;-</span> <span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb48-3"><a href="population-structure.html#cb48-3" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">snp_plinkKINGQC</span>(plink2, <span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>,</span>
+<span id="cb48-4"><a href="population-structure.html#cb48-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">thr.king =</span> <span class="dv">2</span><span class="sc">^-</span><span class="fl">4.5</span>, <span class="at">make.bed =</span> <span class="cn">FALSE</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="population-structure.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log2</span>(rel<span class="sc">$</span>KINSHIP), <span class="st">&quot;FD&quot;</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <div class="infobox info">
 <p>When computing relatedness with KING, it may be needed to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank <span class="citation">(<a href="#ref-bycroft2018uk" role="doc-biblioref">Bycroft et al., 2018</a>)</span>. [TODO: also export my code for iPSYCH]</p>
 </div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="population-structure.html#cb33-1" aria-hidden="true" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb33-2"><a href="population-structure.html#cb33-2" aria-hidden="true" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
-<span id="cb33-3"><a href="population-structure.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_autoSVD</span>(obj.bed, <span class="at">k =</span> <span class="dv">20</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
-<span id="cb33-4"><a href="population-structure.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="population-structure.html#cb50-1" aria-hidden="true" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb50-2"><a href="population-structure.html#cb50-2" aria-hidden="true" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
+<span id="cb50-3"><a href="population-structure.html#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_autoSVD</span>(obj.bed, <span class="at">k =</span> <span class="dv">20</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
+<span id="cb50-4"><a href="population-structure.html#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;    user  system elapsed 
 #&gt;   19.50    1.03  158.55</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="population-structure.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="population-structure.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="population-structure.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;scores&quot;</span>, <span class="at">scores =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">coeff =</span> <span class="fl">0.6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="population-structure.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;scores&quot;</span>, <span class="at">scores =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">coeff =</span> <span class="fl">0.6</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-4-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>There is a bit of population structure (it seems at least 6 PCs). It would be better if could get a better sense of the ancestry of these individuals; let us project this data to the 1000G data and infer ancestry as described in <span class="citation"><a href="#ref-prive2021high" role="doc-biblioref">Privé et al.</a> (<a href="#ref-prive2021high" role="doc-biblioref">2022</a>)</span>.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="population-structure.html#cb37-1" aria-hidden="true" tabindex="-1"></a>bed.ref <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="fu">download_1000G</span>(<span class="st">&quot;tmp-data&quot;</span>))</span>
-<span id="cb37-2"><a href="population-structure.html#cb37-2" aria-hidden="true" tabindex="-1"></a>proj <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
-<span id="cb37-3"><a href="population-structure.html#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_projectPCA</span>(bed.ref, obj.bed, <span class="at">k =</span> <span class="dv">25</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
-<span id="cb37-4"><a href="population-structure.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/proj-to-1000G.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="population-structure.html#cb54-1" aria-hidden="true" tabindex="-1"></a>bed.ref <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="fu">download_1000G</span>(<span class="st">&quot;tmp-data&quot;</span>))</span>
+<span id="cb54-2"><a href="population-structure.html#cb54-2" aria-hidden="true" tabindex="-1"></a>proj <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
+<span id="cb54-3"><a href="population-structure.html#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_projectPCA</span>(bed.ref, obj.bed, <span class="at">k =</span> <span class="dv">25</span>, <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
+<span id="cb54-4"><a href="population-structure.html#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/proj-to-1000G.rds&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;    user  system elapsed 
 #&gt;   43.82    1.42  205.60</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="population-structure.html#cb39-1" aria-hidden="true" tabindex="-1"></a>PC.ref <span class="ot">&lt;-</span> <span class="fu">predict</span>(proj<span class="sc">$</span>obj.svd.ref)</span>
-<span id="cb39-2"><a href="population-structure.html#cb39-2" aria-hidden="true" tabindex="-1"></a>proj2 <span class="ot">&lt;-</span> proj<span class="sc">$</span>OADP_proj</span>
-<span id="cb39-3"><a href="population-structure.html#cb39-3" aria-hidden="true" tabindex="-1"></a>fam2 <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(<span class="fu">sub_bed</span>(bed.ref<span class="sc">$</span>bedfile, <span class="st">&quot;.fam2&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="population-structure.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb40-2"><a href="population-structure.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R&quot;</span>)</span>
-<span id="cb40-3"><a href="population-structure.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="cf">function</span>(k) {</span>
-<span id="cb40-4"><a href="population-structure.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb40-5"><a href="population-structure.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
-<span id="cb40-6"><a href="population-structure.html#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC.ref[, k1], PC.ref[, k2], <span class="at">color =</span> fam2<span class="sc">$</span><span class="st">`</span><span class="at">Super Population</span><span class="st">`</span>, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb40-7"><a href="population-structure.html#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(proj2[, k1], proj2[, k2]), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb40-8"><a href="population-structure.html#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb40-9"><a href="population-structure.html#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Ref Pop&quot;</span>) <span class="sc">+</span></span>
-<span id="cb40-10"><a href="population-structure.html#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
-<span id="cb40-11"><a href="population-structure.html#cb40-11" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="population-structure.html#cb56-1" aria-hidden="true" tabindex="-1"></a>PC.ref <span class="ot">&lt;-</span> <span class="fu">predict</span>(proj<span class="sc">$</span>obj.svd.ref)</span>
+<span id="cb56-2"><a href="population-structure.html#cb56-2" aria-hidden="true" tabindex="-1"></a>proj2 <span class="ot">&lt;-</span> proj<span class="sc">$</span>OADP_proj</span>
+<span id="cb56-3"><a href="population-structure.html#cb56-3" aria-hidden="true" tabindex="-1"></a>fam2 <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(<span class="fu">sub_bed</span>(bed.ref<span class="sc">$</span>bedfile, <span class="st">&quot;.fam2&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="population-structure.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb57-2"><a href="population-structure.html#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R&quot;</span>)</span>
+<span id="cb57-3"><a href="population-structure.html#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb57-4"><a href="population-structure.html#cb57-4" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb57-5"><a href="population-structure.html#cb57-5" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
+<span id="cb57-6"><a href="population-structure.html#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC.ref[, k1], PC.ref[, k2], <span class="at">color =</span> fam2<span class="sc">$</span><span class="st">`</span><span class="at">Super Population</span><span class="st">`</span>, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb57-7"><a href="population-structure.html#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(proj2[, k1], proj2[, k2]), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb57-8"><a href="population-structure.html#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb57-9"><a href="population-structure.html#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Ref Pop&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-10"><a href="population-structure.html#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
+<span id="cb57-11"><a href="population-structure.html#cb57-11" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">3</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>These are clearly mostly European individuals.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="population-structure.html#cb41-1" aria-hidden="true" tabindex="-1"></a>ldist <span class="ot">&lt;-</span> <span class="fu">log</span>(bigutilsr<span class="sc">::</span><span class="fu">dist_ogk</span>(proj2))</span>
-<span id="cb41-2"><a href="population-structure.html#cb41-2" aria-hidden="true" tabindex="-1"></a>lims <span class="ot">&lt;-</span> bigutilsr<span class="sc">::</span><span class="fu">hist_out</span>(ldist)<span class="sc">$</span>lim</span>
-<span id="cb41-3"><a href="population-structure.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ldist, <span class="st">&quot;FD&quot;</span>); <span class="fu">abline</span>(<span class="at">v =</span> lims, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="population-structure.html#cb58-1" aria-hidden="true" tabindex="-1"></a>ldist <span class="ot">&lt;-</span> <span class="fu">log</span>(bigutilsr<span class="sc">::</span><span class="fu">dist_ogk</span>(proj2))</span>
+<span id="cb58-2"><a href="population-structure.html#cb58-2" aria-hidden="true" tabindex="-1"></a>lims <span class="ot">&lt;-</span> bigutilsr<span class="sc">::</span><span class="fu">hist_out</span>(ldist)<span class="sc">$</span>lim</span>
+<span id="cb58-3"><a href="population-structure.html#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ldist, <span class="st">&quot;FD&quot;</span>); <span class="fu">abline</span>(<span class="at">v =</span> lims, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) </span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="population-structure.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ldist <span class="sc">&gt;</span> lims[<span class="dv">2</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="population-structure.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ldist <span class="sc">&gt;</span> lims[<span class="dv">2</span>])</span></code></pre></div>
 <pre><code>#&gt; [1] 4</code></pre>
 <p>There are 4 outlier individuals that you could remove.</p>
 

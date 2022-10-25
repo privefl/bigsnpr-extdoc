@@ -6,7 +6,12 @@ correct-spellings
 inputs-and-formats
 in-bigstatsr
 in-bigsnpr
-getting-a-fbm-or-bigsnp-object
+getting-an-fbm-or-bigsnp-object
+working-with-an-fbm
+similar-accessor-as-r-matrices
+split-parapply-combine-strategy
+similar-accessor-as-rcpp-matrices
+some-summary-functions-are-already-implemented
 preprocessing
 conversion-and-quality-control-of-plink-files
 imputation
