@@ -8,22 +8,26 @@ source("spelling-check.R")
 ```
 
 In {bigstatsr}, you can perform both standard linear and logistic regressions GWAS, using either `big_univLinReg()` or `big_univLogReg()`.
-Function `big_univLinReg()` should be very fast.
+Function `big_univLinReg()` should be very fast, while `big_univLogReg()` is slower.
 
 :::: {.infobox .info}
 This type of association, where each variable is considered independently, can be performed for any type of FBM (i.e. it does not have to be a genotype matrix). This is why these two functions are in package {bigstatsr}, and not {bigsnpr}.
 ::::
 
 
-## Exercise: GWAS {#exo-gwas}
+## Example {#exo-gwas}
 
-Let us reuse the data prepared in \@ref(exo-preprocessing) and in \@ref(exo-pca).
+Let us reuse the data prepared in \@ref(exo-preprocessing) and the PCs in \@ref(exo-pca).
 
 ```{r}
 library(bigsnpr)
 obj.bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
-G <- obj.bigsnp$genotypes
-PC <- predict(readRDS("tmp-data/PCA_GWAS_data.rds"))
+```
+
+
+```{r}
+obj.svd <- readRDS("tmp-data/PCA_GWAS_data.rds")
+PC <- predict(obj.svd)
 ```
 
 The clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (`hdl`), low-density lipoprotein (LDL)-cholesterol (`ldl`), triglycerides (`tg`) and coronary artery disease status (`CAD`).
@@ -34,22 +38,24 @@ For the set of covariates, we will use sex, age, and the first 6 PCs:
 covar <- cbind(as.matrix(obj.bigsnp$fam[c("sex", "age")]), PC[, 1:6])
 ```
 
+:::: {.infobox .caution}
+You probably should not account for other information such as cholesterol as they are heritable covariates [@aschard2015adjusting].
+::::
+
 Let us perform a case-control GWAS for CAD:
 
 ```{r}
+G <- obj.bigsnp$genotypes
 y <- obj.bigsnp$fam$CAD
 ind.gwas <- which(!is.na(y) & complete.cases(covar))
 gwas <- runonce::save_run(
   big_univLogReg(G, y[ind.gwas], ind.train = ind.gwas,
-                       covar.train = covar[ind.gwas, ], 
-                       ncores = nb_cores()),
+                 covar.train = covar[ind.gwas, ], ncores = nb_cores()),
   file = "tmp-data/GWAS_CAD.rds")
 ```
 
-This takes two minutes with 4 cores on my laptop. Note that `big_univLinReg()` takes one second, and should give very similar p-values, if you just need something quick.
-
-:::: {.infobox .caution}
-You probably should not account for other information such as cholesterol as it is some heritable covariates [@aschard2015adjusting].
+:::: {.infobox .info}
+This takes about two minutes with 4 cores on my laptop. Note that `big_univLinReg()` takes two seconds only, and should give very similar p-values, if you just need something quick.
 ::::
 
 ```{r, out.width="95%", fig.asp=0.5, fig.width=10, dev='png'}
@@ -65,9 +71,9 @@ Here, nothing is genome-wide significant because of the small sample size. You c
 y2 <- obj.bigsnp$fam$hdl
 ind.gwas2 <- which(!is.na(y2) & complete.cases(covar))
 gwas2 <- big_univLinReg(G, y2[ind.gwas2], ind.train = ind.gwas2,
-                        covar.train = covar[ind.gwas2, ], 
-                        ncores = nb_cores())
+                        covar.train = covar[ind.gwas2, ], ncores = nb_cores())
 snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
   ggplot2::geom_hline(yintercept = -log10(5e-8), linetype = 2, color = "red")
 ```
 
+[TODO: EXPORT AND LINK TO LARGE GWAS ON CLUSTERS OR MULTIPLE PHENO]
