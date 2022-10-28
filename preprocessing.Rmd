@@ -46,14 +46,14 @@ Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by block
 In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient; @prive2020efficient].
 
 
-## Exercise: preprocessing {#exo-preprocessing}
+## Example {#exo-preprocessing}
 
 For the exercises, we will use the data provided in @reed2015guide.
 
 This can be downloaded using 
 ```{r, warning=FALSE}
 zip <- runonce::download_file(
-  "https://figshare.com/ndownloader/files/36597108",
+  "https://figshare.com/ndownloader/files/38019072",
   dir = "tmp-data", fname = "GWAS_data.zip")
 unzip(zip, exdir = "tmp-data", overwrite = FALSE)
 ```
