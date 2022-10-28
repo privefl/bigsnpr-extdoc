@@ -7,20 +7,20 @@ source("spelling-check.R")
 library(bigsnpr)
 ```
 
-Polygenic scores are one of the main focus of package {bigsnpr}. These are the main methods currently available:
+PGS methods are the main topic of my research work. These are the main methods currently available in the packages:
 
-- penalized regressions, with individual-level data [@prive2019efficient] [[tutorial]](https://privefl.github.io/bigstatsr/articles/penalized-regressions.html)
+- penalized regressions, with individual-level data (@prive2019efficient + [tutorial](https://privefl.github.io/bigstatsr/articles/penalized-regressions.html))
 
-- Clumping and Thresholding (C+T) and Stacked C+T (SCT), with summary statistics and individual level data [@prive2019making] [[tutorial]](https://privefl.github.io/bigsnpr/articles/SCT.html)
+- Clumping and Thresholding (C+T) and Stacked C+T (SCT), with summary statistics and individual level data (@prive2019making + [tutorial](https://privefl.github.io/bigsnpr/articles/SCT.html))
 
-- LDpred2, with summary statistics [@prive2020ldpred2] [[tutorial]](https://privefl.github.io/bigsnpr/articles/LDpred2.html)
+- LDpred2, with summary statistics (@prive2020ldpred2 + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html))
 
-- lassosum2, with the same input data as LDpred2
+- lassosum2, with the same input data as LDpred2 (@prive2021identifying + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#lassosum2-grid-of-models))
 
 
-## Exercises: LDpred2 and lassosum2
+## Example: LDpred2 and lassosum2
 
-You should also check the other tutorials mentioned before.
+You should also check the other tutorial mentioned before.
 
 ### Preparing the data
 

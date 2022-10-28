@@ -1,7 +1,7 @@
 # Introduction
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("pak", "EWAS", "methylation")
+WORDS_TO_IGNORE <- c("EWAS", "methylation", "futureverse", "tidyverse")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -29,7 +29,7 @@ Functions starting with `big_` are part of {bigstatsr}, while functions starting
 
 There are now many things implemented in the packages. You can find a comprehensive list of available functions on the package website [of {bigstatsr}](https://privefl.github.io/bigstatsr/reference/index.html) and [of {bigsnpr}](https://privefl.github.io/bigsnpr/reference/index.html).
 
-The next table presents an overview of common genetic analyses that are already implemented in {bigstatsr} and {bigsnpr}. This listing is inspired from table 1 of @visscher201710 "The Role of GWAS SNP Arrays in Human Genetic Discoveries".
+The next table presents an overview of common genetic analyses that are already implemented in {bigstatsr} and {bigsnpr}. This listing is inspired from table 1 of @visscher201710.
 
 | Analysis                          | Available in {bigstatsr} and {bigsnpr} | Still missing               | Citations              |
 |-----------------------------------|----------------------------------------|-----------------------------|----------------------------------|
@@ -45,6 +45,16 @@ The next table presents an overview of common genetic analyses that are already 
 | Mendelian randomization           |                                        | completely missing          |                          |
 | Miscellaneous                     | - integration with PLINK <br> - format conversion <br> - imputation of genotyped variants <br> - matrix operations <br> - summaries       |              | @prive2017efficient |
 
+
+## Example code
+
+- When you want to use a function for the first time, check the documentation and the examples in there (usually they are very short).
+
+- There are also many (longer) tutorials available (usually one with each paper), which be linked from here or are available at the packages' websites.
+
+- Some other examples are provided in this extended documentation (in the next chapters).
+
+- All the code used in all my papers is available on GitHub. It mostly consists of R scripts based on {bigsnpr}, {bigstatsr}, the tidyverse, and the futureverse [@prive2017efficient; @wickham2019welcome; @bengtsson2020unifying].
 
 ## Installation
 
@@ -66,4 +76,4 @@ remotes::install_github("privefl/bigsnpr")
 
 ## Correct spellings
 
-<blockquote class="twitter-tweet" data-lang="en" align="center" width="50%"><p lang="en" dir="ltr">A friendly reminder:<br>The correct spelling is<br> - bigstatsr -- not bigstatr / BIGstatsR<br> - bigsnpr -- not BIGsnpR / bigSNPr<br> - pcadapt -- not PCAdapt<br> - LDpred -- not LDPred<br><br>Thank you<br>The kittens thank you too <a href="https://t.co/S8wyE4G6BG">pic.twitter.com/S8wyE4G6BG</a></p>&mdash; Florian Privé (remote postdoc) (@privefl) <a href="https://twitter.com/privefl/status/1329109034218237953?ref_src=twsrc%5Etfw">November 18, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+<blockquote class="twitter-tweet" data-lang="en" align="center" width="50%"><p lang="en" dir="ltr">A friendly reminder:<br>The correct spelling is<br> - bigstatsr -- not bigstatr / BIGstatsR<br> - bigsnpr -- not BIGsnpR / bigSNPr<br> - pcadapt -- not PCAdapt<br> - LDpred -- not LDPred<br><br>Thank you<br>The kittens thank you too <a href="https://t.co/S8wyE4G6BG">pic.twitter.com/S8wyE4G6BG</a></p>&mdash; Florian Privé (@privefl) <a href="https://twitter.com/privefl/status/1329109034218237953?ref_src=twsrc%5Etfw">November 18, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 

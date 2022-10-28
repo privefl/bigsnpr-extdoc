@@ -1,12 +1,13 @@
 introduction
 main-motivation-for-developing-bigstatsr-and-bigsnpr
 features
+example-code
 installation
 correct-spellings
 inputs-and-formats
 in-bigstatsr
 in-bigsnpr
-getting-an-fbm-or-bigsnp-object
+getting-FBM
 working-with-an-fbm
 similar-accessor-as-r-matrices
 split-parapply-combine-strategy
@@ -22,8 +23,7 @@ exo-pca
 genome-wide-association-study-gwas
 exo-gwas
 polygenic-scores-pgs
-exercises-ldpred2-and-lassosum2
+example-ldpred2-and-lassosum2
 preparing-the-data
 ldpred2
 lassosum2-grid-of-models
-getting-FBM

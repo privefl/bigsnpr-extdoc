@@ -12,3 +12,9 @@ What will *NOT* be discussed:
 
 - Rare variant association
 - Mendelian randomization
+
+TODO:
+- time it
+- bring hex stickers
+- bring USB key with large data
+- add prerequisites

@@ -42,12 +42,19 @@ covar <- cbind(as.matrix(obj.bigsnp$fam[c("sex", "age")]), PC[, 1:6])
 You probably should not account for other information such as cholesterol as they are heritable covariates [@aschard2015adjusting].
 ::::
 
-Let us perform a case-control GWAS for CAD:
-
 ```{r}
 G <- obj.bigsnp$genotypes
 y <- obj.bigsnp$fam$CAD
 ind.gwas <- which(!is.na(y) & complete.cases(covar))
+```
+
+:::: {.infobox .caution}
+To only use a subset of the data stored as an FBM (`G` here), you should almost never make a copy of the data; instead, use parameters `ind.row` (or `ind.train`) and `ind.col` to apply functions to a subset of the data.
+::::
+
+Let us perform a case-control GWAS for CAD:
+
+```{r}
 gwas <- runonce::save_run(
   big_univLogReg(G, y[ind.gwas], ind.train = ind.gwas,
                  covar.train = covar[ind.gwas, ], ncores = nb_cores()),

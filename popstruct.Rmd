@@ -27,7 +27,7 @@ Population structure is the second main topic of my research work (after polygen
 - In @prive2021high and @prive2021using, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from allele frequencies only (see [this vignette](https://privefl.github.io/bigsnpr/articles/ancestry.html)).
 
 
-## Exercise: population structure {#exo-pca}
+## Example {#exo-pca}
 
 There are many steps to properly perform a PCA, which I will try to detail in the following exercise.
 **You can find another example in [this vignette](https://privefl.github.io/bigsnpr/articles/bedpca.html).**
@@ -99,15 +99,17 @@ It would be nice if we could get a better sense of the ancestry of these individ
 To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using.
 
 ```{r}
-DIR <- "../datasets"  # you can replace by e.g. "data" or "tmp-data"
-
-# /!\ This downloads 850 Mb (each)
 all_freq <- bigreadr::fread2(
-  runonce::download_file("https://figshare.com/ndownloader/files/31620968",
-                         dir = DIR, fname = "ref_freqs.csv.gz"))
+  runonce::download_file(
+    "https://figshare.com/ndownloader/files/38019027",  # for the tutorial (46 MB)
+    # "https://figshare.com/ndownloader/files/31620968",  # for real analyses (849 MB)
+    dir = "tmp-data", fname = "ref_freqs.csv.gz"))
+
 projection <- bigreadr::fread2(
-  runonce::download_file("https://figshare.com/ndownloader/files/31620953",
-                         dir = DIR, fname = "projection.csv.gz"))
+  runonce::download_file(
+    "https://figshare.com/ndownloader/files/38019024",  # for the tutorial (44 MB)
+    # "https://figshare.com/ndownloader/files/31620953",  # for real analyses (847 MB)
+    dir = "tmp-data", fname = "projection.csv.gz"))
 
 correction <- c(1, 1, 1, 1.008, 1.021, 1.034, 1.052, 1.074, 1.099,
                 1.123, 1.15, 1.195, 1.256, 1.321, 1.382, 1.443)
