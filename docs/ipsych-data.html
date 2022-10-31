@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | bigsnpr &amp; bigstatsr</title>
+  <title>Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | bigsnpr &amp; bigstatsr" />
+  <meta property="og:title" content="Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
   <meta property="og:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="github-repo" content="privefl/bigsnpr-extdoc" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | bigsnpr &amp; bigstatsr" />
+  <meta name="twitter:title" content="Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr" />
   <meta name="twitter:site" content="@privefl" />
   <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="polygenic-scores-pgs.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -182,19 +182,78 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="ipsych-data" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> iPSYCH data<a href="ipsych-data.html#ipsych-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="data-on-genomedk" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Data on GenomeDK<a href="ipsych-data.html#data-on-genomedk" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>The iPSYCH2015 data <span class="citation">(<a href="#ref-bybjerg2020ipsych2015" role="doc-biblioref">Bybjerg-Grauholm et al., 2020</a>)</span> has been imputed (not by me) using the RICOPILI pipeline <span class="citation">(<a href="#ref-lam2020ricopili" role="doc-biblioref">Lam et al., 2020</a>)</span>; you can get more info about this pipeline <a href="https://sites.google.com/a/broadinstitute.org/ricopili/">here</a></p></li>
+<li><p>imputation has been performed <em>separately</em> for the previous (2012) data and the new (2015) data</p></li>
+<li><p>outputs are in IMPUTE2 Oxford format storing imputation probabilities (to be 0, 1, or 2), separated for 2012 and 2015 and by regions of the genome</p></li>
+<li><p>RICOPILI “qc1”: variants with an INFO score &gt; 0.1 and MAF &gt; 0.005</p></li>
+</ul>
+<p>Then,</p>
+<ul>
+<li><p>I transformed this data to my format by transforming probabilities to dosages, and merging all datasets while restricting to variants passing qc1 for both waves 2012 / 2015 (around 8.8M variants, across a total of almost 134K individuals)</p></li>
+<li><p>this is available in my <code>bigSNP</code> format in sub-folder <code>bigsnp_r_format/</code>, which can be loaded into R with <code>snp_attach("dosage_ipsych2015.rds")</code>, and for which the backingfile is one very large binary file of 1.1 TB</p></li>
+<li><p>this stores dosage data, i.e. expected genotype values <span class="math inline">\(0 \times P(0) + 1 \times P(1) + 2 \times P(2)\)</span> (between 0 and 2, but rounded to 2 decimal places through <code>CODE_DOSAGE</code>)</p></li>
+<li><p>there are also information on the individuals (in <code>$fam</code>) and on the variants (in <code>$map</code>)</p></li>
+</ul>
+</div>
+<div id="data-on-statistics-denmark" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Data on Statistics Denmark<a href="ipsych-data.html#data-on-statistics-denmark" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>I split the dosage data (from my format) into 137 parts with at most 70K variants (also 4 parts for chromosome X), wrote these to text files, then Sussie converted these to SAS format to be sent to Statistics Denmark</p></li>
+<li><p>Emil helped convert these 137 SAS files back to my format</p></li>
+<li><p>the information on individuals was not sent to Statistics Denmark for some reason, but sample IDs are included (in <code>$fam</code>) so that information on individuals can be found elsewhere on the server and linked to the genotype data via these IDs (using e.g. <code>match()</code> or <code>dplyr::left_join()</code>)</p></li>
+<li><p>then you can either use my R packages to analyze the data or to write bed files (with a loss of information, where dosages are further rounded to 0/1/2)</p></li>
+</ul>
+</div>
+<div id="warnings-about-the-data" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Warnings about the data<a href="ipsych-data.html#warnings-about-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>only dosage data is available on Statistics Denmark (i.e. imputation probabilities in the original format are not available there)</p></li>
+<li><p>imputation is far from perfect (due to small chips)</p></li>
+<li><p>imputation accuracies are not the same for 2012 / 2015, as well as for some allele frequencies; you may need to perform some QC, analyze the two cohorts separately, or at least add an indicator variable as covariate (<code>is_2012</code>, e.g. when performing a GWAS)</p></li>
+</ul>
+</div>
+<div id="other-data-available" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Other data available<a href="ipsych-data.html#other-data-available" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>relatedness KING coefficients (<span class="math inline">\(&gt; 2^{-4.5}\)</span>) computed between pairs of individuals (cf. section <a href="preprocessing.html#PLINK">4.1</a>)</p></li>
+<li><p>PCs computed on the combined data, following best practices from <span class="citation"><a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, McGrath, &amp; Vilhjálmsson</a> (<a href="#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span> (cf. chapter <a href="population-structure.html#population-structure">5</a>)</p></li>
+<li><p>a subset of homogeneous individuals (basically Northern Europeans) derived from PCs with two lines of code</p></li>
+<li><p>polygenic scores for 215 different traits and diseases, based on the UK Biobank individual-level data <span class="citation">(<a href="#ref-prive2021high" role="doc-biblioref">Privé et al., 2022</a>)</span>, computed for all iPSYCH individuals</p></li>
+<li><p>900+ external polygenic scores derived by Clara from externally published GWAS summary statistics <span class="citation">(<a href="#ref-albinana2022multi" role="doc-biblioref">Albinana et al., 2022</a>)</span></p></li>
+</ul>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-albinana2022multi" class="csl-entry">
+Albinana, C., Zhu, Z., Schork, A.J., Ingason, A., Aschard, H., Brikell, I., … others. (2022). <span>Multi-PGS</span> enhances polygenic prediction: Weighting 937 polygenic scores. <em>medRxiv</em>.
+</div>
+<div id="ref-bybjerg2020ipsych2015" class="csl-entry">
+Bybjerg-Grauholm, J., Pedersen, C.B., Bækvad-Hansen, M., Pedersen, M.G., Adamsen, D., Hansen, C.S., … others. (2020). The <span class="nocase">iPSYCH2015</span> case-cohort sample: Updated directions for unravelling genetic and environmental architectures of severe mental disorders. <em>medRxiv</em>.
+</div>
+<div id="ref-lam2020ricopili" class="csl-entry">
+Lam, M., Awasthi, S., Watson, H.J., Goldstein, J., Panagiotaropoulou, G., Trubetskoy, V., … others. (2020). RICOPILI: Rapid imputation for COnsortias PIpeLIne. <em>Bioinformatics</em>, <em>36</em>, 930–933.
+</div>
+<div id="ref-prive2021high" class="csl-entry">
+Privé, F., Aschard, H., Carmi, S., Folkersen, L., Hoggart, C., O’Reilly, P.F., &amp; Vilhjálmsson, B.J. (2022). Portability of 245 polygenic scores when derived from the <span>UK Biobank</span> and applied to 9 ancestry groups from the same cohort. <em>The American Journal of Human Genetics</em>, <em>109</em>, 12–23.
+</div>
+<div id="ref-prive2020efficient" class="csl-entry">
+Privé, F., Luu, K., Blum, M.G., McGrath, J.J., &amp; Vilhjálmsson, B.J. (2020). Efficient toolkit implementing best practices for principal component analysis of population genetic data. <em>Bioinformatics</em>, <em>36</em>, 4449–4457.
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="polygenic-scores-pgs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

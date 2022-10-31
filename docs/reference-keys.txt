@@ -27,3 +27,10 @@ example-ldpred2-and-lassosum2
 preparing-the-data
 ldpred2
 lassosum2-grid-of-models
+ipsych2015-data
+data-on-genomedk
+data-on-statistics-denmark
+warnings-about-the-data
+other-data-available
+PLINK
+ipsych-data

@@ -1,0 +1,61 @@
+# iPSYCH data
+
+```{r setup, include=FALSE}
+WORDS_TO_IGNORE <- c("backingfile", "GenomeDK", "MAF", "qc", "rightarrow",
+                     "accuracies", "Sussie")
+source("knitr-options.R")
+source("spelling-check.R")
+```
+
+## Data on GenomeDK
+
+- The iPSYCH2015 data [@bybjerg2020ipsych2015] has been imputed (not by me) using the RICOPILI pipeline [@lam2020ricopili]; you can get more info about this pipeline [here](https://sites.google.com/a/broadinstitute.org/ricopili/)
+
+- imputation has been performed *separately* for the previous (2012) data and the new (2015) data 
+
+- outputs are in IMPUTE2 Oxford format storing imputation probabilities (to be 0, 1, or 2), separated for 2012 and 2015 and by regions of the genome
+
+- RICOPILI "qc1": variants with an INFO score > 0.1 and MAF > 0.005
+
+Then,
+
+- I transformed this data to my format by transforming probabilities to dosages, and merging all datasets while restricting to variants passing qc1 for both waves 2012 / 2015 (around 8.8M variants, across a total of almost 134K individuals)
+
+- this is available in my `bigSNP` format in sub-folder `bigsnp_r_format/`, which can be loaded into R with `snp_attach("dosage_ipsych2015.rds")`, and for which the backingfile is one very large binary file of 1.1 TB
+
+- this stores dosage data, i.e. expected genotype values $0 \times P(0) + 1 \times P(1) + 2 \times P(2)$ (between 0 and 2, but rounded to 2 decimal places through `CODE_DOSAGE`)
+    
+- there are also information on the individuals (in `$fam`) and on the variants (in `$map`)
+
+
+## Data on Statistics Denmark
+
+- I split the dosage data (from my format) into 137 parts with at most 70K variants (also 4 parts for chromosome X), wrote these to text files, then Sussie converted these to SAS format to be sent to Statistics Denmark
+
+- Emil helped convert these 137 SAS files back to my format
+
+- the information on individuals was not sent to Statistics Denmark for some reason, but sample IDs are included (in `$fam`) so that information on individuals can be found elsewhere on the server and linked to the genotype data via these IDs (using e.g. `match()` or `dplyr::left_join()`)
+
+- then you can either use my R packages to analyze the data or to write bed files (with a loss of information, where dosages are further rounded to 0/1/2)
+
+
+## Warnings about the data
+
+- only dosage data is available on Statistics Denmark (i.e. imputation probabilities in the original format are not available there)
+
+- imputation is far from perfect (due to small chips)
+
+- imputation accuracies are not the same for 2012 / 2015, as well as for some allele frequencies; you may need to perform some QC, analyze the two cohorts separately, or at least add an indicator variable as covariate (`is_2012`, e.g. when performing a GWAS)
+
+
+## Other data available
+
+- relatedness KING coefficients ($> 2^{-4.5}$) computed between pairs of individuals (cf. section \@ref(PLINK))
+
+- PCs computed on the combined data, following best practices from @prive2020efficient (cf. chapter \@ref(population-structure))
+
+- a subset of homogeneous individuals (basically Northern Europeans) derived from PCs with two lines of code
+
+- polygenic scores for 215 different traits and diseases, based on the UK Biobank individual-level data [@prive2021high], computed for all iPSYCH individuals
+
+- 900+ external polygenic scores derived by Clara from externally published GWAS summary statistics [@albinana2022multi]

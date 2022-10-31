@@ -1,5 +1,5 @@
 rmd_files: ["index.Rmd", "intro.Rmd", "input.Rmd", "accessors.Rmd", "preprocessing.Rmd",
-            "popstruct.Rmd", "GWAS.Rmd", "pgs.Rmd", "references.Rmd"]
+            "popstruct.Rmd", "GWAS.Rmd", "pgs.Rmd", "ipsych.Rmd", "references.Rmd"]
 output_dir: docs
 new_session: yes
 language:

@@ -14,7 +14,7 @@ library(bigsnpr)
 
 In this section, I talk about conversion, quality control and imputation. Conversion is also discussed in \@ref(getting-FBM).
 
-## Conversion and quality control of PLINK files
+## Conversion and quality control of PLINK files {#PLINK}
 
 PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from `r icon::fa_r_project()`:
 
