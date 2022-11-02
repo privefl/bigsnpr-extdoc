@@ -23,14 +23,14 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="polygenic-scores-pgs.html"/>
+<link rel="prev" href="ipsych-data.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -169,6 +169,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
@@ -196,7 +197,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> Preprocessing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#PLINK"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
 <li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>4.2</b> Imputation</a></li>
 <li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>4.3</b> Example</a></li>
 </ul></li>
@@ -217,6 +218,13 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>7.1.2</b> LDpred2</a></li>
 <li class="chapter" data-level="7.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>7.1.3</b> lassosum2: grid of models</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ipsych-data.html"><a href="ipsych-data.html"><i class="fa fa-check"></i><b>8</b> iPSYCH data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-genomedk"><i class="fa fa-check"></i><b>8.1</b> Data on GenomeDK</a></li>
+<li class="chapter" data-level="8.2" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-statistics-denmark"><i class="fa fa-check"></i><b>8.2</b> Data on Statistics Denmark</a></li>
+<li class="chapter" data-level="8.3" data-path="ipsych-data.html"><a href="ipsych-data.html#warnings-about-the-data"><i class="fa fa-check"></i><b>8.3</b> Warnings about the data</a></li>
+<li class="chapter" data-level="8.4" data-path="ipsych-data.html"><a href="ipsych-data.html#other-data-available"><i class="fa fa-check"></i><b>8.4</b> Other data available</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -243,13 +251,16 @@ div.csl-indent {
 
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div class="csl-entry">
+Albinana, C., Zhu, Z., Schork, A.J., Ingason, A., Aschard, H., Brikell, I., … others. (2022). <span>Multi-PGS</span> enhances polygenic prediction: Weighting 937 polygenic scores. <em>medRxiv</em>.
+</div>
+<div class="csl-entry">
 Aschard, H., Vilhjálmsson, B.J., Joshi, A.D., Price, A.L., &amp; Kraft, P. (2015). Adjusting for heritable covariates can bias effect estimates in genome-wide association studies. <em>The American Journal of Human Genetics</em>, <em>96</em>, 329–339.
 </div>
 <div class="csl-entry">
 Bengtsson, H. (2021). A unifying framework for parallel and distributed processing in <span>R</span> using futures. <em><span>The R Journal</span></em>, <em>13</em>, 273–291.
 </div>
 <div class="csl-entry">
-Buniello, A., MacArthur, J.A.L., Cerezo, M., Harris, L.W., Hayhurst, J., Malangone, C., … others. (2019). The <span>NHGRI-EBI GWAS Catalog</span> of published genome-wide association studies, targeted arrays and summary statistics 2019. <em>Nucleic Acids Research</em>, <em>47</em>, D1005–D1012.
+Bybjerg-Grauholm, J., Pedersen, C.B., Bækvad-Hansen, M., Pedersen, M.G., Adamsen, D., Hansen, C.S., … others. (2020). The <span class="nocase">iPSYCH2015</span> case-cohort sample: Updated directions for unravelling genetic and environmental architectures of severe mental disorders. <em>medRxiv</em>.
 </div>
 <div class="csl-entry">
 Bycroft, C., Freeman, C., Petkova, D., Band, G., Elliott, L.T., Sharp, K., … others. (2018). The <span>UK Biobank</span> resource with deep phenotyping and genomic data. <em>Nature</em>, <em>562</em>, 203–209.
@@ -258,10 +269,10 @@ Bycroft, C., Freeman, C., Petkova, D., Band, G., Elliott, L.T., Sharp, K., … o
 Chang, C.C., Chow, C.C., Tellier, L.C., Vattikuti, S., Purcell, S.M., &amp; Lee, J.J. (2015). Second-generation <span>PLINK</span>: Rising to the challenge of larger and richer datasets. <em>Gigascience</em>, <em>4</em>, s13742–015.
 </div>
 <div class="csl-entry">
-Manichaikul, A., Mychaleckyj, J.C., Rich, S.S., Daly, K., Sale, M., &amp; Chen, W.-M. (2010). Robust relationship inference in genome-wide association studies. <em>Bioinformatics</em>, <em>26</em>, 2867–2873.
+Lam, M., Awasthi, S., Watson, H.J., Goldstein, J., Panagiotaropoulou, G., Trubetskoy, V., … others. (2020). RICOPILI: Rapid imputation for COnsortias PIpeLIne. <em>Bioinformatics</em>, <em>36</em>, 930–933.
 </div>
 <div class="csl-entry">
-Nikpay, M., Goel, A., Won, H.-H., Hall, L.M., Willenborg, C., Kanoni, S., … others. (2015). A comprehensive 1000 genomes–based genome-wide association meta-analysis of coronary artery disease. <em>Nature Genetics</em>, <em>47</em>, 1121.
+Manichaikul, A., Mychaleckyj, J.C., Rich, S.S., Daly, K., Sale, M., &amp; Chen, W.-M. (2010). Robust relationship inference in genome-wide association studies. <em>Bioinformatics</em>, <em>26</em>, 2867–2873.
 </div>
 <div class="csl-entry">
 Privé, F. (2021). <span class="nocase">Optimal linkage disequilibrium splitting</span>. <em>Bioinformatics</em>, <em>38</em>, 255–256.
@@ -312,7 +323,7 @@ Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L.D., François, R., �
           </div>
         </div>
       </div>
-<a href="polygenic-scores-pgs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ipsych-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

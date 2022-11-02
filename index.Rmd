@@ -1,6 +1,6 @@
 --- 
 title: "bigsnpr & bigstatsr"
-subtitle: "Extended documentation [WORK IN PROGRESS]"
+subtitle: "Extended documentation"
 author: "Florian Privé"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -20,10 +20,40 @@ cover-image: "images/bigstatsr.png"
 # About {-}
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("ShareAlike", "Florian", "Privé", "cpp")
+WORDS_TO_IGNORE <- c("ShareAlike", "Florian", "Privé", "cpp", "RStudio")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
+
+## Prerequisites {-}
+
+- Have at least a basic knowledge of R,
+
+- Install recent versions of R (>= 3.4) and RStudio (>= 1.2),
+
+- Install recent versions of {bigstatsr} and {bigsnpr} (e.g. from CRAN),
+
+- Download the data used in the tutorials:
+    ```{r, results='hold'}
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38019072",
+      dir = "tmp-data", fname = "GWAS_data.zip")  # 109 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38019027", 
+      dir = "tmp-data", fname = "ref_freqs.csv.gz")  # 46 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38019024",
+      dir = "tmp-data", fname = "projection.csv.gz")  # 44 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38077323",
+      dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz")  # 16 MB
+    
+    bigsnpr::download_plink("tmp-data")   # 6.3 MB
+    bigsnpr::download_plink2("tmp-data")  # 6.6 MB
+    ```
 
 ## License {-}
 

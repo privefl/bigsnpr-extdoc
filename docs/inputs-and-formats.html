@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,6 +169,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
@@ -196,7 +197,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> Preprocessing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#PLINK"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
 <li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>4.2</b> Imputation</a></li>
 <li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>4.3</b> Example</a></li>
 </ul></li>
@@ -217,6 +218,13 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>7.1.2</b> LDpred2</a></li>
 <li class="chapter" data-level="7.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>7.1.3</b> lassosum2: grid of models</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ipsych-data.html"><a href="ipsych-data.html"><i class="fa fa-check"></i><b>8</b> iPSYCH data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-genomedk"><i class="fa fa-check"></i><b>8.1</b> Data on GenomeDK</a></li>
+<li class="chapter" data-level="8.2" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-statistics-denmark"><i class="fa fa-check"></i><b>8.2</b> Data on Statistics Denmark</a></li>
+<li class="chapter" data-level="8.3" data-path="ipsych-data.html"><a href="ipsych-data.html#warnings-about-the-data"><i class="fa fa-check"></i><b>8.3</b> Warnings about the data</a></li>
+<li class="chapter" data-level="8.4" data-path="ipsych-data.html"><a href="ipsych-data.html#other-data-available"><i class="fa fa-check"></i><b>8.4</b> Other data available</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -272,7 +280,7 @@ div.csl-indent {
 <li><code>$map</code>: A <code>data.frame</code> with some information on the genetic variants.</li>
 </ul>
 <p>The code used in class <em>FBM.code256</em> for imputed data is e.g. </p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="inputs-and-formats.html#cb3-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="inputs-and-formats.html#cb5-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
 <pre><code>#&gt;   [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
 #&gt;  [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
 #&gt;  [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
@@ -305,7 +313,7 @@ div.csl-indent {
 <li><p>To read an FBM from a large text file, you can use function <code>big_read()</code> (see <a href="https://privefl.github.io/bigstatsr/articles/read-FBM-from-file.html">this vignette</a>).</p></li>
 <li><p>To read a bigSNP object from <em>bed</em>/<em>bim</em>/<em>fam</em> files, you can use functions <code>snp_readBed()</code> and <code>snp_readBed2()</code> (the second can read a subset of individuals/variants and use parallelism).</p></li>
 <li><p>To read <em>BGEN</em> files, you can use function <code>snp_readBGEN()</code>. This function takes around 40 minutes to read 1M variants for 400K individuals using 15 cores. Note that this function works only for BGEN v1.2 with probabilities stored as 8 bits (cf. <a href="https://github.com/privefl/bigsnpr/issues/140">this issue</a>), which is the case for e.g. the UK Biobank files.</p></li>
-<li><p>To read any format used in genetics, you can always convert blocks of the data to text files using PLINK, read these using <code>bigreadr::fread2()</code>, and fill part of the resulting FBM. [TODO: export the code to convert from RICOPILI imputed data]</p></li>
+<li><p>To read any format used in genetics, you can always convert blocks of the data to text files using PLINK, read these using <code>bigreadr::fread2()</code>, and fill part of the resulting FBM. For example, see <a href="https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/1-ricopili-to-bigsnp.R">the code I used to convert the iPSYCH imputed data from the RICOPILI pipeline to my bigSNP format</a>.</p></li>
 </ul>
 
 </div>

@@ -14,7 +14,7 @@ split-parapply-combine-strategy
 similar-accessor-as-rcpp-matrices
 some-summary-functions-are-already-implemented
 preprocessing
-conversion-and-quality-control-of-plink-files
+PLINK
 imputation
 exo-preprocessing
 population-structure
@@ -27,10 +27,8 @@ example-ldpred2-and-lassosum2
 preparing-the-data
 ldpred2
 lassosum2-grid-of-models
-ipsych2015-data
+ipsych-data
 data-on-genomedk
 data-on-statistics-denmark
 warnings-about-the-data
 other-data-available
-PLINK
-ipsych-data

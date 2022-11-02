@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,6 +169,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
@@ -196,7 +197,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> Preprocessing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#PLINK"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
 <li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>4.2</b> Imputation</a></li>
 <li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>4.3</b> Example</a></li>
 </ul></li>
@@ -217,6 +218,13 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>7.1.2</b> LDpred2</a></li>
 <li class="chapter" data-level="7.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>7.1.3</b> lassosum2: grid of models</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ipsych-data.html"><a href="ipsych-data.html"><i class="fa fa-check"></i><b>8</b> iPSYCH data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-genomedk"><i class="fa fa-check"></i><b>8.1</b> Data on GenomeDK</a></li>
+<li class="chapter" data-level="8.2" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-statistics-denmark"><i class="fa fa-check"></i><b>8.2</b> Data on Statistics Denmark</a></li>
+<li class="chapter" data-level="8.3" data-path="ipsych-data.html"><a href="ipsych-data.html#warnings-about-the-data"><i class="fa fa-check"></i><b>8.3</b> Warnings about the data</a></li>
+<li class="chapter" data-level="8.4" data-path="ipsych-data.html"><a href="ipsych-data.html#other-data-available"><i class="fa fa-check"></i><b>8.4</b> Other data available</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -240,12 +248,45 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">bigsnpr &amp; bigstatsr</h1>
-<h2 class="subtitle"><em>Extended documentation [WORK IN PROGRESS]</em></h2>
+<h2 class="subtitle"><em>Extended documentation</em></h2>
 <p class="author"><em>Florian Privé</em></p>
-<p class="date"><em>2022-10-28</em></p>
+<p class="date"><em>2022-11-02</em></p>
 </div>
 <div id="about" class="section level1 unnumbered hasAnchor">
 <h1>About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="prerequisites" class="section level2 unnumbered hasAnchor">
+<h2>Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>Have at least a basic knowledge of R,</p></li>
+<li><p>Install recent versions of R (&gt;= 3.4) and RStudio (&gt;= 1.2),</p></li>
+<li><p>Install recent versions of {bigstatsr} and {bigsnpr} (e.g. from CRAN),</p></li>
+<li><p>Download the data used in the tutorials:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a>runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38019072&quot;</span>,</span>
+<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;GWAS_data.zip&quot;</span>)  <span class="co"># 109 MB</span></span>
+<span id="cb1-4"><a href="index.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="index.html#cb1-5" aria-hidden="true" tabindex="-1"></a>runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb1-6"><a href="index.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38019027&quot;</span>, </span>
+<span id="cb1-7"><a href="index.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;ref_freqs.csv.gz&quot;</span>)  <span class="co"># 46 MB</span></span>
+<span id="cb1-8"><a href="index.html#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="index.html#cb1-9" aria-hidden="true" tabindex="-1"></a>runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb1-10"><a href="index.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38019024&quot;</span>,</span>
+<span id="cb1-11"><a href="index.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;projection.csv.gz&quot;</span>)  <span class="co"># 44 MB</span></span>
+<span id="cb1-12"><a href="index.html#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="index.html#cb1-13" aria-hidden="true" tabindex="-1"></a>runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb1-14"><a href="index.html#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38077323&quot;</span>,</span>
+<span id="cb1-15"><a href="index.html#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;sumstats_CAD_tuto.csv.gz&quot;</span>)  <span class="co"># 16 MB</span></span>
+<span id="cb1-16"><a href="index.html#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="index.html#cb1-17" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span><span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)   <span class="co"># 6.3 MB</span></span>
+<span id="cb1-18"><a href="index.html#cb1-18" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span><span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)  <span class="co"># 6.6 MB</span></span></code></pre></div>
+<pre><code>#&gt; [1] &quot;tmp-data/GWAS_data.zip&quot;
+#&gt; [1] &quot;tmp-data/ref_freqs.csv.gz&quot;
+#&gt; [1] &quot;tmp-data/projection.csv.gz&quot;
+#&gt; [1] &quot;tmp-data/sumstats_CAD_tuto.csv.gz&quot;
+#&gt; [1] &quot;tmp-data/plink.exe&quot;
+#&gt; [1] &quot;tmp-data/plink2.exe&quot;</code></pre></li>
+</ul>
+</div>
 <div id="license" class="section level2 unnumbered hasAnchor">
 <h2>License<a href="index.html#license" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This material is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 License</a>.</p>

@@ -1,8 +1,7 @@
 # Genome-Wide Association Study (GWAS)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", 
-                     "pheno", "pheweb", "SAIGE", "UKB")
+WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -72,7 +71,7 @@ POS <- obj.bigsnp$map$physical.pos
 snp_manhattan(gwas, CHR, POS, npoints = 50e3) +
   ggplot2::geom_hline(yintercept = -log10(5e-8), linetype = 2, color = "red")
 ```
-Here, nothing is genome-wide significant because of the small sample size. You can compare peaks with a GWAS for CAD with much larger sample size at https://pheweb.org/UKB-SAIGE/pheno/411.4.
+Here, nothing is genome-wide significant because of the small sample size.
 
 ```{r, out.width="95%", fig.asp=0.5, fig.width=10, dev='png'}
 y2 <- obj.bigsnp$fam$hdl
@@ -83,4 +82,10 @@ snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
   ggplot2::geom_hline(yintercept = -log10(5e-8), linetype = 2, color = "red")
 ```
 
-[TODO: EXPORT AND LINK TO LARGE GWAS ON CLUSTERS OR MULTIPLE PHENO]
+***
+
+Some other example code:
+
+- [GWAS in iPSYCH](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/3-GWAS.R); you can perform the GWAS on multiple nodes in parallel that would each process a chunk of the variants only
+- [GWAS for very large data and multiple phenotypes](https://github.com/privefl/UKBB-PGS/blob/main/code/run-GWAS-large.R); you should perform the GWAS for all phenotypes for a "small" chunk of columns to avoid repeated access from disk, and can process these chunks on multiple nodes in parallel
+- [some template for {future.batchtools} when using Slurm](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/batchtools.slurm.tmpl)

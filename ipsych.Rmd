@@ -19,7 +19,7 @@ source("spelling-check.R")
 
 Then,
 
-- I transformed this data to my format by transforming probabilities to dosages, and merging all datasets while restricting to variants passing qc1 for both waves 2012 / 2015 (around 8.8M variants, across a total of almost 134K individuals)
+- I transformed this data to my format by transforming probabilities to dosages, and merging all datasets while restricting to variants passing qc1 for both waves 2012 / 2015 (around 8.8M variants, across a total of around 134K individuals)
 
 - this is available in my `bigSNP` format in sub-folder `bigsnp_r_format/`, which can be loaded into R with `snp_attach("dosage_ipsych2015.rds")`, and for which the backingfile is one very large binary file of 1.1 TB
 

@@ -48,7 +48,7 @@ hist(log2(rel$KINSHIP), "FD")
 ```
 
 :::: {.infobox .info}
-When computing relatedness with KING, it may be needed to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank [@bycroft2018uk]. [TODO: also export my code for iPSYCH]
+When computing relatedness with KING, it may be needed to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank [@bycroft2018uk]. For example, see [this code](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/2-rel-and-pca.R).
 ::::
 
 Relatedness should not be a major issue here. Let us now compute PCs.
@@ -80,9 +80,10 @@ PC <- predict(obj.svd)
 ldist <- log(bigutilsr::dist_ogk(PC))
 hist(ldist, "FD")
 ```
-```{r}
+```{r, message=FALSE}
 library(ggplot2)
-source("https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R")
+devtools::source_url(
+  "https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R")
 
 plot_grid2(plotlist = lapply(1:4, function(k) {
   k1 <- 2 * k - 1

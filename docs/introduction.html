@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,6 +169,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i>Contact</a></li>
@@ -196,7 +197,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> Preprocessing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#conversion-and-quality-control-of-plink-files"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#PLINK"><i class="fa fa-check"></i><b>4.1</b> Conversion and quality control of PLINK files</a></li>
 <li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>4.2</b> Imputation</a></li>
 <li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>4.3</b> Example</a></li>
 </ul></li>
@@ -217,6 +218,13 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#ldpred2"><i class="fa fa-check"></i><b>7.1.2</b> LDpred2</a></li>
 <li class="chapter" data-level="7.1.3" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>7.1.3</b> lassosum2: grid of models</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ipsych-data.html"><a href="ipsych-data.html"><i class="fa fa-check"></i><b>8</b> iPSYCH data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-genomedk"><i class="fa fa-check"></i><b>8.1</b> Data on GenomeDK</a></li>
+<li class="chapter" data-level="8.2" data-path="ipsych-data.html"><a href="ipsych-data.html#data-on-statistics-denmark"><i class="fa fa-check"></i><b>8.2</b> Data on Statistics Denmark</a></li>
+<li class="chapter" data-level="8.3" data-path="ipsych-data.html"><a href="ipsych-data.html#warnings-about-the-data"><i class="fa fa-check"></i><b>8.3</b> Warnings about the data</a></li>
+<li class="chapter" data-level="8.4" data-path="ipsych-data.html"><a href="ipsych-data.html#other-data-available"><i class="fa fa-check"></i><b>8.4</b> Other data available</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -356,12 +364,12 @@ This is why there are two packages, where {bigstatsr} can basically be used by a
 <div id="installation" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Installation<a href="introduction.html#installation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Both packages are available on CRAN, so you can use <code>install.packages()</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;bigstatsr&quot;</span>)</span>
-<span id="cb1-2"><a href="introduction.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;bigsnpr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="introduction.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;bigstatsr&quot;</span>)</span>
+<span id="cb3-2"><a href="introduction.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;bigsnpr&quot;</span>)</span></code></pre></div>
 <p>To install the latest versions (from GitHub), you can use {remotes}:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="introduction.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
-<span id="cb2-2"><a href="introduction.html#cb2-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;privefl/bigstatsr&quot;</span>)</span>
-<span id="cb2-3"><a href="introduction.html#cb2-3" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;privefl/bigsnpr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="introduction.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb4-2"><a href="introduction.html#cb4-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;privefl/bigstatsr&quot;</span>)</span>
+<span id="cb4-3"><a href="introduction.html#cb4-3" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;privefl/bigsnpr&quot;</span>)</span></code></pre></div>
 </div>
 <div id="correct-spellings" class="section level2 hasAnchor" number="1.5">
 <h2><span class="header-section-number">1.5</span> Correct spellings<a href="introduction.html#correct-spellings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
