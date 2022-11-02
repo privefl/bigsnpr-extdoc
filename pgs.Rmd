@@ -4,7 +4,6 @@
 WORDS_TO_IGNORE <- c("HapMap")
 source("knitr-options.R")
 source("spelling-check.R")
-library(bigsnpr)
 ```
 
 PGS methods are the main topic of my research work. These are the main methods currently available in the packages:
@@ -17,10 +16,14 @@ PGS methods are the main topic of my research work. These are the main methods c
 
 - lassosum2, with the same input data as LDpred2 (@prive2021identifying + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#lassosum2-grid-of-models))
 
+:::: {.infobox .info}
+You can now use LDpred2-auto for inference (@prive2022inferring + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto)).
+::::
+
 
 ## Example: LDpred2 and lassosum2
 
-You should also check the other tutorial mentioned before.
+You should also check [the other tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) mentioned before.
 
 ### Preparing the data
 
@@ -35,57 +38,91 @@ map <- dplyr::transmute(obj.bigsnp$map,
                         a0 = allele2, a1 = allele1)
 ```
 
-We then download some GWAS summary statistics from a large consortium [@nikpay2015comprehensive; @buniello2019nhgri] and prepare them in the format required by LDpred2:
+Download some GWAS summary statistics for CAD that I derived from the UK Biobank [@bycroft2018uk], and prepare them in the format required by LDpred2:
 ```{r}
-txt <- runonce::download_file(
-  "http://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST003001-GCST004000/GCST003116/cad.add.160614.website.txt",
-  dir = "tmp-data", fname = "sumstats_CAD.txt")
-writeLines(readLines(txt, n = 3))
-# One could also read other variables such as 'median_info', 'model',
-# 'het_pvalue', and 'n_studies' to apply some quality control to the sumstats.
+gz <- runonce::download_file(
+  "https://figshare.com/ndownloader/files/38077323",
+  dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz")
+readLines(gz, n = 3)
 sumstats <- bigreadr::fread2(
-  txt,
-  select = c("chr", "bp_hg19", "noneffect_allele",
-             "effect_allele", "beta", "se_dgc"),
-  col.names = c("chr", "pos", "a0", "a1", "beta", "beta_se"))
-# GWAS effective sample size from the paper;
-# it would be better to have a per-variant sample size in the sumstats.
+  gz,
+  select    = c("chr", "pos", "allele2", "allele1", "beta", "se", "freq", "info"),
+  col.names = c("chr", "pos", "a0", "a1", "beta", "beta_se", "freq", "info"))
+
+# GWAS effective sample size for binary traits (4 / (1 / n_case + 1 / n_control))
 # For quantitative traits, just use the total sample size for `n_eff`.
-sumstats$n_eff <- 4 / (1 / 60801 + 1 / 123504) 
+sumstats$n_eff <- 4 / (1 / 20791 + 1 / 323124) 
 ```
 
-Let us now match these with the internal data we have:
-```{r}
-(info_snp <- tibble::as_tibble(snp_match(sumstats, map)))
-```
-Note that we recommend to use imputed HapMap3 variants when available, otherwise you can just use the genotyped variants as I am doing here.
+Note that we recommend to use imputed HapMap3+ variants when available, for which you can download some precomputed LD reference for European individuals based on the UK Biobank.
+Otherwise use the genotyped variants as I am doing here.
 Try to use an LD reference with at least 2000 individuals (I have only 1401 in this example).
-You can download some precomputed LD reference for European individuals based on the UK Biobank (+ some example R script and some information on the HapMap3 variants) at https://figshare.com/articles/dataset/European_LD_reference/13034123.
+Please see [this other tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) for more information.
 
-Then we can perform some quality control on the summary statistics to see how standard deviations inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
+Let us now match the variants in the GWAS summary statistics with the internal data we have:
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+info_snp <- snp_match(sumstats, map, return_flip_and_rev = TRUE) %>% 
+  mutate(freq = ifelse(`_REV_`, 1 - freq, freq), 
+         `_REV_` = NULL, `_FLIP_`= NULL) %>% 
+  print()
+```
+Check the summary statistics; some quality control may be needed:
 ```{r}
-maf <- snp_MAF(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)
-sd_val <- sqrt(2 * maf * (1 - maf))
+hist(info_snp$n_eff)    # all the same values, otherwise filter at 70% of max
+hist(info_snp$info)     # very good imputation; filter e.g. at 0.7
+summary(info_snp$freq)
+```
+
+Then we can perform some quality control on the summary statistics by checking whether standard deviations inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
+```{r}
+af_ref <- big_colstats(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)$sum / (2 * nrow(G))
+sd_ref <- sqrt(2 * af_ref * (1 - af_ref))
 sd_ss <- with(info_snp, 2 / sqrt(n_eff * beta_se^2 + beta^2))
 is_bad <-
-  sd_ss < (0.5 * sd_val) | sd_ss > (sd_val + 0.1) | sd_ss < 0.1 | sd_val < 0.05
-```
+  sd_ss < (0.5 * sd_ref) | sd_ss > (sd_ref + 0.1) | 
+  sd_ss < 0.05 | sd_ref < 0.05  # basically filtering small MAF
 
-When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace `2` by `sd(y)` when computing `sd_ss`. Have a look at [section 3.4 of the LDpred2 paper](https://academic.oup.com/bioinformatics/article/36/22-23/5424/6039173#233620521). 
-
-```{r, warning=FALSE, fig.width=10, out.width="85%"}
 library(ggplot2)
-ggplot(dplyr::slice_sample(data.frame(sd_val, sd_ss, is_bad), n = 50e3)) +
-  geom_point(aes(sd_val, sd_ss, color = is_bad), alpha = 0.5) +
+ggplot(slice_sample(data.frame(sd_ref, sd_ss, is_bad), n = 50e3)) +
+  geom_point(aes(sd_ref, sd_ss, color = is_bad), alpha = 0.5) +
   theme_bigstatsr(0.9) +
   scale_color_viridis_d(direction = -1) +
   geom_abline(linetype = 2) +
-  labs(x = "Standard deviations in the validation set",
+  labs(x = "Standard deviations in the reference set",
        y = "Standard deviations derived from the summary statistics",
-       color = "To remove?", title = "This is far from perfect; Neff is probably overestimated.")
+       color = "To remove?")
 ```
+
+When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace `2` by `sd(y)` when computing `sd_ss` (equations 1 and 2 of @prive2021identifying).
+
+When allele frequencies are available in the GWAS summary statistics, you can use them (along with INFO scores) to get an even better match:
 ```{r}
-df_beta <- info_snp[!is_bad, ]
+sd_af <- with(info_snp, sqrt(2 * freq * (1 - freq) * info))
+
+ggplot(slice_sample(data.frame(sd_af, sd_ss), n = 50e3)) +
+  geom_point(aes(sd_af, sd_ss), alpha = 0.5) +
+  theme_bigstatsr(0.9) +
+  geom_abline(linetype = 2, color = "red") +
+  labs(x = "Standard deviations derived from allele frequencies",
+       y = "Standard deviations derived from the summary statistics")
+```
+You can still use the reference panel to do some quality control by comparing allele frequencies:
+```{r}
+diff <- af_ref - info_snp$freq
+hist(diff, "FD", xlim = c(-0.1, 0.1))
+```
+
+Then you can filter
+
+```{r}
+is_bad2 <-
+  sd_ss < (0.7 * sd_af) | sd_ss > (sd_af + 0.1) | 
+  sd_ss < 0.05 | sd_af < 0.05 |
+  info_snp$info < 0.7 | abs(diff) > 0.07
+mean(is_bad2)
+table(is_bad, is_bad2)
+df_beta <- info_snp[!is_bad2, ]
 ```
 
 Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes for faster running of this tutorial):
@@ -132,7 +169,7 @@ for (chr in 1:4) {  # REPLACE BY 1:22
 }
 ```
 
-Note that the "compact" format for SFBMs is quite new. You will need `packageVersion("bigsparser") >= package_version("0.5")`. 
+To use the “compact” format for SFBMs, you need `packageVersion("bigsparser") >= package_version("0.5")`. 
 Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version (to avoid crashes).
 
 ```{r}
@@ -170,7 +207,7 @@ dim(params)
 
 Here, we will be using this smaller grid instead (for speed in this tutorial):
 ```{r}
-(params <- expand.grid(p = signif(seq_log(0.001, 0.3, length.out = 8), 2),
+(params <- expand.grid(p = signif(seq_log(1e-4, 0.5, length.out = 16), 2),
                        h2 = round(ldsc_h2_est, 4), sparse = TRUE))
 ```
 
@@ -216,28 +253,30 @@ best_beta_grid <- params %>%
 To run LDpred2-auto, you can use:
 ```{r}
 # LDpred2-auto
-# Note: use vec_p_init = seq_log(1e-4, 0.5, 30) in real scenario
-# and defaults for 'burn_in' and 'num_iter' (again, for speed here)
 multi_auto <- snp_ldpred2_auto(
   corr, df_beta, h2_init = ldsc_h2_est,
-  vec_p_init = seq_log(1e-3, 0.1, NCORES),  # TO CHANGE
-  burn_in = 50, num_iter = 50,              # TO REMOVE
+  vec_p_init = seq_log(1e-4, 0.2, 30),
+  burn_in = 100, num_iter = 100,         # TO REMOVE, for speed here
+  allow_jump_sign = FALSE,
+  shrink_corr = 0.95,
   ncores = NCORES)
 ```
 
-We should perform some quality control on the chains (you should have more than 4, e.g. 30):
+Perform some quality control on the chains:
 ```{r}
-beta_auto <- sapply(multi_auto, function(auto) auto$beta_est)
-pred_auto <- big_prodMat(G, beta_auto, ind.col = df_beta[["_NUM_ID_"]],
-                         ncores = NCORES)
-sc <- apply(pred_auto, 2, sd)
-keep <- abs(sc - median(sc)) < 3 * mad(sc)
-final_beta_auto <- rowMeans(beta_auto[, keep])
+# `range` should be between 0 and 2
+(range <- sapply(multi_auto, function(auto) diff(range(auto$corr_est))))
+(keep <- (range > (0.95 * quantile(range, 0.95))))
+```
+
+To get the final effects / predictions, **you should only use chains that pass this filtering**:
+```{r}
+final_beta_auto <- 
+  rowMeans(sapply(multi_auto[keep], function(auto) auto$beta_est))
 ```
 
 We can finally test the final prediction
 ```{r}
-# could directly use `rowMeans(pred_auto[, keep])` here
 final_pred_auto <- big_prodVec(G, final_beta_auto,
                                ind.col = df_beta[["_NUM_ID_"]],
                                ncores = NCORES)
@@ -247,13 +286,13 @@ AUCBoot(final_pred_auto, obj.bigsnp$fam$CAD)
 
 ### lassosum2: grid of models
 
-lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It should be fast to run. It can be run next to LDpred2 and the best model can be chosen using the validation set.
+lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It can therefore be run next to LDpred2 and the best model can be chosen using the validation set.
 Note that parameter 's' from lassosum has been replaced by a new parameter 'delta' in lassosum2, in order to better reflect that the lassosum model also uses L2-regularization (therefore, elastic-net regularization).
 
 ```{r}
 beta_lassosum2 <- snp_lassosum2(
   corr, df_beta, ncores = NCORES,
-  nlambda = 10, maxiter = 50)  # TO REMOVE
+  nlambda = 10, maxiter = 50)      # TO REMOVE, for speed here
 ```
 
 ```{r}
@@ -267,7 +306,6 @@ params2$score <- apply(pred_grid2, 2, function(x) {
 ```
 
 ```{r}
-library(ggplot2)
 ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) +
   theme_bigstatsr() +
   geom_point() +
@@ -277,7 +315,6 @@ ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) +
 ```
 
 ```{r}
-library(dplyr)
 best_grid_lassosum2 <- params2 %>%
   mutate(id = row_number()) %>%
   arrange(desc(score)) %>%
