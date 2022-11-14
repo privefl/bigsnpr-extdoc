@@ -41,6 +41,8 @@ Then,
 
 ## Warnings about the data
 
+- there are 49 duplicate individuals in the data on GenomeDK, and these were removed from the data transferred to Statistics Denmark
+
 - only dosage data is available on Statistics Denmark (i.e. imputation probabilities in the original format are not available there)
 
 - imputation is far from perfect (due to small chips)
