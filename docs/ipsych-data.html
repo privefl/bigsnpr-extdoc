@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-02" />
+<meta name="date" content="2022-11-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,7 +52,6 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-66N68ENQ12"></script>
 <script>
@@ -68,6 +67,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -276,6 +276,7 @@ div.csl-indent {
 <div id="warnings-about-the-data" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Warnings about the data<a href="ipsych-data.html#warnings-about-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
+<li><p>there are 49 duplicate individuals in the data on GenomeDK, and these were removed from the data transferred to Statistics Denmark</p></li>
 <li><p>only dosage data is available on Statistics Denmark (i.e. imputation probabilities in the original format are not available there)</p></li>
 <li><p>imputation is far from perfect (due to small chips)</p></li>
 <li><p>imputation accuracies are not the same for 2012 / 2015, as well as for some allele frequencies; you may need to perform some QC, analyze the two cohorts separately, or at least add an indicator variable as covariate (<code>is_2012</code>, e.g. when performing a GWAS)</p></li>
@@ -285,9 +286,9 @@ div.csl-indent {
 <h2><span class="header-section-number">8.4</span> Other data available<a href="ipsych-data.html#other-data-available" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>relatedness KING coefficients (<span class="math inline">\(&gt; 2^{-4.5}\)</span>) computed between pairs of individuals (cf. section <a href="preprocessing.html#PLINK">4.1</a>)</p></li>
-<li><p>PCs computed on the combined data, following best practices from <span class="citation"><a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, McGrath, &amp; Vilhjálmsson</a> (<a href="#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span> (cf. chapter <a href="population-structure.html#population-structure">5</a>)</p></li>
+<li><p>PCs computed on the combined data, following best practices from <span class="citation">Privé, Luu, Blum, et al. (<a href="#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span> (cf. chapter <a href="population-structure.html#population-structure">5</a>)</p></li>
 <li><p>a subset of homogeneous individuals (basically Northern Europeans) derived from PCs with two lines of code</p></li>
-<li><p>polygenic scores for 215 different traits and diseases, based on the UK Biobank individual-level data <span class="citation">(<a href="#ref-prive2021high" role="doc-biblioref">Privé et al., 2022</a>)</span>, computed for all iPSYCH individuals</p></li>
+<li><p>polygenic scores for 215 different traits and diseases, based on the UK Biobank individual-level data <span class="citation">(<a href="#ref-prive2021high" role="doc-biblioref">Privé, Aschard, et al., 2022</a>)</span>, computed for all iPSYCH individuals</p></li>
 <li><p>900+ external polygenic scores derived by Clara from externally published GWAS summary statistics <span class="citation">(<a href="#ref-albinana2022multi" role="doc-biblioref">Albinana et al., 2022</a>)</span></p></li>
 </ul>
 
@@ -296,19 +297,19 @@ div.csl-indent {
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-albinana2022multi" class="csl-entry">
-Albinana, C., Zhu, Z., Schork, A.J., Ingason, A., Aschard, H., Brikell, I., … others. (2022). <span>Multi-PGS</span> enhances polygenic prediction: Weighting 937 polygenic scores. <em>medRxiv</em>.
+Albinana, C., Zhu, Z., Schork, A.J., Ingason, A., Aschard, H., Brikell, I., et al.others. (2022). <span>Multi-PGS</span> enhances polygenic prediction: Weighting 937 polygenic scores. <em>medRxiv</em>. Retrieved from <a href="https://doi.org/10.1101/2022.09.14.22279940">https://doi.org/10.1101/2022.09.14.22279940</a>
 </div>
 <div id="ref-bybjerg2020ipsych2015" class="csl-entry">
-Bybjerg-Grauholm, J., Pedersen, C.B., Bækvad-Hansen, M., Pedersen, M.G., Adamsen, D., Hansen, C.S., … others. (2020). The <span class="nocase">iPSYCH2015</span> case-cohort sample: Updated directions for unravelling genetic and environmental architectures of severe mental disorders. <em>medRxiv</em>.
+Bybjerg-Grauholm, J., Pedersen, C.B., Bækvad-Hansen, M., Pedersen, M.G., Adamsen, D., Hansen, C.S., et al.others. (2020). The <span class="nocase">iPSYCH2015</span> case-cohort sample: Updated directions for unravelling genetic and environmental architectures of severe mental disorders. <em>medRxiv</em>. Retrieved from <a href="https://doi.org/10.1101/2020.11.30.20237768">https://doi.org/10.1101/2020.11.30.20237768</a>
 </div>
 <div id="ref-lam2020ricopili" class="csl-entry">
-Lam, M., Awasthi, S., Watson, H.J., Goldstein, J., Panagiotaropoulou, G., Trubetskoy, V., … others. (2020). RICOPILI: Rapid imputation for COnsortias PIpeLIne. <em>Bioinformatics</em>, <em>36</em>, 930–933.
+Lam, M., Awasthi, S., Watson, H.J., Goldstein, J., Panagiotaropoulou, G., Trubetskoy, V., et al.others. (2020). <a href="https://doi.org/10.1093/bioinformatics/btz633"><span class="nocase">RICOPILI: rapid imputation for COnsortias PIpeLIne</span></a>. <em>Bioinformatics</em>, <em>36</em>, 930–933.
 </div>
 <div id="ref-prive2021high" class="csl-entry">
-Privé, F., Aschard, H., Carmi, S., Folkersen, L., Hoggart, C., O’Reilly, P.F., &amp; Vilhjálmsson, B.J. (2022). Portability of 245 polygenic scores when derived from the <span>UK Biobank</span> and applied to 9 ancestry groups from the same cohort. <em>The American Journal of Human Genetics</em>, <em>109</em>, 12–23.
+Privé, F., Aschard, H., Carmi, S., Folkersen, L., Hoggart, C., O’Reilly, P.F., &amp; Vilhjálmsson, B.J. (2022). <a href="https://doi.org/10.1016/j.ajhg.2021.11.008">Portability of 245 polygenic scores when derived from the <span>UK Biobank</span> and applied to 9 ancestry groups from the same cohort</a>. <em>The American Journal of Human Genetics</em>, <em>109</em>, 12–23.
 </div>
 <div id="ref-prive2020efficient" class="csl-entry">
-Privé, F., Luu, K., Blum, M.G., McGrath, J.J., &amp; Vilhjálmsson, B.J. (2020). Efficient toolkit implementing best practices for principal component analysis of population genetic data. <em>Bioinformatics</em>, <em>36</em>, 4449–4457.
+Privé, F., Luu, K., Blum, M.G., McGrath, J.J., &amp; Vilhjálmsson, B.J. (2020). <a href="https://doi.org/10.1093/bioinformatics/btaa520">Efficient toolkit implementing best practices for principal component analysis of population genetic data</a>. <em>Bioinformatics</em>, <em>36</em>, 4449–4457.
 </div>
 </div>
             </section>

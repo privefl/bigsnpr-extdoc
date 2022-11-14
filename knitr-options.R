@@ -10,6 +10,8 @@ options(width = 75)
 Sys.setenv(LANGUAGE = "en")
 Sys.setlocale("LC_TIME", "C")
 
+FA_ICON_R <- icons::fontawesome$brands$`r-project`
+
 system <- function(...) {
   if (isTRUE(list(...)$intern)) {
     base::system(...)

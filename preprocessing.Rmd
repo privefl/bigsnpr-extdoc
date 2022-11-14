@@ -16,7 +16,7 @@ In this section, I talk about conversion, quality control and imputation. Conver
 
 ## Conversion and quality control of PLINK files {#PLINK}
 
-PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from `r icon::fa_r_project()`:
+PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from `r FA_ICON_R`:
 
 - `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0 [@chang2015second].
 
@@ -28,7 +28,7 @@ PLINK is very efficient for conversion and quality control of multiple formats, 
 	
 - `snp_plinkRmSamples()` for producing new PLINK files after having removed some individuals.
 
-- For any other PLINK function, I recommend calling PLINK directly from `r icon::fa_r_project()` thanks to system calls and package {glue}, e.g.
+- For any other PLINK function, I recommend calling PLINK directly from `r FA_ICON_R` thanks to system calls and package {glue}, e.g.
     ```{r}
     plink <- download_plink("tmp-data")
     system(glue::glue(

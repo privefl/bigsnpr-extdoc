@@ -17,4 +17,5 @@ TODO:
 - time it
 - bring hex stickers
 - bring USB key with large data
-- add prerequisites
+- add small exercises to see if they follow (in exo box) -> should be very fast
+- record it (with Zoom I guess)
