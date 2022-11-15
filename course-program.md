@@ -19,3 +19,9 @@ TODO:
 - bring USB key with large data
 - add small exercises to see if they follow (in exo box) -> should be very fast
 - record it (with Zoom I guess)
+
+
+ESTIMATED TIME TAKEN:
+1: 20-30 min
+2: 20-30 min
+3: 20-30 min

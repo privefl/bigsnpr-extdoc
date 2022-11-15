@@ -20,9 +20,7 @@ Therefore I decided to move all these functions that could be used on any data s
 This is why there are two packages, where {bigstatsr} can basically be used by any field using data stored as large matrices, while {bigsnpr} provides some tools rather specific to genotype data, largely building on top of {bigstatsr}. The initial description of the two packages is available in @prive2017efficient.
 
 :::: {.infobox .info}
-
 Functions starting with `big_` are part of {bigstatsr}, while functions starting with `snp_` or `bed_` are part of {bigsnpr}.
-
 ::::
 
 ## Features

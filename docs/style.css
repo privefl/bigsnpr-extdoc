@@ -32,6 +32,10 @@ pre code {
   background-image: url("images/information-icon.png");
 }
 
+.exo {
+  background-image: url("images/homework.png");
+}
+
 /* CITATIONS */
 
 div.csl-entry:before {

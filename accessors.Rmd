@@ -47,7 +47,9 @@ knitr::include_graphics("https://raw.githubusercontent.com/privefl/R-presentatio
 
 Learn more with [this tutorial on `big_apply()`](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
-*Exercise*: compute the sum of each column using `big_apply()`.
+:::: {.infobox .exo}
+Compute the sum of each column of `X <- big_attachExtdata()` using `big_apply()`.
+::::
 
 
 ## Similar accessor as Rcpp matrices
