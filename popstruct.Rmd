@@ -1,7 +1,13 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
 # Population structure
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("pca", "loadings")
+WORDS_TO_IGNORE <- c("pca", "loadings", "pcadapt")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -9,28 +15,28 @@ source("spelling-check.R")
 ## Principal Component Analysis (PCA)
 
 PCA on the genotype matrix can be used to capture population structure.
-PCA can capture different kinds of structure [@prive2020efficient]:
+However, PCA can actually capture different kinds of structure [@prive2020efficient]:
 
 - population structure (what we want),
-- LD structure, when there are two many correlated variants and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
-- relatedness structure, when there are related individuals that can cluster together in later PCs,
+- LD structure, when there are two many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
+- relatedness structure, when there are related individuals who usually cluster together in later PCs,
 - noise, basically just circles when looking at PC scores.
 
 Population structure is the second main topic of my research work (after polygenic scores).
 
-- In @prive2017efficient, I introduced an algorithm to compute PCA for a `bigSNP` object while accounting for the LD problem by using clumping (not pruning, cf. [this vignette](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html)) and an *automatic* removal of long-range LD regions.
+- In @prive2017efficient, I introduced an algorithm to compute PCA for a `bigSNP` object while accounting for the LD problem by using clumping (not pruning, cf. [this vignette](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html)) and an *automatic* detection and removal of long-range LD regions.
 
-- In @prive2020performing, I improved an algorithm to detect variants associated with population structure.
+- In @prive2020performing, I improved the implementation of an algorithm, pcadapt, to detect variants associated with population structure (could be considered as a GWAS for population structure).
 
-- In @prive2020efficient, I extended the package to be also able to run PCA directly on PLINK bed files with a small percentage of missing values, and investigated best practices for PCA in more detail.
+- In @prive2020efficient, I extended {bigsnpr} to also be able to run PCA on PLINK bed files directly with a small percentage of missing values, and investigated best practices for PCA in more detail.
 
 - In @prive2021high and @prive2021using, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from allele frequencies only (see [this vignette](https://privefl.github.io/bigsnpr/articles/ancestry.html)).
 
 
 ## Example {#exo-pca}
 
-There are many steps to properly perform a PCA, which I will try to detail in the following exercise.
-**You can find another example in [this vignette](https://privefl.github.io/bigsnpr/articles/bedpca.html).**
+There can be many steps to properly perform a PCA, which I try to showcase in the following example.
+**You can find another detailed example of how to conduct a PCA in [this vignette](https://privefl.github.io/bigsnpr/articles/bedpca.html).**
 
 Let us reuse the data prepared in \@ref(exo-preprocessing).
 
@@ -44,17 +50,28 @@ rel <- snp_plinkKINGQC(plink2, "tmp-data/GWAS_data_sorted_QC.bed",
 ```
 
 ```{r}
-hist(log2(rel$KINSHIP), "FD")
+hist(log2(rel$KINSHIP), "FD"); abline(v = c(-4.5, -3.5), col = "red")
 ```
 
 :::: {.infobox .info}
-When computing relatedness with KING, it may be needed to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank [@bycroft2018uk]. For example, see [this code](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/2-rel-and-pca.R).
+When computing relatedness with KING, LD pruning is *NOT* recommended. However, it may be useful to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank [@bycroft2018uk]. For example, see [this code](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/2-rel-and-pca.R).
 ::::
 
 Relatedness should not be a major issue here. Let us now compute PCs.
 
+:::: {.infobox .info}
+All the code that follows could be run on the bigSNP object we made before. Nevertheless, to showcase the `bed_*` functions here, we will run the following analyses on the bed file directly.
+::::
+
 ```{r}
+# Memory-map a bed file directly
 obj.bed <- bed("tmp-data/GWAS_data_sorted_QC.bed")
+str(obj.bed, max.level = 2)
+```
+
+```{r}
+# If you expect individuals to all come from the same continent,
+# use e.g. k=10, otherwise you can try k=25.
 obj.svd <- runonce::save_run(
   bed_autoSVD(obj.bed, k = 12, ncores = NCORES),
   file = "tmp-data/PCA_GWAS_data.rds")
@@ -68,18 +85,19 @@ plot(obj.svd, type = "scores", scores = 1:12, coeff = 0.5)
 There is some population structure (maybe up to 6 PCs). You should also check loadings to make sure there is no LD structure (peaks on loadings):
 
 ```{r}
-plot(obj.svd, type = "loadings", loadings = 1:8, coeff = 0.5)
+plot(obj.svd, type = "loadings", loadings = 1:6, coeff = 0.5)
 ```
 
 No peaks, but loadings of PC4 and PC5 are a bit odd.
 
-If you expect the individuals to mostly come from one population, you can simply use a robust distance to identify a homogeneous subset of individuals, then look at the histogram of log-distances to choose a threshold based on visual inspection (here I would probably choose 4.5).
+If you expect the individuals to mostly come from one population (e.g. in a national biobank), you can simply use a robust distance to identify a homogeneous subset of individuals, then look at the histogram of log-distances to choose a threshold based on visual inspection (here I would probably choose 4.5).
 
 ```{r}
 PC <- predict(obj.svd)
 ldist <- log(bigutilsr::dist_ogk(PC))
 hist(ldist, "FD")
 ```
+
 ```{r, message=FALSE}
 library(ggplot2)
 devtools::source_url(
@@ -112,6 +130,7 @@ projection <- bigreadr::fread2(
     # "https://figshare.com/ndownloader/files/31620953",  # for real analyses (847 MB)
     dir = "tmp-data", fname = "projection.csv.gz"))
 
+# coefficients to correct for overfitting of PCA
 correction <- c(1, 1, 1, 1.008, 1.021, 1.034, 1.052, 1.074, 1.099,
                 1.123, 1.15, 1.195, 1.256, 1.321, 1.382, 1.443)
 ```
@@ -147,19 +166,17 @@ all_sq_dist <- apply(all_centers, 1, function(one_center) {
   rowSums(sweep(all_proj, 2, one_center, '-')^2)
 })
 
-THR <- 0.005  # you can adjust this threshold
+THR <- 0.002  # you can adjust this threshold
 thr_sq_dist <- max(dist(all_centers)^2) * THR / 0.16
 
 group <- colnames(all_freq)[-(1:5)]
 group[group %in% c("Scandinavia", "United Kingdom", "Ireland")]   <- "Europe (North West)"
 group[group %in% c("Europe (South East)", "Europe (North East)")] <- "Europe (East)"
 
-cluster <- group[
-  apply(all_sq_dist, 1, function(x) {
-    ind <- which.min(x)
-    if (x[ind] < thr_sq_dist) ind else NA
-  })
-]
+cluster <- apply(all_sq_dist, 1, function(sq_dist) {
+  ind <- which.min(sq_dist)
+  if (sq_dist[ind] < thr_sq_dist) group[ind] else NA
+})
 
 table(cluster, exclude = NULL)  # no NA -> all assigned
 ```
@@ -177,3 +194,8 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 
 These are mostly European individuals.
 PC4-PC6 are definitively a bit odd. 
+
+
+:::: {.infobox .exo}
+Adapt all the previous code to rerun it on the bigSNP object we made before (instead of the bed object we have used here).
+::::

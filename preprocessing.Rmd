@@ -44,6 +44,7 @@ Note that most functions from {bigstatsr} and {bigsnpr} do NOT handle missing va
 Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. the code from [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
 In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient; @prive2020efficient].
+If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as discussed in \@ref(getting-FBM).
 
 
 ## Example {#exo-preprocessing}
@@ -68,7 +69,7 @@ system(glue::glue(
 ))
 ```
 
-As you can see from PLINK output, this data contains 1401 individuals and 500,000 variants, with a few missing values.
+As you can see from PLINK output, this data contains 1401 individuals and 500,000 variants, with a small percentage of missing values (2.2%).
 
 We can then perform some quality control using
 ```{r, include=FALSE}
@@ -84,7 +85,8 @@ bedfile2 <- snp_plinkQC(plink, "tmp-data/GWAS_data_sorted")
 obj.bigsnp <- snp_attach(rds)
 str(obj.bigsnp, max.level = 2)
 ```
-We can store some extra information on the individuals (e.g. some phenotypes):
+
+We can read and store some extra information on the individuals (e.g. some phenotypes):
 ```{r}
 clinical <- bigreadr::fread2("tmp-data/GWAS_clinical.csv")
 # Get the same order as for the genotypes

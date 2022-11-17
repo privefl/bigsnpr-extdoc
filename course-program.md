@@ -22,6 +22,11 @@ TODO:
 
 
 ESTIMATED TIME TAKEN:
+====
 1: 20-30 min
 2: 20-30 min
 3: 20-30 min
+4: 25-35 min
+====
+5: 1h+ (+ adapting code)
+====
