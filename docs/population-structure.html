@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-14" />
+<meta name="date" content="2022-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -251,7 +251,7 @@ div.csl-indent {
 <div id="principal-component-analysis-pca" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Principal Component Analysis (PCA)<a href="population-structure.html#principal-component-analysis-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>PCA on the genotype matrix can be used to capture population structure.
-However, PCA can actually capture different kinds of structure <span class="citation">(<a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, McGrath, &amp; Vilhjálmsson, 2020</a>)</span>:</p>
+However, PCA can actually capture different kinds of structure <span class="citation">(<a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al., 2020</a>)</span>:</p>
 <ul>
 <li>population structure (what we want),</li>
 <li>LD structure, when there are two many correlated variants (e.g. within long-range LD regions) and not enough population structure (see <a href="https://privefl.github.io/bigsnpr/articles/how-to-PCA.html">this vignette</a>),</li>
@@ -260,10 +260,10 @@ However, PCA can actually capture different kinds of structure <span class="cita
 </ul>
 <p>Population structure is the second main topic of my research work (after polygenic scores).</p>
 <ul>
-<li><p>In <span class="citation">Privé, Aschard, Ziyatdinov, &amp; Blum (<a href="#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span>, I introduced an algorithm to compute PCA for a <code>bigSNP</code> object while accounting for the LD problem by using clumping (not pruning, cf. <a href="https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html">this vignette</a>) and an <em>automatic</em> detection and removal of long-range LD regions.</p></li>
-<li><p>In <span class="citation">Privé, Luu, Vilhjálmsson, &amp; Blum (<a href="#ref-prive2020performing" role="doc-biblioref">2020</a>)</span>, I improved the implementation of an algorithm, pcadapt, to detect variants associated with population structure (could be considered as a GWAS for population structure).</p></li>
+<li><p>In <span class="citation">Privé et al. (<a href="#ref-prive2017efficient" role="doc-biblioref">2018</a>)</span>, I introduced an algorithm to compute PCA for a <code>bigSNP</code> object while accounting for the LD problem by using clumping (not pruning, cf. <a href="https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html">this vignette</a>) and an <em>automatic</em> detection and removal of long-range LD regions.</p></li>
+<li><p>In <span class="citation">Privé, Luu, Vilhjálmsson, et al. (<a href="#ref-prive2020performing" role="doc-biblioref">2020</a>)</span>, I improved the implementation of an algorithm, pcadapt, to detect variants associated with population structure (could be considered as a GWAS for population structure).</p></li>
 <li><p>In <span class="citation">Privé, Luu, Blum, et al. (<a href="#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span>, I extended {bigsnpr} to also be able to run PCA on PLINK bed files directly with a small percentage of missing values, and investigated best practices for PCA in more detail.</p></li>
-<li><p>In <span class="citation">Privé et al. (<a href="#ref-prive2021high" role="doc-biblioref">2022</a>)</span> and <span class="citation">Privé (<a href="#ref-prive2021using" role="doc-biblioref">2022</a>)</span>, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from allele frequencies only (see <a href="https://privefl.github.io/bigsnpr/articles/ancestry.html">this vignette</a>).</p></li>
+<li><p>In <span class="citation">Privé, Aschard, et al. (<a href="#ref-prive2021high" role="doc-biblioref">2022</a>)</span> and <span class="citation">Privé (<a href="#ref-prive2021using" role="doc-biblioref">2022</a>)</span>, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from allele frequencies only (see <a href="https://privefl.github.io/bigsnpr/articles/ancestry.html">this vignette</a>).</p></li>
 </ul>
 </div>
 <div id="exo-pca" class="section level2 hasAnchor" number="5.2">
@@ -272,13 +272,13 @@ However, PCA can actually capture different kinds of structure <span class="cita
 <strong>You can find another detailed example of how to conduct a PCA in <a href="https://privefl.github.io/bigsnpr/articles/bedpca.html">this vignette</a>.</strong></p>
 <p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">4.3</a>.</p>
 <p>First, let us get an idea of the relatedness in the data using</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="population-structure.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="population-structure.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="population-structure.html#cb3-1" aria-hidden="true" tabindex="-1"></a>(NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>())</span>
-<span id="cb3-2"><a href="population-structure.html#cb3-2" aria-hidden="true" tabindex="-1"></a>plink2 <span class="ot">&lt;-</span> <span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
-<span id="cb3-3"><a href="population-structure.html#cb3-3" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">snp_plinkKINGQC</span>(plink2, <span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>,</span>
-<span id="cb3-4"><a href="population-structure.html#cb3-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">thr.king =</span> <span class="dv">2</span><span class="sc">^-</span><span class="fl">4.5</span>, <span class="at">make.bed =</span> <span class="cn">FALSE</span>, <span class="at">ncores =</span> NCORES)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="population-structure.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log2</span>(rel<span class="sc">$</span>KINSHIP), <span class="st">&quot;FD&quot;</span>); <span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">4.5</span>, <span class="sc">-</span><span class="fl">3.5</span>), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="population-structure.html#cb50-1" aria-hidden="true" tabindex="-1"></a>(NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>())</span>
+<span id="cb50-2"><a href="population-structure.html#cb50-2" aria-hidden="true" tabindex="-1"></a>plink2 <span class="ot">&lt;-</span> <span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb50-3"><a href="population-structure.html#cb50-3" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">snp_plinkKINGQC</span>(plink2, <span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>,</span>
+<span id="cb50-4"><a href="population-structure.html#cb50-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">thr.king =</span> <span class="dv">2</span><span class="sc">^-</span><span class="fl">4.5</span>, <span class="at">make.bed =</span> <span class="cn">FALSE</span>, <span class="at">ncores =</span> NCORES)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="population-structure.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log2</span>(rel<span class="sc">$</span>KINSHIP), <span class="st">&quot;FD&quot;</span>); <span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">4.5</span>, <span class="sc">-</span><span class="fl">3.5</span>), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <div class="infobox info">
 <p>When computing relatedness with KING, LD pruning is <em>NOT</em> recommended. However, it may be useful to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank <span class="citation">(<a href="#ref-bycroft2018uk" role="doc-biblioref">Bycroft et al., 2018</a>)</span>. For example, see <a href="https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/2-rel-and-pca.R">this code</a>.</p>
@@ -287,9 +287,9 @@ However, PCA can actually capture different kinds of structure <span class="cita
 <div class="infobox info">
 <p>All the code that follows could be run on the bigSNP object we made before. Nevertheless, to showcase the <code>bed_*</code> functions here, we will run the following analyses on the bed file directly.</p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="population-structure.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Memory-map a bed file directly</span></span>
-<span id="cb5-2"><a href="population-structure.html#cb5-2" aria-hidden="true" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb5-3"><a href="population-structure.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(obj.bed, <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="population-structure.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Memory-map a bed file directly</span></span>
+<span id="cb52-2"><a href="population-structure.html#cb52-2" aria-hidden="true" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb52-3"><a href="population-structure.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(obj.bed, <span class="at">max.level =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>#&gt; Reference class &#39;bed&#39; [package &quot;bigsnpr&quot;] with 13 fields
 #&gt;  $ bedfile: chr &quot;tmp-data/GWAS_data_sorted_QC.bed&quot;
 #&gt;  $ extptr :&lt;externalptr&gt; 
@@ -307,64 +307,93 @@ However, PCA can actually capture different kinds of structure <span class="cita
 #&gt;  $ address:&lt;externalptr&gt; 
 #&gt;  and 16 methods, of which 2 are  possibly relevant:
 #&gt;    initialize, show#envRefClass</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="population-structure.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you expect individuals to all come from the same continent,</span></span>
-<span id="cb7-2"><a href="population-structure.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use e.g. k=10, otherwise you can try k=25.</span></span>
-<span id="cb7-3"><a href="population-structure.html#cb7-3" aria-hidden="true" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
-<span id="cb7-4"><a href="population-structure.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_autoSVD</span>(obj.bed, <span class="at">k =</span> <span class="dv">12</span>, <span class="at">ncores =</span> NCORES),</span>
-<span id="cb7-5"><a href="population-structure.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt;    user  system elapsed 
-#&gt;   21.70    1.20  142.45</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="population-structure.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="population-structure.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you expect individuals to all come from the same continent,</span></span>
+<span id="cb54-2"><a href="population-structure.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use e.g. k=10, otherwise you can try k=25.</span></span>
+<span id="cb54-3"><a href="population-structure.html#cb54-3" aria-hidden="true" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
+<span id="cb54-4"><a href="population-structure.html#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_autoSVD</span>(obj.bed, <span class="at">k =</span> <span class="dv">12</span>, <span class="at">ncores =</span> NCORES),</span>
+<span id="cb54-5"><a href="population-structure.html#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; 
+#&gt; Phase of clumping (on MAC) at r^2 &gt; 0.2.. keep 115258 variants.
+#&gt; Discarding 0 variant with MAC &lt; 10.
+#&gt; 
+#&gt; Iteration 1:
+#&gt; Computing SVD..
+#&gt; 309 outlier variants detected..
+#&gt; 2 long-range LD regions detected..
+#&gt; 
+#&gt; Iteration 2:
+#&gt; Computing SVD..
+#&gt; 19 outlier variants detected..
+#&gt; 0 long-range LD region detected..
+#&gt; 
+#&gt; Iteration 3:
+#&gt; Computing SVD..
+#&gt; 3 outlier variants detected..
+#&gt; 0 long-range LD region detected..
+#&gt; 
+#&gt; Iteration 4:
+#&gt; Computing SVD..
+#&gt; 15 outlier variants detected..
+#&gt; 0 long-range LD region detected..
+#&gt; 
+#&gt; Iteration 5:
+#&gt; Computing SVD..
+#&gt; 0 outlier variant detected..
+#&gt; 
+#&gt; Converged!
+#&gt;    user  system elapsed 
+#&gt;   26.58    1.34  139.57</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="population-structure.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="population-structure.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;scores&quot;</span>, <span class="at">scores =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">coeff =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="population-structure.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;scores&quot;</span>, <span class="at">scores =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">coeff =</span> <span class="fl">0.5</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-5-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>There is some population structure (maybe up to 6 PCs). You should also check loadings to make sure there is no LD structure (peaks on loadings):</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="population-structure.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;loadings&quot;</span>, <span class="at">loadings =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">coeff =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="population-structure.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;loadings&quot;</span>, <span class="at">loadings =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">coeff =</span> <span class="fl">0.5</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>No peaks, but loadings of PC4 and PC5 are a bit odd.</p>
 <p>If you expect the individuals to mostly come from one population (e.g. in a national biobank), you can simply use a robust distance to identify a homogeneous subset of individuals, then look at the histogram of log-distances to choose a threshold based on visual inspection (here I would probably choose 4.5).</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="population-structure.html#cb12-1" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(obj.svd)</span>
-<span id="cb12-2"><a href="population-structure.html#cb12-2" aria-hidden="true" tabindex="-1"></a>ldist <span class="ot">&lt;-</span> <span class="fu">log</span>(bigutilsr<span class="sc">::</span><span class="fu">dist_ogk</span>(PC))</span>
-<span id="cb12-3"><a href="population-structure.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ldist, <span class="st">&quot;FD&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="population-structure.html#cb59-1" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(obj.svd)</span>
+<span id="cb59-2"><a href="population-structure.html#cb59-2" aria-hidden="true" tabindex="-1"></a>ldist <span class="ot">&lt;-</span> <span class="fu">log</span>(bigutilsr<span class="sc">::</span><span class="fu">dist_ogk</span>(PC))</span>
+<span id="cb59-3"><a href="population-structure.html#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ldist, <span class="st">&quot;FD&quot;</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="population-structure.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb13-2"><a href="population-structure.html#cb13-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">source_url</span>(</span>
-<span id="cb13-3"><a href="population-structure.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R&quot;</span>)</span>
-<span id="cb13-4"><a href="population-structure.html#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="population-structure.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(k) {</span>
-<span id="cb13-6"><a href="population-structure.html#cb13-6" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb13-7"><a href="population-structure.html#cb13-7" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
-<span id="cb13-8"><a href="population-structure.html#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC[, k1], PC[, k2], <span class="at">color =</span> ldist, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb13-9"><a href="population-structure.html#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
-<span id="cb13-10"><a href="population-structure.html#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb13-11"><a href="population-structure.html#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;log-distance&quot;</span>) <span class="sc">+</span></span>
-<span id="cb13-12"><a href="population-structure.html#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
-<span id="cb13-13"><a href="population-structure.html#cb13-13" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">legend_ratio =</span> <span class="fl">0.2</span>, <span class="at">title_ratio =</span> <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="population-structure.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb60-2"><a href="population-structure.html#cb60-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">source_url</span>(</span>
+<span id="cb60-3"><a href="population-structure.html#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R&quot;</span>)</span>
+<span id="cb60-4"><a href="population-structure.html#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="population-structure.html#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb60-6"><a href="population-structure.html#cb60-6" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb60-7"><a href="population-structure.html#cb60-7" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
+<span id="cb60-8"><a href="population-structure.html#cb60-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC[, k1], PC[, k2], <span class="at">color =</span> ldist, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb60-9"><a href="population-structure.html#cb60-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb60-10"><a href="population-structure.html#cb60-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb60-11"><a href="population-structure.html#cb60-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;log-distance&quot;</span>) <span class="sc">+</span></span>
+<span id="cb60-12"><a href="population-structure.html#cb60-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
+<span id="cb60-13"><a href="population-structure.html#cb60-13" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">legend_ratio =</span> <span class="fl">0.2</span>, <span class="at">title_ratio =</span> <span class="dv">0</span>)</span></code></pre></div>
 <pre><code>#&gt; Warning: `qplot()` was deprecated in ggplot2 3.4.0.</code></pre>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>It would be nice if we could get a better sense of the ancestry of these individuals.
 To achieve this, we can project this data onto the PCA space of many known population groups defined in <span class="citation">Privé (<a href="#ref-prive2021using" role="doc-biblioref">2022</a>)</span>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="population-structure.html#cb15-1" aria-hidden="true" tabindex="-1"></a>all_freq <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
-<span id="cb15-2"><a href="population-structure.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb15-3"><a href="population-structure.html#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019027&quot;</span>,  <span class="co"># for the tutorial (46 MB)</span></span>
-<span id="cb15-4"><a href="population-structure.html#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620968&quot;,  # for real analyses (849 MB)</span></span>
-<span id="cb15-5"><a href="population-structure.html#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;ref_freqs.csv.gz&quot;</span>))</span>
-<span id="cb15-6"><a href="population-structure.html#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="population-structure.html#cb15-7" aria-hidden="true" tabindex="-1"></a>projection <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
-<span id="cb15-8"><a href="population-structure.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb15-9"><a href="population-structure.html#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019024&quot;</span>,  <span class="co"># for the tutorial (44 MB)</span></span>
-<span id="cb15-10"><a href="population-structure.html#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620953&quot;,  # for real analyses (847 MB)</span></span>
-<span id="cb15-11"><a href="population-structure.html#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;projection.csv.gz&quot;</span>))</span>
-<span id="cb15-12"><a href="population-structure.html#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="population-structure.html#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients to correct for overfitting of PCA</span></span>
-<span id="cb15-14"><a href="population-structure.html#cb15-14" aria-hidden="true" tabindex="-1"></a>correction <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">1.008</span>, <span class="fl">1.021</span>, <span class="fl">1.034</span>, <span class="fl">1.052</span>, <span class="fl">1.074</span>, <span class="fl">1.099</span>,</span>
-<span id="cb15-15"><a href="population-structure.html#cb15-15" aria-hidden="true" tabindex="-1"></a>                <span class="fl">1.123</span>, <span class="fl">1.15</span>, <span class="fl">1.195</span>, <span class="fl">1.256</span>, <span class="fl">1.321</span>, <span class="fl">1.382</span>, <span class="fl">1.443</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="population-structure.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb16-2"><a href="population-structure.html#cb16-2" aria-hidden="true" tabindex="-1"></a>matched <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="population-structure.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos, <span class="at">a1 =</span> allele1, <span class="at">a0 =</span> allele2) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-4"><a href="population-structure.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-5"><a href="population-structure.html#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">snp_match</span>(all_freq[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]) <span class="sc">%&gt;%</span></span>
-<span id="cb16-6"><a href="population-structure.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="population-structure.html#cb62-1" aria-hidden="true" tabindex="-1"></a>all_freq <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb62-2"><a href="population-structure.html#cb62-2" aria-hidden="true" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb62-3"><a href="population-structure.html#cb62-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019027&quot;</span>,  <span class="co"># for the tutorial (46 MB)</span></span>
+<span id="cb62-4"><a href="population-structure.html#cb62-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620968&quot;,  # for real analyses (849 MB)</span></span>
+<span id="cb62-5"><a href="population-structure.html#cb62-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;ref_freqs.csv.gz&quot;</span>))</span>
+<span id="cb62-6"><a href="population-structure.html#cb62-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-7"><a href="population-structure.html#cb62-7" aria-hidden="true" tabindex="-1"></a>projection <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb62-8"><a href="population-structure.html#cb62-8" aria-hidden="true" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb62-9"><a href="population-structure.html#cb62-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019024&quot;</span>,  <span class="co"># for the tutorial (44 MB)</span></span>
+<span id="cb62-10"><a href="population-structure.html#cb62-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620953&quot;,  # for real analyses (847 MB)</span></span>
+<span id="cb62-11"><a href="population-structure.html#cb62-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;projection.csv.gz&quot;</span>))</span>
+<span id="cb62-12"><a href="population-structure.html#cb62-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-13"><a href="population-structure.html#cb62-13" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients to correct for overfitting of PCA</span></span>
+<span id="cb62-14"><a href="population-structure.html#cb62-14" aria-hidden="true" tabindex="-1"></a>correction <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">1.008</span>, <span class="fl">1.021</span>, <span class="fl">1.034</span>, <span class="fl">1.052</span>, <span class="fl">1.074</span>, <span class="fl">1.099</span>,</span>
+<span id="cb62-15"><a href="population-structure.html#cb62-15" aria-hidden="true" tabindex="-1"></a>                <span class="fl">1.123</span>, <span class="fl">1.15</span>, <span class="fl">1.195</span>, <span class="fl">1.256</span>, <span class="fl">1.321</span>, <span class="fl">1.382</span>, <span class="fl">1.443</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="population-structure.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb63-2"><a href="population-structure.html#cb63-2" aria-hidden="true" tabindex="-1"></a>matched <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="population-structure.html#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos, <span class="at">a1 =</span> allele1, <span class="at">a0 =</span> allele2) <span class="sc">%&gt;%</span> </span>
+<span id="cb63-4"><a href="population-structure.html#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-5"><a href="population-structure.html#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">snp_match</span>(all_freq[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb63-6"><a href="population-structure.html#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
 <pre><code>#&gt;   chr     pos a0 a1 beta _NUM_ID_.ss       rsid _NUM_ID_
 #&gt; 1   1  752566  G  A   -1           2  rs3094315        1
 #&gt; 2   1  785989  T  C   -1           4  rs2980300        2
@@ -373,38 +402,38 @@ To achieve this, we can project this data onto the PCA space of many known popul
 #&gt; 5   1  949608  G  A    1           7     rs1921        5
 #&gt; 6   1 1018704  A  G   -1           8  rs9442372        6
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 301150 rows ]</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="population-structure.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># further subsetting on missing values</span></span>
-<span id="cb18-2"><a href="population-structure.html#cb18-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">bed_counts</span>(obj.bed, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)</span>
-<span id="cb18-3"><a href="population-structure.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># hist(nb_na &lt;- counts[4, ])</span></span>
-<span id="cb18-4"><a href="population-structure.html#cb18-4" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>(counts[<span class="dv">4</span>, ] <span class="sc">&lt;</span> (<span class="fu">nrow</span>(obj.bed) <span class="sc">*</span> <span class="fl">0.05</span>))        </span>
-<span id="cb18-5"><a href="population-structure.html#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="population-structure.html#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># project individuals (divided by 2) onto the PC space</span></span>
-<span id="cb18-7"><a href="population-structure.html#cb18-7" aria-hidden="true" tabindex="-1"></a>PROJ <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(projection[matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind], <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)])</span>
-<span id="cb18-8"><a href="population-structure.html#cb18-8" aria-hidden="true" tabindex="-1"></a>all_proj <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">sweep</span>(PROJ, <span class="dv">2</span>, correction <span class="sc">/</span> <span class="dv">2</span>, <span class="st">&#39;*&#39;</span>), <span class="dv">2</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb18-9"><a href="population-structure.html#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_prodVec</span>(obj.bed, x, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>[ind], <span class="at">ncores =</span> NCORES,</span>
-<span id="cb18-10"><a href="population-structure.html#cb18-10" aria-hidden="true" tabindex="-1"></a>              <span class="co"># scaling to get G if beta = 1 and (2 - G) if beta = -1</span></span>
-<span id="cb18-11"><a href="population-structure.html#cb18-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">center =</span> <span class="dv">1</span> <span class="sc">-</span> matched<span class="sc">$</span>beta[ind],</span>
-<span id="cb18-12"><a href="population-structure.html#cb18-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">scale =</span> matched<span class="sc">$</span>beta[ind])</span>
-<span id="cb18-13"><a href="population-structure.html#cb18-13" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="population-structure.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># further subsetting on missing values</span></span>
+<span id="cb65-2"><a href="population-structure.html#cb65-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">bed_counts</span>(obj.bed, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)</span>
+<span id="cb65-3"><a href="population-structure.html#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># hist(nb_na &lt;- counts[4, ])</span></span>
+<span id="cb65-4"><a href="population-structure.html#cb65-4" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>(counts[<span class="dv">4</span>, ] <span class="sc">&lt;</span> (<span class="fu">nrow</span>(obj.bed) <span class="sc">*</span> <span class="fl">0.05</span>))        </span>
+<span id="cb65-5"><a href="population-structure.html#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a href="population-structure.html#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co"># project individuals (divided by 2) onto the PC space</span></span>
+<span id="cb65-7"><a href="population-structure.html#cb65-7" aria-hidden="true" tabindex="-1"></a>PROJ <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(projection[matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind], <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)])</span>
+<span id="cb65-8"><a href="population-structure.html#cb65-8" aria-hidden="true" tabindex="-1"></a>all_proj <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">sweep</span>(PROJ, <span class="dv">2</span>, correction <span class="sc">/</span> <span class="dv">2</span>, <span class="st">&#39;*&#39;</span>), <span class="dv">2</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb65-9"><a href="population-structure.html#cb65-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bed_prodVec</span>(obj.bed, x, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>[ind], <span class="at">ncores =</span> NCORES,</span>
+<span id="cb65-10"><a href="population-structure.html#cb65-10" aria-hidden="true" tabindex="-1"></a>              <span class="co"># scaling to get G if beta = 1 and (2 - G) if beta = -1</span></span>
+<span id="cb65-11"><a href="population-structure.html#cb65-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">center =</span> <span class="dv">1</span> <span class="sc">-</span> matched<span class="sc">$</span>beta[ind],</span>
+<span id="cb65-12"><a href="population-structure.html#cb65-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">scale =</span> matched<span class="sc">$</span>beta[ind])</span>
+<span id="cb65-13"><a href="population-structure.html#cb65-13" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
 <p>We can then assign individuals to the closest center:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="population-structure.html#cb19-1" aria-hidden="true" tabindex="-1"></a>all_centers <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(<span class="fu">as.matrix</span>(all_freq[matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind], <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]), PROJ)</span>
-<span id="cb19-2"><a href="population-structure.html#cb19-2" aria-hidden="true" tabindex="-1"></a>all_sq_dist <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_centers, <span class="dv">1</span>, <span class="cf">function</span>(one_center) {</span>
-<span id="cb19-3"><a href="population-structure.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowSums</span>(<span class="fu">sweep</span>(all_proj, <span class="dv">2</span>, one_center, <span class="st">&#39;-&#39;</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb19-4"><a href="population-structure.html#cb19-4" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb19-5"><a href="population-structure.html#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="population-structure.html#cb19-6" aria-hidden="true" tabindex="-1"></a>THR <span class="ot">&lt;-</span> <span class="fl">0.002</span>  <span class="co"># you can adjust this threshold</span></span>
-<span id="cb19-7"><a href="population-structure.html#cb19-7" aria-hidden="true" tabindex="-1"></a>thr_sq_dist <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">dist</span>(all_centers)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> THR <span class="sc">/</span> <span class="fl">0.16</span></span>
-<span id="cb19-8"><a href="population-structure.html#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="population-structure.html#cb19-9" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
-<span id="cb19-10"><a href="population-structure.html#cb19-10" aria-hidden="true" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
-<span id="cb19-11"><a href="population-structure.html#cb19-11" aria-hidden="true" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
-<span id="cb19-12"><a href="population-structure.html#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-13"><a href="population-structure.html#cb19-13" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_sq_dist, <span class="dv">1</span>, <span class="cf">function</span>(sq_dist) {</span>
-<span id="cb19-14"><a href="population-structure.html#cb19-14" aria-hidden="true" tabindex="-1"></a>  ind <span class="ot">&lt;-</span> <span class="fu">which.min</span>(sq_dist)</span>
-<span id="cb19-15"><a href="population-structure.html#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sq_dist[ind] <span class="sc">&lt;</span> thr_sq_dist) group[ind] <span class="cf">else</span> <span class="cn">NA</span></span>
-<span id="cb19-16"><a href="population-structure.html#cb19-16" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb19-17"><a href="population-structure.html#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="population-structure.html#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cluster, <span class="at">exclude =</span> <span class="cn">NULL</span>)  <span class="co"># no NA -&gt; all assigned</span></span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="population-structure.html#cb66-1" aria-hidden="true" tabindex="-1"></a>all_centers <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(<span class="fu">as.matrix</span>(all_freq[matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind], <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]), PROJ)</span>
+<span id="cb66-2"><a href="population-structure.html#cb66-2" aria-hidden="true" tabindex="-1"></a>all_sq_dist <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_centers, <span class="dv">1</span>, <span class="cf">function</span>(one_center) {</span>
+<span id="cb66-3"><a href="population-structure.html#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowSums</span>(<span class="fu">sweep</span>(all_proj, <span class="dv">2</span>, one_center, <span class="st">&#39;-&#39;</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb66-4"><a href="population-structure.html#cb66-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb66-5"><a href="population-structure.html#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-6"><a href="population-structure.html#cb66-6" aria-hidden="true" tabindex="-1"></a>THR <span class="ot">&lt;-</span> <span class="fl">0.002</span>  <span class="co"># you can adjust this threshold</span></span>
+<span id="cb66-7"><a href="population-structure.html#cb66-7" aria-hidden="true" tabindex="-1"></a>thr_sq_dist <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">dist</span>(all_centers)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> THR <span class="sc">/</span> <span class="fl">0.16</span></span>
+<span id="cb66-8"><a href="population-structure.html#cb66-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-9"><a href="population-structure.html#cb66-9" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
+<span id="cb66-10"><a href="population-structure.html#cb66-10" aria-hidden="true" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
+<span id="cb66-11"><a href="population-structure.html#cb66-11" aria-hidden="true" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
+<span id="cb66-12"><a href="population-structure.html#cb66-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-13"><a href="population-structure.html#cb66-13" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_sq_dist, <span class="dv">1</span>, <span class="cf">function</span>(sq_dist) {</span>
+<span id="cb66-14"><a href="population-structure.html#cb66-14" aria-hidden="true" tabindex="-1"></a>  ind <span class="ot">&lt;-</span> <span class="fu">which.min</span>(sq_dist)</span>
+<span id="cb66-15"><a href="population-structure.html#cb66-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sq_dist[ind] <span class="sc">&lt;</span> thr_sq_dist) group[ind] <span class="cf">else</span> <span class="cn">NA</span></span>
+<span id="cb66-16"><a href="population-structure.html#cb66-16" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb66-17"><a href="population-structure.html#cb66-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-18"><a href="population-structure.html#cb66-18" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cluster, <span class="at">exclude =</span> <span class="cn">NULL</span>)  <span class="co"># no NA -&gt; all assigned</span></span></code></pre></div>
 <pre><code>#&gt; cluster
 #&gt;           Ashkenazi       Europe (East) Europe (North West) 
 #&gt;                 110                 148                 872 
@@ -412,14 +441,14 @@ To achieve this, we can project this data onto the PCA space of many known popul
 #&gt;                  45                 219                   4 
 #&gt;                &lt;NA&gt; 
 #&gt;                   3</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="population-structure.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(k) {</span>
-<span id="cb21-2"><a href="population-structure.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb21-3"><a href="population-structure.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
-<span id="cb21-4"><a href="population-structure.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC[, k1], PC[, k2], <span class="at">color =</span> cluster, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb21-5"><a href="population-structure.html#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb21-6"><a href="population-structure.html#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Assigned</span><span class="sc">\n</span><span class="st">population&quot;</span>) <span class="sc">+</span></span>
-<span id="cb21-7"><a href="population-structure.html#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
-<span id="cb21-8"><a href="population-structure.html#cb21-8" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">legend_ratio =</span> <span class="fl">0.25</span>, <span class="at">title_ratio =</span> <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="population-structure.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb68-2"><a href="population-structure.html#cb68-2" aria-hidden="true" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb68-3"><a href="population-structure.html#cb68-3" aria-hidden="true" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
+<span id="cb68-4"><a href="population-structure.html#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(PC[, k1], PC[, k2], <span class="at">color =</span> cluster, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb68-5"><a href="population-structure.html#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb68-6"><a href="population-structure.html#cb68-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Assigned</span><span class="sc">\n</span><span class="st">population&quot;</span>) <span class="sc">+</span></span>
+<span id="cb68-7"><a href="population-structure.html#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
+<span id="cb68-8"><a href="population-structure.html#cb68-8" aria-hidden="true" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">legend_ratio =</span> <span class="fl">0.25</span>, <span class="at">title_ratio =</span> <span class="dv">0</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-12-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>These are mostly European individuals.
 PC4-PC6 are definitively a bit odd.</p>
@@ -510,6 +539,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

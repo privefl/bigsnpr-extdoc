@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-14" />
+<meta name="date" content="2022-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -280,7 +280,7 @@ div.csl-indent {
 <li><code>$map</code>: A <code>data.frame</code> with some information on the genetic variants.</li>
 </ul>
 <p>The code used in class <em>FBM.code256</em> for imputed data is e.g. </p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="inputs-and-formats.html#cb1-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="inputs-and-formats.html#cb5-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
 <pre><code>#&gt;   [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
 #&gt;  [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
 #&gt;  [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
@@ -301,7 +301,7 @@ div.csl-indent {
 #&gt; [239]   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA
 #&gt; [253]   NA   NA   NA   NA</code></pre>
 <p>where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for handling many types of data while storing each elements using one byte only (x4 compared to bed files, but /8 compared to doubles).</p>
-<p>Since v1.0, package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values <span class="citation">(<a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, McGrath, &amp; Vilhjálmsson, 2020</a>)</span>.</p>
+<p>Since v1.0, package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values <span class="citation">(<a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al., 2020</a>)</span>.</p>
 <div class="infobox info">
 <p>If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only <em>FBM.code256</em>. We have started talking about this in <a href="https://github.com/privefl/bigsnpr/issues/185">this issue</a>.</p>
 </div>

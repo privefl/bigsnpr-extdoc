@@ -1,3 +1,9 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
 # Polygenic scores (PGS)
 
 ```{r setup, include=FALSE}
@@ -6,9 +12,9 @@ source("knitr-options.R")
 source("spelling-check.R")
 ```
 
-PGS methods are the main topic of my research work. These are the main methods currently available in the packages:
+Improving PGS methods is the main topic of my research work. These are the main methods currently available in the packages:
 
-- penalized regressions, with individual-level data (@prive2019efficient + [tutorial](https://privefl.github.io/bigstatsr/articles/penalized-regressions.html))
+- efficient penalized regressions, with individual-level data (@prive2019efficient + [tutorial](https://privefl.github.io/bigstatsr/articles/penalized-regressions.html))
 
 - Clumping and Thresholding (C+T) and Stacked C+T (SCT), with summary statistics and individual level data (@prive2019making + [tutorial](https://privefl.github.io/bigsnpr/articles/SCT.html))
 
@@ -44,6 +50,7 @@ gz <- runonce::download_file(
   "https://figshare.com/ndownloader/files/38077323",
   dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz")
 readLines(gz, n = 3)
+
 sumstats <- bigreadr::fread2(
   gz,
   select    = c("chr", "pos", "allele2", "allele1", "beta", "se", "freq", "info"),
@@ -94,7 +101,9 @@ ggplot(slice_sample(data.frame(sd_ref, sd_ss, is_bad), n = 50e3)) +
        color = "To remove?")
 ```
 
+:::: {.infobox .caution}
 When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace `2` by `sd(y)` when computing `sd_ss` (equations 1 and 2 of @prive2021identifying).
+::::
 
 When allele frequencies are available in the GWAS summary statistics, you can use them (along with INFO scores) to get an even better match:
 ```{r}
@@ -121,13 +130,23 @@ is_bad2 <-
   sd_ss < 0.05 | sd_af < 0.05 |
   info_snp$info < 0.7 | abs(diff) > 0.07
 mean(is_bad2)
-table(is_bad, is_bad2)
 df_beta <- info_snp[!is_bad2, ]
 ```
 
 Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes for faster running of this tutorial):
 
+```{r, include=FALSE}
+file.remove("tmp-data/corr.sbk")
+```
+
 ```{r}
+# Precomputed genetic positions (in cM) to avoid downloading large files in this tuto
+gen_pos <- readRDS(runonce::download_file(
+  "https://figshare.com/ndownloader/files/38247288",
+  dir = "tmp-data", fname = "gen_pos_tuto.rds"))
+
+df_beta <- dplyr::filter(df_beta, chr %in% 1:4)  # TO REMOVE (for speed here)
+
 for (chr in 1:4) {  # REPLACE BY 1:22
     
   print(chr)
@@ -139,26 +158,17 @@ for (chr in 1:4) {  # REPLACE BY 1:22
     ## indices in 'G'
     ind.chr2 <- df_beta$`_NUM_ID_`[ind.chr]
     
-    POS2 <- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = "tmp-data")
+    # genetic positions (in cM)
+    # POS2 <- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = "tmp-data")
+    POS2 <- gen_pos[ind.chr2]  # USE snp_asGeneticPos() IN REAL CODE
+    
+    # compute the banded correlation matrix in sparse matrix format
     snp_cor(G, ind.col = ind.chr2, size = 3 / 1000, infos.pos = POS2, 
             ncores = NCORES)
     
   }, file = paste0("tmp-data/corr_chr", chr, ".rds"))
-}
-```
-
-```{r, include=FALSE}
-file.remove("tmp-data/corr.sbk")
-```
-
-Then we create the on-disk sparse genome-wide correlation matrix (again using only the first 4 chromosomes, for speed in this tutorial; replace by `1:22`):
-```{r}
-for (chr in 1:4) {  # REPLACE BY 1:22
-  
-  print(chr)
-  
-  corr0 <- readRDS(paste0("tmp-data/corr_chr", chr, ".rds"))
-  
+    
+  # transform to SFBM (on-disk format) on the fly
   if (chr == 1) {
     ld <- Matrix::colSums(corr0^2)
     corr <- as_SFBM(corr0, "tmp-data/corr", compact = TRUE)
@@ -169,20 +179,24 @@ for (chr in 1:4) {  # REPLACE BY 1:22
 }
 ```
 
-To use the “compact” format for SFBMs, you need `packageVersion("bigsparser") >= package_version("0.5")`. 
+:::: {.infobox .caution}
+To use the "compact" format for SFBMs, you need `packageVersion("bigsparser") >= package_version("0.5")`. 
 Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version (to avoid crashes).
+::::
 
 ```{r}
 file.size(corr$sbk) / 1024^3  # file size in GB
 ```
 
-Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM should be enough.
+:::: {.infobox .caution}
+Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM on a laptop should be enough.
+::::
+
 
 ### LDpred2
 
 We can now run LD score regression:
 ```{r}
-df_beta <- dplyr::filter(df_beta, chr %in% 1:4)  # TO REMOVE (for speed here)
 (ldsc <- with(df_beta, snp_ldsc(ld, length(ld), chi2 = (beta / beta_se)^2,
                                  sample_size = n_eff, blocks = NULL)))
 ldsc_h2_est <- ldsc[["h2"]]
@@ -216,19 +230,18 @@ beta_grid <- snp_ldpred2_grid(corr, df_beta, params, ncores = NCORES)
 params$sparsity <- colMeans(beta_grid == 0)
 ```
 
-Then, we can compute the corresponding PGS for all these models:
+Then, we can compute the corresponding PGS for all these models, and visualize their performance:
 ```{r}
 pred_grid <- big_prodMat(G, beta_grid, ind.col = df_beta[["_NUM_ID_"]],
                          ncores = NCORES)
+
 params$score <- apply(pred_grid, 2, function(x) {
-  if (all(is.na(x))) return(NA)
-  summary(glm(CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"))$coef["x", 3]
+  if (all(is.na(x))) return(NA)  # models that diverged substantially
+  summary(glm(
+    CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"
+  ))$coef["x", 3]
 })
-```
 
-Note that missing values represent models that diverged substantially.
-
-```{r}
 ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
   theme_bigstatsr() +
   geom_point() +
@@ -238,6 +251,7 @@ ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
   labs(y = "GLM Z-Score", color = "h2") +
   theme(legend.position = "top", panel.spacing = unit(1, "lines"))
 ```
+
 Then you can use the best-performing model here.
 Note that you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set.
 ```{r, message=FALSE}
@@ -286,7 +300,7 @@ AUCBoot(final_pred_auto, obj.bigsnp$fam$CAD)
 
 ### lassosum2: grid of models
 
-lassosum2 is a re-implementation of the lassosum model that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It can therefore be run next to LDpred2 and the best model can be chosen using the validation set.
+lassosum2 is a re-implementation of the lassosum model [@mak2017polygenic] that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It can therefore be run next to LDpred2 and the best model can be chosen using the validation set.
 Note that parameter 's' from lassosum has been replaced by a new parameter 'delta' in lassosum2, in order to better reflect that the lassosum model also uses L2-regularization (therefore, elastic-net regularization).
 
 ```{r}
@@ -295,17 +309,19 @@ beta_lassosum2 <- snp_lassosum2(
   nlambda = 10, maxiter = 50)      # TO REMOVE, for speed here
 ```
 
+As with LDpred2-grid, we can compute the corresponding PGS for all these models, and visualize their performance:
 ```{r}
-params2 <- attr(beta_lassosum2, "grid_param")
 pred_grid2 <- big_prodMat(G, beta_lassosum2, ind.col = df_beta[["_NUM_ID_"]],
                           ncores = NCORES)
-params2$score <- apply(pred_grid2, 2, function(x) {
-  if (all(is.na(x))) return(NA)
-  summary(glm(CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"))$coef["x", 3]
-})
-```
 
-```{r}
+params2 <- attr(beta_lassosum2, "grid_param")
+params2$score <- apply(pred_grid2, 2, function(x) {
+  if (all(is.na(x))) return(NA)  # models that diverged substantially
+  summary(glm(
+    CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"
+  ))$coef["x", 3]
+})
+
 ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) +
   theme_bigstatsr() +
   geom_point() +
@@ -323,6 +339,7 @@ best_grid_lassosum2 <- params2 %>%
   beta_lassosum2[, .]
 ```
 
+We can choose the best-overall model from both LDpred2-grid and lassosum2:
 ```{r}
 best_grid_overall <- `if`(max(params2$score) > max(params$score),
                           best_grid_lassosum2,

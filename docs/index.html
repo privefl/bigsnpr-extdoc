@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
@@ -23,13 +23,13 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-14" />
+<meta name="date" content="2022-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
+
+
 
 <link rel="next" href="introduction.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -250,7 +250,7 @@ div.csl-indent {
 <h1 class="title">bigsnpr &amp; bigstatsr</h1>
 <h2 class="subtitle"><em>Extended documentation</em></h2>
 <p class="author"><em>Florian Privé</em></p>
-<p class="date"><em>2022-11-14</em></p>
+<p class="date"><em>2022-11-18</em></p>
 </div>
 <div id="about" class="section level1 unnumbered hasAnchor">
 <h1>About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -277,12 +277,17 @@ div.csl-indent {
 <span id="cb1-14"><a href="index.html#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38077323&quot;</span>,</span>
 <span id="cb1-15"><a href="index.html#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;sumstats_CAD_tuto.csv.gz&quot;</span>)  <span class="co"># 16 MB</span></span>
 <span id="cb1-16"><a href="index.html#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="index.html#cb1-17" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span><span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)   <span class="co"># 6.3 MB</span></span>
-<span id="cb1-18"><a href="index.html#cb1-18" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span><span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)  <span class="co"># 6.6 MB</span></span></code></pre></div>
+<span id="cb1-17"><a href="index.html#cb1-17" aria-hidden="true" tabindex="-1"></a>runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb1-18"><a href="index.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38247288&quot;</span>,</span>
+<span id="cb1-19"><a href="index.html#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;gen_pos_tuto.rds&quot;</span>)  <span class="co"># 2.5 MB</span></span>
+<span id="cb1-20"><a href="index.html#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="index.html#cb1-21" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span><span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)   <span class="co"># 6.3 MB</span></span>
+<span id="cb1-22"><a href="index.html#cb1-22" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span><span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)  <span class="co"># 6.6 MB</span></span></code></pre></div>
 <pre><code>#&gt; [1] &quot;tmp-data/GWAS_data.zip&quot;
 #&gt; [1] &quot;tmp-data/ref_freqs.csv.gz&quot;
 #&gt; [1] &quot;tmp-data/projection.csv.gz&quot;
 #&gt; [1] &quot;tmp-data/sumstats_CAD_tuto.csv.gz&quot;
+#&gt; [1] &quot;tmp-data/gen_pos_tuto.rds&quot;
 #&gt; [1] &quot;tmp-data/plink.exe&quot;
 #&gt; [1] &quot;tmp-data/plink2.exe&quot;</code></pre></li>
 </ul>

@@ -14,7 +14,6 @@ What will *NOT* be discussed:
 - Mendelian randomization
 
 TODO:
-- time it
 - bring hex stickers
 - bring USB key with large data
 - add small exercises to see if they follow (in exo box) -> should be very fast
@@ -30,3 +29,6 @@ ESTIMATED TIME TAKEN:
 ====
 5: 1h+ (+ adapting code)
 ====
+6: 10-20 min
+7: 45-60 min
+8: 10-20 min

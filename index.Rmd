@@ -51,6 +51,10 @@ source("spelling-check.R")
       "https://figshare.com/ndownloader/files/38077323",
       dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz")  # 16 MB
     
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38247288",
+      dir = "tmp-data", fname = "gen_pos_tuto.rds")  # 2.5 MB
+    
     bigsnpr::download_plink("tmp-data")   # 6.3 MB
     bigsnpr::download_plink2("tmp-data")  # 6.6 MB
     ```

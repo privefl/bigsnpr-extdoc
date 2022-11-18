@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-14" />
+<meta name="date" content="2022-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -258,8 +258,8 @@ div.csl-indent {
 </ul>
 <p>Then,</p>
 <ul>
-<li><p>I transformed this data to my format by transforming probabilities to dosages, and merging all datasets while restricting to variants passing qc1 for both waves 2012 / 2015 (around 8.8M variants, across a total of around 134K individuals)</p></li>
-<li><p>this is available in my <code>bigSNP</code> format in sub-folder <code>bigsnp_r_format/</code>, which can be loaded into R with <code>snp_attach("dosage_ipsych2015.rds")</code>, and for which the backingfile is one very large binary file of 1.1 TB</p></li>
+<li><p>I transformed this data to my bigSNP format by transforming probabilities to dosages, and merging all datasets while restricting to variants passing qc1 for both waves 2012 / 2015 (around 8.8M variants, across a total of around 134K individuals)</p></li>
+<li><p>this is available in the sub-folder <code>bigsnp_r_format/</code>, and can be loaded into R with <code>snp_attach("dosage_ipsych2015.rds")</code>, and for which the backingfile is one very large binary file of 1.1 TB</p></li>
 <li><p>this stores dosage data, i.e. expected genotype values <span class="math inline">\(0 \times P(0) + 1 \times P(1) + 2 \times P(2)\)</span> (between 0 and 2, but rounded to 2 decimal places through <code>CODE_DOSAGE</code>)</p></li>
 <li><p>there are also information on the individuals (in <code>$fam</code>) and on the variants (in <code>$map</code>)</p></li>
 </ul>
