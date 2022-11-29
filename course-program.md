@@ -18,6 +18,7 @@ TODO:
 - bring USB key with large data
 - add small exercises to see if they follow (in exo box) -> should be very fast
 - record it (with Zoom I guess)
+- round of table
 
 
 ESTIMATED TIME TAKEN:
@@ -32,3 +33,8 @@ ESTIMATED TIME TAKEN:
 6: 10-20 min
 7: 45-60 min
 8: 10-20 min
+
+TODO:
+- Implement function for projecting individuals (and maybe ancestry grouping or proportions as an option)
+- Beware that the projection does not really handle missing values very well
+- Mount video

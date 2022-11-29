@@ -1,19 +1,19 @@
 --- 
 title: "bigsnpr & bigstatsr"
-subtitle: "Extended documentation"
 author: "Florian Privé"
 date: "`r Sys.Date()`"
+subtitle: Extended documentation
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [refs.bib]
+bibliography: refs.bib
 biblio-style: apalike
 link-citations: yes
 csl: apa-modified.csl
-description: "Extended documentation for bigsnpr & bigstatsr."
-twitter-handle: "privefl"
-github-repo: "privefl/bigsnpr-extdoc"
-url: 'https\://privefl.github.io/bigsnpr-extdoc/'
-cover-image: "images/bigstatsr.png"
+description: Extended documentation for bigsnpr & bigstatsr.
+twitter-handle: privefl
+github-repo: privefl/bigsnpr-extdoc
+url: https\://privefl.github.io/bigsnpr-extdoc/
+cover-image: images/bigstatsr.png
 ---
 
 
@@ -24,6 +24,10 @@ WORDS_TO_IGNORE <- c("ShareAlike", "Florian", "Privé", "cpp", "RStudio")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
+
+## 4-hour video going over these materials {-}
+
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/7VxBT5A_AcA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
 
 ## Prerequisites {-}
 

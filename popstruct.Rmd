@@ -94,7 +94,7 @@ If you expect the individuals to mostly come from one population (e.g. in a nati
 
 ```{r}
 PC <- predict(obj.svd)
-ldist <- log(bigutilsr::dist_ogk(PC))
+ldist <- log(bigutilsr::dist_ogk(PC[, 1:6]))
 hist(ldist, "FD")
 ```
 
