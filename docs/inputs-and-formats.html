@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
-  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
@@ -16,14 +16,14 @@
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 2 Inputs and formats | bigsnpr &amp; bigstatsr" />
-  <meta name="twitter:site" content="@privefl" />
+  
   <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
 
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-18" />
+<meta name="date" content="2025-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
@@ -169,6 +173,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#hour-video-going-over-these-materials"><i class="fa fa-check"></i>4-hour video going over these materials</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
@@ -280,7 +285,7 @@ div.csl-indent {
 <li><code>$map</code>: A <code>data.frame</code> with some information on the genetic variants.</li>
 </ul>
 <p>The code used in class <em>FBM.code256</em> for imputed data is e.g. </p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="inputs-and-formats.html#cb5-1" aria-hidden="true" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="inputs-and-formats.html#cb5-1" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
 <pre><code>#&gt;   [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
 #&gt;  [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
 #&gt;  [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
@@ -301,10 +306,7 @@ div.csl-indent {
 #&gt; [239]   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA   NA
 #&gt; [253]   NA   NA   NA   NA</code></pre>
 <p>where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for handling many types of data while storing each elements using one byte only (x4 compared to bed files, but /8 compared to doubles).</p>
-<p>Since v1.0, package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values <span class="citation">(<a href="#ref-prive2020efficient" role="doc-biblioref">Privé, Luu, Blum, et al., 2020</a>)</span>.</p>
-<div class="infobox info">
-<p>If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only <em>FBM.code256</em>. We have started talking about this in <a href="https://github.com/privefl/bigsnpr/issues/185">this issue</a>.</p>
-</div>
+<p>Package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values <span class="citation">(<a href="#ref-prive2020efficient">Privé, Luu, Blum, et al., 2020</a>)</span>.</p>
 </div>
 <div id="getting-FBM" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Getting an FBM or bigSNP object<a href="inputs-and-formats.html#getting-FBM" class="anchor-section" aria-label="Anchor link to header"></a></h2>

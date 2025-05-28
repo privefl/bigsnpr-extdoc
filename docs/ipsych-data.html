@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr</title>
   <meta name="description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
-  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr" />
   <meta property="og:type" content="book" />
@@ -16,14 +16,14 @@
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 8 iPSYCH data | bigsnpr &amp; bigstatsr" />
-  <meta name="twitter:site" content="@privefl" />
+  
   <meta name="twitter:description" content="Extended documentation for bigsnpr &amp; bigstatsr." />
   <meta name="twitter:image" content="https://privefl.github.io/bigsnpr-extdoc//images/bigstatsr.png" />
 
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2022-11-18" />
+<meta name="date" content="2025-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
@@ -169,6 +173,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#hour-video-going-over-these-materials"><i class="fa fa-check"></i>4-hour video going over these materials</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i>Author</a></li>
@@ -251,7 +256,7 @@ div.csl-indent {
 <div id="data-on-genomedk" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Data on GenomeDK<a href="ipsych-data.html#data-on-genomedk" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><p>The iPSYCH2015 data <span class="citation">(<a href="#ref-bybjerg2020ipsych2015" role="doc-biblioref">Bybjerg-Grauholm et al., 2020</a>)</span> has been imputed (not by me) using the RICOPILI pipeline <span class="citation">(<a href="#ref-lam2020ricopili" role="doc-biblioref">Lam et al., 2020</a>)</span>; you can get more info about this pipeline <a href="https://sites.google.com/a/broadinstitute.org/ricopili/">here</a></p></li>
+<li><p>The iPSYCH2015 data <span class="citation">(<a href="#ref-bybjerg2020ipsych2015">Bybjerg-Grauholm et al., 2020</a>)</span> has been imputed (not by me) using the RICOPILI pipeline <span class="citation">(<a href="#ref-lam2020ricopili">Lam et al., 2020</a>)</span>; you can get more info about this pipeline <a href="https://sites.google.com/a/broadinstitute.org/ricopili/">here</a></p></li>
 <li><p>imputation has been performed <em>separately</em> for the previous (2012) data and the new (2015) data</p></li>
 <li><p>outputs are in IMPUTE2 Oxford format storing imputation probabilities (to be 0, 1, or 2), separated for 2012 and 2015 and by regions of the genome</p></li>
 <li><p>RICOPILI “qc1”: variants with an INFO score &gt; 0.1 and MAF &gt; 0.005</p></li>
@@ -278,7 +283,7 @@ div.csl-indent {
 <ul>
 <li><p>there are 49 duplicate individuals in the data on GenomeDK, and these were removed from the data transferred to Statistics Denmark</p></li>
 <li><p>only dosage data is available on Statistics Denmark (i.e. imputation probabilities in the original format are not available there)</p></li>
-<li><p>imputation is far from perfect (due to small chips)</p></li>
+<li><p>imputation is far from perfect (due to small genotyping chips)</p></li>
 <li><p>imputation accuracies are not the same for 2012 / 2015, as well as for some allele frequencies; you may need to perform some QC, analyze the two cohorts separately, or at least add an indicator variable as covariate (<code>is_2012</code>, e.g. when performing a GWAS)</p></li>
 </ul>
 </div>
@@ -286,10 +291,11 @@ div.csl-indent {
 <h2><span class="header-section-number">8.4</span> Other data available<a href="ipsych-data.html#other-data-available" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>relatedness KING coefficients (<span class="math inline">\(&gt; 2^{-4.5}\)</span>) computed between pairs of individuals (cf. section <a href="preprocessing.html#PLINK">4.1</a>)</p></li>
-<li><p>PCs computed on the combined data, following best practices from <span class="citation">Privé, Luu, Blum, et al. (<a href="#ref-prive2020efficient" role="doc-biblioref">2020</a>)</span> (cf. chapter <a href="population-structure.html#population-structure">5</a>)</p></li>
+<li><p>PCs computed on the combined data, following best practices from <span class="citation">Privé, Luu, Blum, et al. (<a href="#ref-prive2020efficient">2020</a>)</span> (cf. chapter <a href="population-structure.html#population-structure">5</a>)</p></li>
 <li><p>a subset of homogeneous individuals (basically Northern Europeans) derived from PCs with two lines of code</p></li>
-<li><p>polygenic scores for 215 different traits and diseases, based on the UK Biobank individual-level data <span class="citation">(<a href="#ref-prive2021high" role="doc-biblioref">Privé, Aschard, et al., 2022</a>)</span>, computed for all iPSYCH individuals</p></li>
-<li><p>900+ external polygenic scores derived by Clara from externally published GWAS summary statistics <span class="citation">(<a href="#ref-albinana2022multi" role="doc-biblioref">Albinana et al., 2022</a>)</span></p></li>
+<li><p>PGS for 215 different traits and diseases, based on the UK Biobank individual-level data <span class="citation">(<a href="#ref-prive2021high">Privé, Aschard, et al., 2022</a>)</span>, computed for all iPSYCH individuals</p></li>
+<li><p>900+ external PGS derived by Clara from externally published GWAS summary statistics <span class="citation">(<a href="#ref-albinana2022multi">Albiñana et al., 2023</a>)</span></p></li>
+<li><p>even more PGS derived by Ole (ask him about them)</p></li>
 </ul>
 
 </div>
@@ -297,13 +303,13 @@ div.csl-indent {
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-albinana2022multi" class="csl-entry">
-Albinana, C., Zhu, Z., Schork, A.J., Ingason, A., Aschard, H., Brikell, I., et al.others. (2022). <span>Multi-PGS</span> enhances polygenic prediction: Weighting 937 polygenic scores. <em>medRxiv</em>. Retrieved from <a href="https://doi.org/10.1101/2022.09.14.22279940">https://doi.org/10.1101/2022.09.14.22279940</a>
+Albiñana, C., Zhu, Z., Schork, A.J., Ingason, A., Aschard, H., Brikell, I., et al. (2023). <a href="https://doi.org/10.1038/s41467-023-40330-w"><span>Multi-PGS</span> enhances polygenic prediction by combining 937 polygenic scores</a>. <em>Nature Communications</em>, <em>14</em>, 4702.
 </div>
 <div id="ref-bybjerg2020ipsych2015" class="csl-entry">
-Bybjerg-Grauholm, J., Pedersen, C.B., Bækvad-Hansen, M., Pedersen, M.G., Adamsen, D., Hansen, C.S., et al.others. (2020). The <span class="nocase">iPSYCH2015</span> case-cohort sample: Updated directions for unravelling genetic and environmental architectures of severe mental disorders. <em>medRxiv</em>. Retrieved from <a href="https://doi.org/10.1101/2020.11.30.20237768">https://doi.org/10.1101/2020.11.30.20237768</a>
+Bybjerg-Grauholm, J., Pedersen, C.B., Bækvad-Hansen, M., Pedersen, M.G., Adamsen, D., Hansen, C.S., et al. (2020). The <span class="nocase">iPSYCH2015</span> case-cohort sample: Updated directions for unravelling genetic and environmental architectures of severe mental disorders. <em>medRxiv</em>. Retrieved from <a href="https://doi.org/10.1101/2020.11.30.20237768">https://doi.org/10.1101/2020.11.30.20237768</a>
 </div>
 <div id="ref-lam2020ricopili" class="csl-entry">
-Lam, M., Awasthi, S., Watson, H.J., Goldstein, J., Panagiotaropoulou, G., Trubetskoy, V., et al.others. (2020). <a href="https://doi.org/10.1093/bioinformatics/btz633"><span class="nocase">RICOPILI: rapid imputation for COnsortias PIpeLIne</span></a>. <em>Bioinformatics</em>, <em>36</em>, 930–933.
+Lam, M., Awasthi, S., Watson, H.J., Goldstein, J., Panagiotaropoulou, G., Trubetskoy, V., et al. (2020). <a href="https://doi.org/10.1093/bioinformatics/btz633"><span class="nocase">RICOPILI: rapid imputation for COnsortias PIpeLIne</span></a>. <em>Bioinformatics</em>, <em>36</em>, 930–933.
 </div>
 <div id="ref-prive2021high" class="csl-entry">
 Privé, F., Aschard, H., Carmi, S., Folkersen, L., Hoggart, C., O’Reilly, P.F., &amp; Vilhjálmsson, B.J. (2022). <a href="https://doi.org/10.1016/j.ajhg.2021.11.008">Portability of 245 polygenic scores when derived from the <span>UK Biobank</span> and applied to 9 ancestry groups from the same cohort</a>. <em>The American Journal of Human Genetics</em>, <em>109</em>, 12–23.

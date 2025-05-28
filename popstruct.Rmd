@@ -26,11 +26,11 @@ Population structure is the second main topic of my research work (after polygen
 
 - In @prive2017efficient, I introduced an algorithm to compute PCA for a `bigSNP` object while accounting for the LD problem by using clumping (not pruning, cf. [this vignette](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html)) and an *automatic* detection and removal of long-range LD regions.
 
-- In @prive2020performing, I improved the implementation of an algorithm, pcadapt, to detect variants associated with population structure (could be considered as a GWAS for population structure).
+- In @prive2020performing, I improved the implementation of the pcadapt algorithm, which detects variants associated with population structure (i.e. some kind of GWAS for population structure).
 
 - In @prive2020efficient, I extended {bigsnpr} to also be able to run PCA on PLINK bed files directly with a small percentage of missing values, and investigated best practices for PCA in more detail.
 
-- In @prive2021high and @prive2021using, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from allele frequencies only (see [this vignette](https://privefl.github.io/bigsnpr/articles/ancestry.html)).
+- In @prive2021high and @prive2021using, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from genotype data but also from allele frequencies only (see [this vignette](https://privefl.github.io/bigsnpr/articles/ancestry.html)).
 
 
 ## Example {#exo-pca}
@@ -100,8 +100,7 @@ hist(ldist, "FD")
 
 ```{r, message=FALSE}
 library(ggplot2)
-devtools::source_url(
-  "https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R")
+source("https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R")
 
 plot_grid2(plotlist = lapply(1:4, function(k) {
   k1 <- 2 * k - 1
@@ -137,6 +136,7 @@ correction <- c(1, 1, 1, 1.008, 1.021, 1.034, 1.052, 1.074, 1.099,
 
 
 ```{r, warning=FALSE, message=FALSE}
+# match variants between the two datasets
 library(dplyr)
 matched <- obj.bed$map %>%
   transmute(chr = chromosome, pos = physical.pos, a1 = allele1, a0 = allele2) %>% 
@@ -178,7 +178,7 @@ cluster <- apply(all_sq_dist, 1, function(sq_dist) {
   if (sq_dist[ind] < thr_sq_dist) group[ind] else NA
 })
 
-table(cluster, exclude = NULL)  # no NA -> all assigned
+table(cluster, exclude = NULL)  # 3 NAs -> almost all assigned
 ```
 
 ```{r}

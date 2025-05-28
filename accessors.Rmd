@@ -17,14 +17,17 @@ X <- FBM(2, 5, init = 1:10, backingfile = "test")$save()
 ```{r}
 X$backingfile                ## the file where the data is actually stored
 X <- big_attach("test.rds")  ## can get the FBM from any R session
-X[, 1]  ## ok
-X[1, ]  ## bad
-X[]     ## super bad
 ```
 
 You can access the whole FBM as an R matrix in memory using `X[]`.
 However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
 Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.
+
+```{r}
+X[, 1]  ## ok (must read first column only)
+X[1, ]  ## bad (must read all data from disk)
+X[]     ## super bad (standard R matrix in memory)
+```
 
 
 ## Split-(par)Apply-Combine Strategy

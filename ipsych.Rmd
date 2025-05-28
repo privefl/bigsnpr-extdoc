@@ -45,7 +45,7 @@ Then,
 
 - only dosage data is available on Statistics Denmark (i.e. imputation probabilities in the original format are not available there)
 
-- imputation is far from perfect (due to small chips)
+- imputation is far from perfect (due to small genotyping chips)
 
 - imputation accuracies are not the same for 2012 / 2015, as well as for some allele frequencies; you may need to perform some QC, analyze the two cohorts separately, or at least add an indicator variable as covariate (`is_2012`, e.g. when performing a GWAS)
 
@@ -58,6 +58,8 @@ Then,
 
 - a subset of homogeneous individuals (basically Northern Europeans) derived from PCs with two lines of code
 
-- polygenic scores for 215 different traits and diseases, based on the UK Biobank individual-level data [@prive2021high], computed for all iPSYCH individuals
+- PGS for 215 different traits and diseases, based on the UK Biobank individual-level data [@prive2021high], computed for all iPSYCH individuals
 
-- 900+ external polygenic scores derived by Clara from externally published GWAS summary statistics [@albinana2022multi]
+- 900+ external PGS derived by Clara from externally published GWAS summary statistics [@albinana2022multi]
+
+- even more PGS derived by Ole (ask him about them)

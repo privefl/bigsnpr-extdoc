@@ -38,7 +38,7 @@ covar <- cbind(as.matrix(obj.bigsnp$fam[c("sex", "age")]), PC[, 1:6])
 ```
 
 :::: {.infobox .caution}
-You probably should not account for other information such as cholesterol as they are heritable covariates [@aschard2015adjusting].
+You probably should not account for other information such as cholesterol as they are heritable covariates [@aschard2015adjusting; @day2016robust].
 ::::
 
 ```{r}

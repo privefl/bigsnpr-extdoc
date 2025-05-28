@@ -47,11 +47,8 @@ bigsnpr::CODE_DOSAGE
 ```
 where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for handling many types of data while storing each elements using one byte only (x4 compared to bed files, but /8 compared to doubles). 
 
-Since v1.0, package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values [@prive2020efficient].
+Package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values [@prive2020efficient].
 
-:::: {.infobox .info}
-If there is a demand for it, I might extend functions in {bigsnpr} to handle more types of FBMs than only *FBM.code256*. We have started talking about this in [this issue](https://github.com/privefl/bigsnpr/issues/185).
-::::
 
 ## Getting an FBM or bigSNP object {#getting-FBM}
 

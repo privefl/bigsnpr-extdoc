@@ -77,11 +77,11 @@ info_snp <- snp_match(sumstats, map, return_flip_and_rev = TRUE) %>%
 Check the summary statistics; some quality control may be needed:
 ```{r}
 hist(info_snp$n_eff)    # all the same values, otherwise filter at 70% of max
-hist(info_snp$info)     # very good imputation; filter e.g. at 0.7
+hist(info_snp$info)     # very good imputation; filter e.g. at 0.7 or 0.8
 summary(info_snp$freq)
 ```
 
-Then we can perform some quality control on the summary statistics by checking whether standard deviations inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
+Then we can perform some quality control on the summary statistics by checking whether standard deviations (of genotypes) inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
 ```{r}
 af_ref <- big_colstats(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)$sum / (2 * nrow(G))
 sd_ref <- sqrt(2 * af_ref * (1 - af_ref))
@@ -118,8 +118,8 @@ ggplot(slice_sample(data.frame(sd_af, sd_ss), n = 50e3)) +
 ```
 You can still use the reference panel to do some quality control by comparing allele frequencies:
 ```{r}
-diff <- af_ref - info_snp$freq
-hist(diff, "FD", xlim = c(-0.1, 0.1))
+af_diff <- af_ref - info_snp$freq
+hist(af_diff, "FD", xlim = c(-0.1, 0.1))
 ```
 
 Then you can filter
@@ -128,12 +128,12 @@ Then you can filter
 is_bad2 <-
   sd_ss < (0.7 * sd_af) | sd_ss > (sd_af + 0.1) | 
   sd_ss < 0.05 | sd_af < 0.05 |
-  info_snp$info < 0.7 | abs(diff) > 0.07
+  info_snp$info < 0.7 | abs(af_diff) > 0.07
 mean(is_bad2)
 df_beta <- info_snp[!is_bad2, ]
 ```
 
-Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes for faster running of this tutorial):
+Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes here, for faster running of this tutorial):
 
 ```{r, include=FALSE}
 file.remove("tmp-data/corr.sbk")
@@ -160,7 +160,7 @@ for (chr in 1:4) {  # REPLACE BY 1:22
     
     # genetic positions (in cM)
     # POS2 <- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = "tmp-data")
-    POS2 <- gen_pos[ind.chr2]  # USE snp_asGeneticPos() IN REAL CODE
+    POS2 <- gen_pos[ind.chr2]  # PRECOMPUTED HERE; USE snp_asGeneticPos() IN REAL CODE
     
     # compute the banded correlation matrix in sparse matrix format
     snp_cor(G, ind.col = ind.chr2, size = 3 / 1000, infos.pos = POS2, 
@@ -179,10 +179,10 @@ for (chr in 1:4) {  # REPLACE BY 1:22
 }
 ```
 
-:::: {.infobox .caution}
-To use the "compact" format for SFBMs, you need `packageVersion("bigsparser") >= package_version("0.5")`. 
-Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version (to avoid crashes).
-::::
+<!-- :::: {.infobox .caution} -->
+<!-- To use the "compact" format for SFBMs, you need `packageVersion("bigsparser") >= package_version("0.5")`.  -->
+<!-- Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version (to avoid crashes). -->
+<!-- :::: -->
 
 ```{r}
 file.size(corr$sbk) / 1024^3  # file size in GB
@@ -221,6 +221,7 @@ dim(params)
 
 Here, we will be using this smaller grid instead (for speed in this tutorial):
 ```{r}
+# smaller grid for tutorial only (USE PREVIOUS ONE IN REAL CODE)
 (params <- expand.grid(p = signif(seq_log(1e-4, 0.5, length.out = 16), 2),
                        h2 = round(ldsc_h2_est, 4), sparse = TRUE))
 ```
@@ -235,11 +236,11 @@ Then, we can compute the corresponding PGS for all these models, and visualize t
 pred_grid <- big_prodMat(G, beta_grid, ind.col = df_beta[["_NUM_ID_"]],
                          ncores = NCORES)
 
-params$score <- apply(pred_grid, 2, function(x) {
-  if (all(is.na(x))) return(NA)  # models that diverged substantially
-  summary(glm(
-    CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"
-  ))$coef["x", 3]
+params$score <- apply(pred_grid, 2, function(.x) {
+  if (all(is.na(.x))) return(NA)  # models that diverged substantially
+  summary(glm(  # simply use `lm()` for quantitative traits
+    CAD ~ .x + sex + age, data = obj.bigsnp$fam, family = "binomial"
+  ))$coef[".x", 3]
 })
 
 ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
@@ -253,12 +254,13 @@ ggplot(params, aes(x = p, y = score, color = as.factor(h2))) +
 ```
 
 Then you can use the best-performing model here.
-Note that you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set.
+Note that, in practice, you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set (unrelated to those in the validation set).
 ```{r, message=FALSE}
 library(dplyr)
 best_beta_grid <- params %>%
   mutate(id = row_number()) %>%
   arrange(desc(score)) %>%
+  print() %>% 
   slice(1) %>%
   pull(id) %>%
   beta_grid[, .]
@@ -272,6 +274,7 @@ multi_auto <- snp_ldpred2_auto(
   vec_p_init = seq_log(1e-4, 0.2, 30),
   burn_in = 100, num_iter = 100,         # TO REMOVE, for speed here
   allow_jump_sign = FALSE,
+  use_MLE = FALSE,         # USE `TRUE` ONLY FOR GWAS WITH LARGE N AND M
   shrink_corr = 0.95,
   ncores = NCORES)
 ```
@@ -280,7 +283,7 @@ Perform some quality control on the chains:
 ```{r}
 # `range` should be between 0 and 2
 (range <- sapply(multi_auto, function(auto) diff(range(auto$corr_est))))
-(keep <- (range > (0.95 * quantile(range, 0.95))))
+(keep <- which(range > (0.95 * quantile(range, 0.95, na.rm = TRUE))))
 ```
 
 To get the final effects / predictions, **you should only use chains that pass this filtering**:
@@ -315,11 +318,11 @@ pred_grid2 <- big_prodMat(G, beta_lassosum2, ind.col = df_beta[["_NUM_ID_"]],
                           ncores = NCORES)
 
 params2 <- attr(beta_lassosum2, "grid_param")
-params2$score <- apply(pred_grid2, 2, function(x) {
-  if (all(is.na(x))) return(NA)  # models that diverged substantially
-  summary(glm(
-    CAD ~ x + sex + age, data = obj.bigsnp$fam, family = "binomial"
-  ))$coef["x", 3]
+params2$score <- apply(pred_grid2, 2, function(.x) {
+  if (all(is.na(.x))) return(NA)  # models that diverged substantially
+  summary(glm(  # simply use `lm()` for quantitative traits
+    CAD ~ .x + sex + age, data = obj.bigsnp$fam, family = "binomial"
+  ))$coef[".x", 3]
 })
 
 ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) +
@@ -334,6 +337,7 @@ ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) +
 best_grid_lassosum2 <- params2 %>%
   mutate(id = row_number()) %>%
   arrange(desc(score)) %>%
+  print() %>% 
   slice(1) %>%
   pull(id) %>% 
   beta_lassosum2[, .]
@@ -341,7 +345,8 @@ best_grid_lassosum2 <- params2 %>%
 
 We can choose the best-overall model from both LDpred2-grid and lassosum2:
 ```{r}
-best_grid_overall <- `if`(max(params2$score) > max(params$score),
-                          best_grid_lassosum2,
-                          best_beta_grid)
+best_grid_overall <- `if`(max(params2$score, na.rm = TRUE) > max(params$score, na.rm = TRUE),
+                          best_grid_lassosum2, best_beta_grid)
 ```
+
+One advantage of lassosum2 compared to LDpred2 is that it can provide very sparse solutions (< 1% of variants used).

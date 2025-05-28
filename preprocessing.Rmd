@@ -22,7 +22,7 @@ PLINK is very efficient for conversion and quality control of multiple formats, 
 
 - `snp_plinkQC()` for quality control (QC) and conversion to bed/bim/fam.
 
-- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator [@manichaikul2010robust]. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files. Note that monozygotic twins or identical samples have a KING coefficient of $0.5$, not $1$; $0.25$ = siblings and parents; $2^{-3}$ = second-degree relatives (e.g. grandparents, uncles); $2^{-4}$ = third-degree relatives (e.g. cousins). You can use a threshold of $2^{-4.5} \approx 0.0442$ to remove all these related individuals (one from each pair).
+- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator [@manichaikul2010robust]. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files. Note that monozygotic twins or identical samples have a KING coefficient of $0.5$, not $1$; $0.25$ = siblings and parents; $2^{-3}$ = second-degree relatives (e.g. grandparents, uncles); $2^{-4}$ = third-degree relatives (e.g. cousins). You can use a threshold of $2^{-4.5} \approx 0.0442$ to remove all these related individuals (one from each pair, or all for PCA).
 	
 - `snp_plinkIBDQC()` for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments. I prefer the KING one.
 	
@@ -39,11 +39,11 @@ PLINK is very efficient for conversion and quality control of multiple formats, 
 
 ## Imputation
 
-Note that most functions from {bigstatsr} and {bigsnpr} do NOT handle missing values.
+Note that most functions from {bigstatsr} and {bigsnpr} do NOT handle missing values, except for some of the `bed_` functions.
 
 Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. the code from [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
-In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient; @prive2020efficient].
+In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the (much) slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient].
 If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as discussed in \@ref(getting-FBM).
 
 
@@ -95,7 +95,7 @@ ord <- match(obj.bigsnp$fam$family.ID, clinical$FamID)
 pheno <- clinical[ord, ]
 # Quick check
 stopifnot(all.equal(obj.bigsnp$fam$sex, pheno$sex))
-# Update the $fam component
+# Update the $fam component (could have used `dplyr::left_join()` also)
 obj.bigsnp$fam <- cbind(obj.bigsnp$fam, pheno[-c(1, 3)])
 ```
 
@@ -114,7 +114,7 @@ big_counts(G2, ind.col = 1:8)
 big_counts(G, ind.col = 1:8)
 ```
 
-`G` still has missing values, but `G2` does not. Note that both use the same underlying data (the same binary file on disk), the difference is that they use a different code to decode the underlying data:
+`G` still has missing values, but `G2` does not. Note that both use the same underlying data (the same binary file `.bk` on disk), the difference is that they use a different code to decode the underlying data:
 ```{r}
 G$code256
 G2$code256
@@ -126,4 +126,4 @@ obj.bigsnp$genotypes <- G2
 snp_save(obj.bigsnp)
 ```
 
-You can re-attach this data in another R session later using `snp_attach("tmp-data/GWAS_data_sorted_QC.rds")`.  
+You can then re-attach this data in another R session later using `snp_attach("tmp-data/GWAS_data_sorted_QC.rds")`.  
