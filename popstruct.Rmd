@@ -18,11 +18,14 @@ PCA on the genotype matrix can be used to capture population structure.
 However, PCA can actually capture different kinds of structure [@prive2020efficient]:
 
 - population structure (what we want),
-- LD structure, when there are two many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
+
+- Linkage Disequilibrium (LD) structure, when there are too many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
+
 - relatedness structure, when there are related individuals who usually cluster together in later PCs,
+
 - noise, basically just circles when looking at PC scores.
 
-Population structure is the second main topic of my research work (after polygenic scores).
+Capturing population structure with PCA is the second main topic of my research work (after polygenic scores).
 
 - In @prive2017efficient, I introduced an algorithm to compute PCA for a `bigSNP` object while accounting for the LD problem by using clumping (not pruning, cf. [this vignette](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html)) and an *automatic* detection and removal of long-range LD regions.
 
@@ -114,18 +117,18 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 ```
 
 It would be nice if we could get a better sense of the ancestry of these individuals.
-To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using.
+To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using (based on the UK Biobank and some individuals from the 1000 Genomes).
 
 ```{r}
 all_freq <- bigreadr::fread2(
   runonce::download_file(
-    "https://figshare.com/ndownloader/files/38019027",  # for the tutorial (46 MB)
+    "https://figshare.com/ndownloader/files/38019027",  # subset for the tutorial (46 MB)
     # "https://figshare.com/ndownloader/files/31620968",  # for real analyses (849 MB)
     dir = "tmp-data", fname = "ref_freqs.csv.gz"))
 
 projection <- bigreadr::fread2(
   runonce::download_file(
-    "https://figshare.com/ndownloader/files/38019024",  # for the tutorial (44 MB)
+    "https://figshare.com/ndownloader/files/38019024",  # subset for the tutorial (44 MB)
     # "https://figshare.com/ndownloader/files/31620953",  # for real analyses (847 MB)
     dir = "tmp-data", fname = "projection.csv.gz"))
 
@@ -134,45 +137,88 @@ correction <- c(1, 1, 1, 1.008, 1.021, 1.034, 1.052, 1.074, 1.099,
                 1.123, 1.15, 1.195, 1.256, 1.321, 1.382, 1.443)
 ```
 
+```{r}
+str(all_freq)    # reference allele frequencies
+str(projection)  # PC loadings of the reference data
+```
+
+:::: {.infobox .exo}
+Match variants between `obj.bed` and `all_freq` using `snp_match()`.
+
+For the variants matched, further remove the variants with more than 5% of missing values.
+::::
+
+<details>
+<summary>Click to see solution</summary>
 
 ```{r, warning=FALSE, message=FALSE}
 # match variants between the two datasets
 library(dplyr)
 matched <- obj.bed$map %>%
-  transmute(chr = chromosome, pos = physical.pos, a1 = allele1, a0 = allele2) %>% 
+  transmute(chr = chromosome, pos = physical.pos, a1 = allele1, a0 = allele2) %>%
   mutate(beta = 1) %>%
   snp_match(all_freq[1:5]) %>%
   print()
+```
 
+```{r}
 # further subsetting on missing values
 counts <- bed_counts(obj.bed, ind.col = matched$`_NUM_ID_.ss`, ncores = NCORES)
-# hist(nb_na <- counts[4, ])
-ind <- which(counts[4, ] < (nrow(obj.bed) * 0.05))        
+hist(counts[4, ])
+ind <- which((counts[4, ] / nrow(obj.bed)) < 0.05)
+matched2 <- matched[ind, ]
+```
 
-# project individuals (divided by 2) onto the PC space
-PROJ <- as.matrix(projection[matched$`_NUM_ID_`[ind], -(1:5)])
-all_proj <- apply(sweep(PROJ, 2, correction / 2, '*'), 2, function(x) {
-  bed_prodVec(obj.bed, x, ind.col = matched$`_NUM_ID_.ss`[ind], ncores = NCORES,
+</details>
+
+***
+
+```{r}
+# projection matrix
+proj_mat <- as.matrix(projection[matched2$`_NUM_ID_`, -(1:5)])
+# reference allele frequencies
+ref_mat  <- as.matrix(all_freq  [matched2$`_NUM_ID_`, -(1:5)])
+# centers of reference populations in the PCA
+all_centers <- crossprod(ref_mat, proj_mat)
+```
+
+```{r}
+# project individuals (divided by 2 -> as AF) onto the PC space
+all_proj <- apply(sweep(proj_mat, 2, correction / 2, '*'), 2, function(x) {
+  bed_prodVec(obj.bed, x, ind.col = matched2$`_NUM_ID_.ss`, ncores = NCORES,
               # scaling to get G if beta = 1 and (2 - G) if beta = -1
-              center = 1 - matched$beta[ind],
-              scale = matched$beta[ind])
+              center = 1 - matched2$beta, scale = matched2$beta)
 })
 ```
 
-We can then assign individuals to the closest center:
+:::: {.infobox .info}
+The `correction` factors are needed when projecting *new individuals* onto a PCA space to correct for the shrinkage that happens due to "overfitting" of the PCA. This happens particularly when the number of individuals used to derive the PCA is smaller than the number of variables. The amount of correction needed increases for later PCs. You can have a look at @prive2020efficient to read more about this.
+
+Note that the provided `correction` is specific to the PC loadings I provide, so that you don't need to recompute it. It is based on the ratio between the projections using a method that corrects for this shrinkage and the simple projections (simply multiplying by the loadings on the right).
+::::
+
+***
+
+:::: {.infobox .info}
+In @prive2021high, I have showed that distances in the PCA space are approximately proportional to $F_{ST}$ (a genetic distance). So I recommend using distances in the PCA space to assign individuals to clusters. So that clusters remain somewhat homogeneous, a maximum distance can be set based on proportionality with a chosen $F_{ST}$ threshold. 
+::::
+
+We can then assign each individual to their closest center:
 ```{r}
-all_centers <- crossprod(as.matrix(all_freq[matched$`_NUM_ID_`[ind], -(1:5)]), PROJ)
+# distance of individuals from each reference population (the center)
 all_sq_dist <- apply(all_centers, 1, function(one_center) {
   rowSums(sweep(all_proj, 2, one_center, '-')^2)
 })
 
-THR <- 0.002  # you can adjust this threshold
-thr_sq_dist <- max(dist(all_centers)^2) * THR / 0.16
+thr_fst <- 0.002  # you can adjust this threshold
+thr_sq_dist <- max(dist(all_centers)^2) * thr_fst / 0.16
 
+# gather some groups
 group <- colnames(all_freq)[-(1:5)]
 group[group %in% c("Scandinavia", "United Kingdom", "Ireland")]   <- "Europe (North West)"
 group[group %in% c("Europe (South East)", "Europe (North East)")] <- "Europe (East)"
 
+# assign to closest cluster, when close enough
 cluster <- apply(all_sq_dist, 1, function(sq_dist) {
   ind <- which.min(sq_dist)
   if (sq_dist[ind] < thr_sq_dist) group[ind] else NA
@@ -187,14 +233,17 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
   k2 <- 2 * k
   qplot(PC[, k1], PC[, k2], color = cluster, size = I(2)) +
     theme_bigstatsr(0.6) +
-    labs(x = paste0("PC", k1), y = paste0("PC", k2), color = "Assigned\npopulation") +
+    labs(x = paste0("PC", k1), y = paste0("PC", k2), color = "Assigned group") +
     coord_equal()
 }), nrow = 2, legend_ratio = 0.25, title_ratio = 0)
 ```
 
 These are mostly European individuals.
-PC4-PC6 are definitively a bit odd. 
+PC4 is definitively a bit odd.
 
+:::: {.infobox .exo}
+Try to find out what's going on with PC4.
+::::
 
 :::: {.infobox .exo}
 Adapt all the previous code to rerun it on the bigSNP object we made before (instead of the bed object we have used here).

@@ -15,8 +15,9 @@ X <- FBM(2, 5, init = 1:10, backingfile = "test")$save()
 ```
 
 ```{r}
-X$backingfile                ## the file where the data is actually stored
-X <- big_attach("test.rds")  ## can get the FBM from any R session
+X$backingfile                # the file where numeric data is stored
+X$rds                        # the file where information about the data is stored
+X <- big_attach("test.rds")  # can get the FBM from any R session
 ```
 
 You can access the whole FBM as an R matrix in memory using `X[]`.
@@ -24,25 +25,19 @@ However, if the matrix is too large to fit in memory, you should always access o
 Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.
 
 ```{r}
-X[, 1]  ## ok (must read first column only)
-X[1, ]  ## bad (must read all data from disk)
-X[]     ## super bad (standard R matrix in memory)
+X[, 1]  # ok (must read first column only)
+X[1, ]  # bad (must read all data from disk)
+X[]     # super bad (standard R matrix in memory)
 ```
 
 
-## Split-(par)Apply-Combine Strategy
+### Split-(par)Apply-Combine Strategy
 
 ```{r}
-colSums(X[])  ## super bad
+colSums(X[])  # super bad
 ```
 
-```{r, out.width='40%', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/privefl/R-presentation/master/caution.jpg")
-```
-
-***
-
-How to apply standard R functions to big matrices (in parallel); implemented in `big_apply()`.
+Instead, the split-apply-combine strategy works well for applying standard R functions to FBMs (possibly in parallel), as implemented in `big_apply()`.
 
 ```{r, out.width='90%', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/privefl/R-presentation/master/split-apply-combine.svg")
@@ -56,6 +51,8 @@ Compute the sum of each column of `X <- big_attachExtdata()` using `big_apply()`
 
 
 ## Similar accessor as Rcpp matrices
+
+In case you want to develop new R functions for this format while coding in C++ (which is the case for many bigstatsr/bigsnpr functions).
 
 ```{Rcpp, eval=FALSE}
 // [[Rcpp::plugins(cpp11)]]
@@ -113,8 +110,11 @@ NumericVector bigcolsums2(Environment BM,
 ## Some summary functions are already implemented
 
 ```{r}
-big_colstats(X)  # sum and var (for each column)
-big_scale()(X)   # mean and sd (for each column)
+library(bigsnpr)
+(X2 <- snp_attachExtdata()$genotypes)
+big_colstats(X2)      # sum and var (for each column)
+big_scale()(X2)       # mean and sd (for each column)
+snp_scaleBinom()(X2)  # 2 * af (mean) and sqrt(2 * af * (1 - af)) (~sd)
 ```
 
 :::: {.infobox .caution}

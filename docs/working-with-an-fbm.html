@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé" />
 
 
-<meta name="date" content="2025-05-28" />
+<meta name="date" content="2025-07-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -195,10 +195,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html"><i class="fa fa-check"></i><b>3</b> Working with an FBM</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>3.1</b> Similar accessor as R matrices</a></li>
-<li class="chapter" data-level="3.2" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>3.2</b> Split-(par)Apply-Combine Strategy</a></li>
-<li class="chapter" data-level="3.3" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>3.3</b> Similar accessor as Rcpp matrices</a></li>
-<li class="chapter" data-level="3.4" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>3.4</b> Some summary functions are already implemented</a></li>
+<li class="chapter" data-level="3.1" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>3.1</b> Similar accessor as R matrices</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>3.1.1</b> Split-(par)Apply-Combine Strategy</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>3.2</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="3.3" data-path="working-with-an-fbm.html"><a href="working-with-an-fbm.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>3.3</b> Some summary functions are already implemented</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> Preprocessing</a>
 <ul>
@@ -255,101 +257,175 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 3</span> Working with an FBM<a href="working-with-an-fbm.html#working-with-an-fbm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="similar-accessor-as-r-matrices" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Similar accessor as R matrices<a href="working-with-an-fbm.html#similar-accessor-as-r-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="working-with-an-fbm.html#cb7-1" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)</span>
-<span id="cb7-2"><a href="working-with-an-fbm.html#cb7-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="at">init =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">backingfile =</span> <span class="st">&quot;test&quot;</span>)<span class="sc">$</span><span class="fu">save</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="working-with-an-fbm.html#cb8-1" tabindex="-1"></a>X<span class="sc">$</span>backingfile                <span class="do">## the file where the data is actually stored</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="working-with-an-fbm.html#cb38-1" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)</span>
+<span id="cb38-2"><a href="working-with-an-fbm.html#cb38-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="at">init =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">backingfile =</span> <span class="st">&quot;test&quot;</span>)<span class="sc">$</span><span class="fu">save</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="working-with-an-fbm.html#cb39-1" tabindex="-1"></a>X<span class="sc">$</span>backingfile                <span class="co"># the file where numeric data is stored</span></span></code></pre></div>
 <pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\OneDrive - Aarhus universitet\\Desktop\\bigsnpr-extdoc\\test.bk&quot;</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="working-with-an-fbm.html#cb10-1" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">big_attach</span>(<span class="st">&quot;test.rds&quot;</span>)  <span class="do">## can get the FBM from any R session</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="working-with-an-fbm.html#cb41-1" tabindex="-1"></a>X<span class="sc">$</span>rds                        <span class="co"># the file where information about the data is stored</span></span></code></pre></div>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\OneDrive - Aarhus universitet\\Desktop\\bigsnpr-extdoc\\test.rds&quot;</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="working-with-an-fbm.html#cb43-1" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">big_attach</span>(<span class="st">&quot;test.rds&quot;</span>)  <span class="co"># can get the FBM from any R session</span></span></code></pre></div>
 <p>You can access the whole FBM as an R matrix in memory using <code>X[]</code>.
 However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
 Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="working-with-an-fbm.html#cb11-1" tabindex="-1"></a>X[, <span class="dv">1</span>]  <span class="do">## ok (must read first column only)</span></span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="working-with-an-fbm.html#cb44-1" tabindex="-1"></a>X[, <span class="dv">1</span>]  <span class="co"># ok (must read first column only)</span></span></code></pre></div>
 <pre><code>#&gt; [1] 1 2</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="working-with-an-fbm.html#cb13-1" tabindex="-1"></a>X[<span class="dv">1</span>, ]  <span class="do">## bad (must read all data from disk)</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="working-with-an-fbm.html#cb46-1" tabindex="-1"></a>X[<span class="dv">1</span>, ]  <span class="co"># bad (must read all data from disk)</span></span></code></pre></div>
 <pre><code>#&gt; [1] 1 3 5 7 9</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="working-with-an-fbm.html#cb15-1" tabindex="-1"></a>X[]     <span class="do">## super bad (standard R matrix in memory)</span></span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="working-with-an-fbm.html#cb48-1" tabindex="-1"></a>X[]     <span class="co"># super bad (standard R matrix in memory)</span></span></code></pre></div>
 <pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5]
 #&gt; [1,]    1    3    5    7    9
 #&gt; [2,]    2    4    6    8   10</code></pre>
-</div>
-<div id="split-parapply-combine-strategy" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Split-(par)Apply-Combine Strategy<a href="working-with-an-fbm.html#split-parapply-combine-strategy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="working-with-an-fbm.html#cb17-1" tabindex="-1"></a><span class="fu">colSums</span>(X[])  <span class="do">## super bad</span></span></code></pre></div>
+<div id="split-parapply-combine-strategy" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Split-(par)Apply-Combine Strategy<a href="working-with-an-fbm.html#split-parapply-combine-strategy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="working-with-an-fbm.html#cb50-1" tabindex="-1"></a><span class="fu">colSums</span>(X[])  <span class="co"># super bad</span></span></code></pre></div>
 <pre><code>#&gt; [1]  3  7 11 15 19</code></pre>
-<p><img src="https://raw.githubusercontent.com/privefl/R-presentation/master/caution.jpg" width="40%" style="display: block; margin: auto;" /></p>
-<hr />
-<p>How to apply standard R functions to big matrices (in parallel); implemented in <code>big_apply()</code>.</p>
+<p>Instead, the split-apply-combine strategy works well for applying standard R functions to FBMs (possibly in parallel), as implemented in <code>big_apply()</code>.</p>
 <p><img src="https://raw.githubusercontent.com/privefl/R-presentation/master/split-apply-combine.svg" width="90%" style="display: block; margin: auto;" /></p>
 <p>Learn more with <a href="https://privefl.github.io/bigstatsr/articles/big-apply.html">this tutorial on <code>big_apply()</code></a>.</p>
 <div class="infobox exo">
 <p>Compute the sum of each column of <code>X &lt;- big_attachExtdata()</code> using <code>big_apply()</code>.</p>
 </div>
 </div>
-<div id="similar-accessor-as-rcpp-matrices" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Similar accessor as Rcpp matrices<a href="working-with-an-fbm.html#similar-accessor-as-rcpp-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb19-1"><a href="working-with-an-fbm.html#cb19-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
-<span id="cb19-2"><a href="working-with-an-fbm.html#cb19-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
-<span id="cb19-3"><a href="working-with-an-fbm.html#cb19-3" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></span>
-<span id="cb19-4"><a href="working-with-an-fbm.html#cb19-4" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="working-with-an-fbm.html#cb19-5" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb19-6"><a href="working-with-an-fbm.html#cb19-6" tabindex="-1"></a>NumericVector bigcolsums<span class="op">(</span>Environment BM<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-7"><a href="working-with-an-fbm.html#cb19-7" tabindex="-1"></a>  </span>
-<span id="cb19-8"><a href="working-with-an-fbm.html#cb19-8" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>FBM<span class="op">&gt;</span> xpBM <span class="op">=</span> BM<span class="op">[</span><span class="st">&quot;address&quot;</span><span class="op">];</span>   <span class="co">// get the external pointer</span></span>
-<span id="cb19-9"><a href="working-with-an-fbm.html#cb19-9" tabindex="-1"></a>  BMAcc<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> macc<span class="op">(</span>xpBM<span class="op">);</span>         <span class="co">// create an accessor to the data</span></span>
-<span id="cb19-10"><a href="working-with-an-fbm.html#cb19-10" tabindex="-1"></a>  </span>
-<span id="cb19-11"><a href="working-with-an-fbm.html#cb19-11" tabindex="-1"></a>  <span class="dt">size_t</span> n <span class="op">=</span> macc<span class="op">.</span>nrow<span class="op">();</span>           <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
-<span id="cb19-12"><a href="working-with-an-fbm.html#cb19-12" tabindex="-1"></a>  <span class="dt">size_t</span> m <span class="op">=</span> macc<span class="op">.</span>ncol<span class="op">();</span>           <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
-<span id="cb19-13"><a href="working-with-an-fbm.html#cb19-13" tabindex="-1"></a>  </span>
-<span id="cb19-14"><a href="working-with-an-fbm.html#cb19-14" tabindex="-1"></a>  NumericVector res<span class="op">(</span>m<span class="op">);</span></span>
-<span id="cb19-15"><a href="working-with-an-fbm.html#cb19-15" tabindex="-1"></a>  </span>
-<span id="cb19-16"><a href="working-with-an-fbm.html#cb19-16" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++)</span> </span>
-<span id="cb19-17"><a href="working-with-an-fbm.html#cb19-17" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb19-18"><a href="working-with-an-fbm.html#cb19-18" tabindex="-1"></a>      res<span class="op">[</span>j<span class="op">]</span> <span class="op">+=</span> macc<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span>         <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
-<span id="cb19-19"><a href="working-with-an-fbm.html#cb19-19" tabindex="-1"></a>  </span>
-<span id="cb19-20"><a href="working-with-an-fbm.html#cb19-20" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">;</span></span>
-<span id="cb19-21"><a href="working-with-an-fbm.html#cb19-21" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>For a subset of the data:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="working-with-an-fbm.html#cb20-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
-<span id="cb20-2"><a href="working-with-an-fbm.html#cb20-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
-<span id="cb20-3"><a href="working-with-an-fbm.html#cb20-3" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></span>
-<span id="cb20-4"><a href="working-with-an-fbm.html#cb20-4" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="working-with-an-fbm.html#cb20-5" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb20-6"><a href="working-with-an-fbm.html#cb20-6" tabindex="-1"></a>NumericVector bigcolsums2<span class="op">(</span>Environment BM<span class="op">,</span></span>
-<span id="cb20-7"><a href="working-with-an-fbm.html#cb20-7" tabindex="-1"></a>                          <span class="at">const</span> IntegerVector<span class="op">&amp;</span> rowInd<span class="op">,</span></span>
-<span id="cb20-8"><a href="working-with-an-fbm.html#cb20-8" tabindex="-1"></a>                          <span class="at">const</span> IntegerVector<span class="op">&amp;</span> colInd<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb20-9"><a href="working-with-an-fbm.html#cb20-9" tabindex="-1"></a>  </span>
-<span id="cb20-10"><a href="working-with-an-fbm.html#cb20-10" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>FBM<span class="op">&gt;</span> xpBM <span class="op">=</span> BM<span class="op">[</span><span class="st">&quot;address&quot;</span><span class="op">];</span>   </span>
-<span id="cb20-11"><a href="working-with-an-fbm.html#cb20-11" tabindex="-1"></a>  <span class="co">// accessor to a sub-view of the data -&gt; the only line of code that should change</span></span>
-<span id="cb20-12"><a href="working-with-an-fbm.html#cb20-12" tabindex="-1"></a>  SubBMAcc<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> macc<span class="op">(</span>xpBM<span class="op">,</span> rowInd<span class="op">,</span> colInd<span class="op">,</span> <span class="dv">1</span><span class="op">);</span>  </span>
-<span id="cb20-13"><a href="working-with-an-fbm.html#cb20-13" tabindex="-1"></a>  </span>
-<span id="cb20-14"><a href="working-with-an-fbm.html#cb20-14" tabindex="-1"></a>  <span class="dt">size_t</span> n <span class="op">=</span> macc<span class="op">.</span>nrow<span class="op">();</span></span>
-<span id="cb20-15"><a href="working-with-an-fbm.html#cb20-15" tabindex="-1"></a>  <span class="dt">size_t</span> m <span class="op">=</span> macc<span class="op">.</span>ncol<span class="op">();</span></span>
-<span id="cb20-16"><a href="working-with-an-fbm.html#cb20-16" tabindex="-1"></a>  </span>
-<span id="cb20-17"><a href="working-with-an-fbm.html#cb20-17" tabindex="-1"></a>  NumericVector res<span class="op">(</span>m<span class="op">);</span></span>
-<span id="cb20-18"><a href="working-with-an-fbm.html#cb20-18" tabindex="-1"></a>  </span>
-<span id="cb20-19"><a href="working-with-an-fbm.html#cb20-19" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++)</span> </span>
-<span id="cb20-20"><a href="working-with-an-fbm.html#cb20-20" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb20-21"><a href="working-with-an-fbm.html#cb20-21" tabindex="-1"></a>      res<span class="op">[</span>j<span class="op">]</span> <span class="op">+=</span> macc<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span> </span>
-<span id="cb20-22"><a href="working-with-an-fbm.html#cb20-22" tabindex="-1"></a>  </span>
-<span id="cb20-23"><a href="working-with-an-fbm.html#cb20-23" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">;</span></span>
-<span id="cb20-24"><a href="working-with-an-fbm.html#cb20-24" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
-<div id="some-summary-functions-are-already-implemented" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Some summary functions are already implemented<a href="working-with-an-fbm.html#some-summary-functions-are-already-implemented" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="working-with-an-fbm.html#cb21-1" tabindex="-1"></a><span class="fu">big_colstats</span>(X)  <span class="co"># sum and var (for each column)</span></span></code></pre></div>
-<pre><code>#&gt;   sum var
-#&gt; 1   3 0.5
-#&gt; 2   7 0.5
-#&gt; 3  11 0.5
-#&gt; 4  15 0.5
-#&gt; 5  19 0.5</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="working-with-an-fbm.html#cb23-1" tabindex="-1"></a><span class="fu">big_scale</span>()(X)   <span class="co"># mean and sd (for each column)</span></span></code></pre></div>
-<pre><code>#&gt;   center     scale
-#&gt; 1    1.5 0.7071068
-#&gt; 2    3.5 0.7071068
-#&gt; 3    5.5 0.7071068
-#&gt; 4    7.5 0.7071068
-#&gt; 5    9.5 0.7071068</code></pre>
+<div id="similar-accessor-as-rcpp-matrices" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Similar accessor as Rcpp matrices<a href="working-with-an-fbm.html#similar-accessor-as-rcpp-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In case you want to develop new R functions for this format while coding in C++ (which is the case for many bigstatsr/bigsnpr functions).</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb52-1"><a href="working-with-an-fbm.html#cb52-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
+<span id="cb52-2"><a href="working-with-an-fbm.html#cb52-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
+<span id="cb52-3"><a href="working-with-an-fbm.html#cb52-3" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></span>
+<span id="cb52-4"><a href="working-with-an-fbm.html#cb52-4" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="working-with-an-fbm.html#cb52-5" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb52-6"><a href="working-with-an-fbm.html#cb52-6" tabindex="-1"></a>NumericVector bigcolsums<span class="op">(</span>Environment BM<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb52-7"><a href="working-with-an-fbm.html#cb52-7" tabindex="-1"></a>  </span>
+<span id="cb52-8"><a href="working-with-an-fbm.html#cb52-8" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>FBM<span class="op">&gt;</span> xpBM <span class="op">=</span> BM<span class="op">[</span><span class="st">&quot;address&quot;</span><span class="op">];</span>   <span class="co">// get the external pointer</span></span>
+<span id="cb52-9"><a href="working-with-an-fbm.html#cb52-9" tabindex="-1"></a>  BMAcc<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> macc<span class="op">(</span>xpBM<span class="op">);</span>         <span class="co">// create an accessor to the data</span></span>
+<span id="cb52-10"><a href="working-with-an-fbm.html#cb52-10" tabindex="-1"></a>  </span>
+<span id="cb52-11"><a href="working-with-an-fbm.html#cb52-11" tabindex="-1"></a>  <span class="dt">size_t</span> n <span class="op">=</span> macc<span class="op">.</span>nrow<span class="op">();</span>           <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
+<span id="cb52-12"><a href="working-with-an-fbm.html#cb52-12" tabindex="-1"></a>  <span class="dt">size_t</span> m <span class="op">=</span> macc<span class="op">.</span>ncol<span class="op">();</span>           <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
+<span id="cb52-13"><a href="working-with-an-fbm.html#cb52-13" tabindex="-1"></a>  </span>
+<span id="cb52-14"><a href="working-with-an-fbm.html#cb52-14" tabindex="-1"></a>  NumericVector res<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb52-15"><a href="working-with-an-fbm.html#cb52-15" tabindex="-1"></a>  </span>
+<span id="cb52-16"><a href="working-with-an-fbm.html#cb52-16" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++)</span> </span>
+<span id="cb52-17"><a href="working-with-an-fbm.html#cb52-17" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb52-18"><a href="working-with-an-fbm.html#cb52-18" tabindex="-1"></a>      res<span class="op">[</span>j<span class="op">]</span> <span class="op">+=</span> macc<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span>         <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
+<span id="cb52-19"><a href="working-with-an-fbm.html#cb52-19" tabindex="-1"></a>  </span>
+<span id="cb52-20"><a href="working-with-an-fbm.html#cb52-20" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="cb52-21"><a href="working-with-an-fbm.html#cb52-21" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>For a subset of the data:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb53-1"><a href="working-with-an-fbm.html#cb53-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
+<span id="cb53-2"><a href="working-with-an-fbm.html#cb53-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
+<span id="cb53-3"><a href="working-with-an-fbm.html#cb53-3" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></span>
+<span id="cb53-4"><a href="working-with-an-fbm.html#cb53-4" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="working-with-an-fbm.html#cb53-5" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb53-6"><a href="working-with-an-fbm.html#cb53-6" tabindex="-1"></a>NumericVector bigcolsums2<span class="op">(</span>Environment BM<span class="op">,</span></span>
+<span id="cb53-7"><a href="working-with-an-fbm.html#cb53-7" tabindex="-1"></a>                          <span class="at">const</span> IntegerVector<span class="op">&amp;</span> rowInd<span class="op">,</span></span>
+<span id="cb53-8"><a href="working-with-an-fbm.html#cb53-8" tabindex="-1"></a>                          <span class="at">const</span> IntegerVector<span class="op">&amp;</span> colInd<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb53-9"><a href="working-with-an-fbm.html#cb53-9" tabindex="-1"></a>  </span>
+<span id="cb53-10"><a href="working-with-an-fbm.html#cb53-10" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>FBM<span class="op">&gt;</span> xpBM <span class="op">=</span> BM<span class="op">[</span><span class="st">&quot;address&quot;</span><span class="op">];</span>   </span>
+<span id="cb53-11"><a href="working-with-an-fbm.html#cb53-11" tabindex="-1"></a>  <span class="co">// accessor to a sub-view of the data -&gt; the only line of code that should change</span></span>
+<span id="cb53-12"><a href="working-with-an-fbm.html#cb53-12" tabindex="-1"></a>  SubBMAcc<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> macc<span class="op">(</span>xpBM<span class="op">,</span> rowInd<span class="op">,</span> colInd<span class="op">,</span> <span class="dv">1</span><span class="op">);</span>  </span>
+<span id="cb53-13"><a href="working-with-an-fbm.html#cb53-13" tabindex="-1"></a>  </span>
+<span id="cb53-14"><a href="working-with-an-fbm.html#cb53-14" tabindex="-1"></a>  <span class="dt">size_t</span> n <span class="op">=</span> macc<span class="op">.</span>nrow<span class="op">();</span></span>
+<span id="cb53-15"><a href="working-with-an-fbm.html#cb53-15" tabindex="-1"></a>  <span class="dt">size_t</span> m <span class="op">=</span> macc<span class="op">.</span>ncol<span class="op">();</span></span>
+<span id="cb53-16"><a href="working-with-an-fbm.html#cb53-16" tabindex="-1"></a>  </span>
+<span id="cb53-17"><a href="working-with-an-fbm.html#cb53-17" tabindex="-1"></a>  NumericVector res<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb53-18"><a href="working-with-an-fbm.html#cb53-18" tabindex="-1"></a>  </span>
+<span id="cb53-19"><a href="working-with-an-fbm.html#cb53-19" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++)</span> </span>
+<span id="cb53-20"><a href="working-with-an-fbm.html#cb53-20" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb53-21"><a href="working-with-an-fbm.html#cb53-21" tabindex="-1"></a>      res<span class="op">[</span>j<span class="op">]</span> <span class="op">+=</span> macc<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span> </span>
+<span id="cb53-22"><a href="working-with-an-fbm.html#cb53-22" tabindex="-1"></a>  </span>
+<span id="cb53-23"><a href="working-with-an-fbm.html#cb53-23" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="cb53-24"><a href="working-with-an-fbm.html#cb53-24" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</div>
+<div id="some-summary-functions-are-already-implemented" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Some summary functions are already implemented<a href="working-with-an-fbm.html#some-summary-functions-are-already-implemented" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="working-with-an-fbm.html#cb54-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb54-2"><a href="working-with-an-fbm.html#cb54-2" tabindex="-1"></a>(X2 <span class="ot">&lt;-</span> <span class="fu">snp_attachExtdata</span>()<span class="sc">$</span>genotypes)</span></code></pre></div>
+<pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="working-with-an-fbm.html#cb56-1" tabindex="-1"></a><span class="fu">big_colstats</span>(X2)      <span class="co"># sum and var (for each column)</span></span></code></pre></div>
+<pre><code>#&gt;    sum       var
+#&gt; 1  354 0.4604831
+#&gt; 2  213 0.3241195
+#&gt; 3  245 0.3932122
+#&gt; 4  191 0.3109247
+#&gt; 5  472 0.5176030
+#&gt; 6  368 0.4613528
+#&gt; 7  132 0.2292594
+#&gt; 8  497 0.4791207
+#&gt; 9  498 0.5160886
+#&gt; 10 481 0.5416535
+#&gt; 11 460 0.5168908
+#&gt; 12 393 0.4772465
+#&gt; 13  80 0.1465521
+#&gt; 14 195 0.3245168
+#&gt; 15 468 0.5084417
+#&gt; 16 287 0.4489901
+#&gt; 17 257 0.3745071
+#&gt; 18 371 0.4356004
+#&gt; 19 330 0.4444994
+#&gt; 20 479 0.5178430
+#&gt; 21 158 0.2707630
+#&gt; 22 389 0.4540881
+#&gt; 23 335 0.4882371
+#&gt; 24 394 0.4801104
+#&gt; 25 430 0.4968213
+#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 4517 rows ]</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="working-with-an-fbm.html#cb58-1" tabindex="-1"></a><span class="fu">big_scale</span>()(X2)       <span class="co"># mean and sd (for each column)</span></span></code></pre></div>
+<pre><code>#&gt;       center     scale
+#&gt; 1  0.6847195 0.6785891
+#&gt; 2  0.4119923 0.5693149
+#&gt; 3  0.4738878 0.6270663
+#&gt; 4  0.3694391 0.5576062
+#&gt; 5  0.9129594 0.7194463
+#&gt; 6  0.7117988 0.6792295
+#&gt; 7  0.2553191 0.4788104
+#&gt; 8  0.9613153 0.6921855
+#&gt; 9  0.9632495 0.7183931
+#&gt; 10 0.9303675 0.7359712
+#&gt; 11 0.8897485 0.7189512
+#&gt; 12 0.7601547 0.6908303
+#&gt; 13 0.1547389 0.3828213
+#&gt; 14 0.3771760 0.5696638
+#&gt; 15 0.9052224 0.7130510
+#&gt; 16 0.5551257 0.6700673
+#&gt; 17 0.4970986 0.6119698
+#&gt; 18 0.7176015 0.6600003
+#&gt; 19 0.6382979 0.6667079
+#&gt; 20 0.9264990 0.7196131
+#&gt; 21 0.3056093 0.5203490
+#&gt; 22 0.7524178 0.6738606
+#&gt; 23 0.6479691 0.6987397
+#&gt; 24 0.7620890 0.6929000
+#&gt; 25 0.8317215 0.7048555
+#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 4517 rows ]</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="working-with-an-fbm.html#cb60-1" tabindex="-1"></a><span class="fu">snp_scaleBinom</span>()(X2)  <span class="co"># 2 * af (mean) and sqrt(2 * af * (1 - af)) (~sd)</span></span></code></pre></div>
+<pre><code>#&gt;       center     scale
+#&gt; 1  0.6847195 0.6710433
+#&gt; 2  0.4119923 0.5719471
+#&gt; 3  0.4738878 0.6013343
+#&gt; 4  0.3694391 0.5488137
+#&gt; 5  0.9129594 0.7044231
+#&gt; 6  0.7117988 0.6771042
+#&gt; 7  0.2553191 0.4719377
+#&gt; 8  0.9613153 0.7065775
+#&gt; 9  0.9632495 0.7066291
+#&gt; 10 0.9303675 0.7053904
+#&gt; 11 0.8897485 0.7027961
+#&gt; 12 0.7601547 0.6864671
+#&gt; 13 0.1547389 0.3778450
+#&gt; 14 0.3771760 0.5532135
+#&gt; 15 0.9052224 0.7039237
+#&gt; 16 0.5551257 0.6332799
+#&gt; 17 0.4970986 0.6111834
+#&gt; 18 0.7176015 0.6783256
+#&gt; 19 0.6382979 0.6592312
+#&gt; 20 0.9264990 0.7051942
+#&gt; 21 0.3056093 0.5088327
+#&gt; 22 0.7524178 0.6850923
+#&gt; 23 0.6479691 0.6618437
+#&gt; 24 0.7620890 0.6868036
+#&gt; 25 0.8317215 0.6970231
+#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 4517 rows ]</code></pre>
 <div class="infobox caution">
 <p>To only use a subset of the data stored as an FBM, you should almost never make a copy of the data; instead, use parameters <code>ind.row</code> (or <code>ind.train</code>) and <code>ind.col</code> to apply functions to a subset of the data.</p>
 </div>
